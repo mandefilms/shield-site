@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shield — Always Watching. Never Intrusive.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1E3A5F;
+      --blue:   #2B4C7E;
+      --blue-light: #3A6099;
+      --coral:  #FF6B6B;
+      --yellow: #FFD93D;
+      --mint:   #6BCB77;
+      --white:  #FFFFFF;
+      --off-white: #F4F8FF;
+      --text-dark: #1A2B40;
+      --text-mid: #3A5472;
+      --radius: 20px;
+      --shadow: 0 8px 40px rgba(30,58,95,0.13);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--blue);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── UTILITIES ────────────────────────────────── */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+    .tag--coral  { background: var(--coral);  color: var(--white); }
+    .tag--mint   { background: var(--mint);   color: var(--navy); }
+    .tag--yellow { background: var(--yellow); color: var(--navy); }
+    .tag--blue   { background: rgba(255,255,255,0.18); color: var(--white); }
+
+    h1 { font-family: 'Fraunces', serif; font-size: clamp(2.8rem, 8vw, 5rem); line-height: 1.05; font-weight: 700; }
+    h2 { font-family: 'Fraunces', serif; font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.15; font-weight: 700; }
+    h3 { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; }
+    p  { line-height: 1.75; font-size: 1.05rem; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── DECORATIVE BLOBS ─────────────────────────── */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      opacity: 0.18;
+    }
+
+    /* ── NAV ──────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(30, 58, 95, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-decoration: none; color: var(--white); }
+    .nav-logo .owl { font-size: 1.4rem; }
+    .nav-cta {
+      background: var(--coral);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 9px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── HERO ─────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex; align-items: center;
+      padding: 120px 0 80px;
+      overflow: hidden;
+    }
+    #hero .blob-1 { width: 500px; height: 500px; background: var(--coral); top: -120px; right: -160px; }
+    #hero .blob-2 { width: 400px; height: 400px; background: var(--mint);  bottom: -80px; left: -120px; }
+
+    .hero-inner { position: relative; z-index: 2; }
+    .hero-owl { font-size: clamp(3.5rem, 10vw, 6rem); display: block; margin-bottom: 16px; line-height: 1; }
+    .hero-title { margin-bottom: 18px; }
+    .hero-title em { font-style: italic; color: var(--yellow); }
+    .hero-tagline {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-style: italic;
+      color: var(--mint);
+      margin-bottom: 22px;
+      opacity: 0.9;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      opacity: 0.85;
+      max-width: 560px;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+    .hero-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-form input {
+      flex: 1 1 220px;
+      padding: 14px 20px;
+      border-radius: 100px;
+      border: 2px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .hero-form input::placeholder { color: rgba(255,255,255,0.55); }
+    .hero-form input:focus { border-color: rgba(255,255,255,0.6); }
+    .btn-primary {
+      background: var(--coral);
+      color: var(--white);
+      border: none;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+    .hero-note { margin-top: 14px; font-size: 0.82rem; opacity: 0.55; }
+
+    .hero-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 40px; }
+    .badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .badge .icon { font-size: 1rem; }
+
+    /* ── SECTION BASE ─────────────────────────────── */
+    section { padding: 90px 0; }
+    .section-light {
+      background: var(--off-white);
+      color: var(--text-dark);
+    }
+    .section-navy {
+      background: var(--navy);
+      color: var(--white);
+    }
+    .section-mid {
+      background: #243F68;
+      color: var(--white);
+    }
+    .section-white {
+      background: var(--white);
+      color: var(--text-dark);
+    }
+
+    .section-header { margin-bottom: 52px; }
+    .section-header p { opacity: 0.75; max-width: 560px; margin-top: 14px; font-size: 1.05rem; }
+    .section-light .section-header p,
+    .section-white .section-header p { color: var(--text-mid); opacity: 1; }
+
+    /* ── PROBLEM ──────────────────────────────────── */
+    #problem { position: relative; overflow: hidden; }
+    #problem .blob-3 { width: 360px; height: 360px; background: var(--coral); top: -60px; left: -100px; }
+
+    .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .problem-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .problem-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .problem-card h3 { margin-bottom: 8px; font-size: 1rem; }
+    .problem-card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.6; }
+
+    /* ── DIFFERENTIATORS ──────────────────────────── */
+    #different { position: relative; overflow: hidden; }
+    #different .blob-4 { width: 420px; height: 420px; background: var(--mint); bottom: -80px; right: -120px; }
+
+    .diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .diff-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .diff-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .diff-card.coral::before { background: var(--coral); }
+    .diff-card.mint::before  { background: var(--mint); }
+    .diff-card.yellow::before { background: var(--yellow); }
+    .diff-card.blue::before  { background: var(--blue-light); }
+    .diff-card h3 { color: var(--text-dark); margin-bottom: 10px; font-size: 1.05rem; }
+    .diff-card p { color: var(--text-mid); font-size: 0.92rem; line-height: 1.65; }
+    .diff-icon { font-size: 2rem; margin-bottom: 14px; }
+
+    /* ── HOW IT WORKS ─────────────────────────────── */
+    #how { position: relative; overflow: hidden; }
+
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 24px;
+      align-items: flex-start;
+      padding-bottom: 44px;
+      position: relative;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 29px;
+      top: 60px;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255,255,255,0.1);
+    }
+    .step-num {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.1rem;
+      flex-shrink: 0;
+      position: relative; z-index: 1;
+    }
+    .step-num.coral  { background: var(--coral); color: var(--white); }
+    .step-num.yellow { background: var(--yellow); color: var(--navy); }
+    .step-num.mint   { background: var(--mint);   color: var(--navy); }
+    .step-num.blue   { background: rgba(255,255,255,0.2); color: var(--white); }
+    .step-body { padding-top: 10px; }
+    .step-body h3 { font-size: 1.2rem; margin-bottom: 8px; }
+    .step-body p  { font-size: 0.95rem; opacity: 0.72; line-height: 1.65; }
+    .step-emoji { font-size: 1.4rem; margin-bottom: 4px; display: block; }
+
+    /* ── SOS ──────────────────────────────────────── */
+    #sos { position: relative; overflow: hidden; }
+    #sos .blob-5 { width: 380px; height: 380px; background: var(--coral); opacity: 0.12; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+    .sos-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 640px) { .sos-inner { grid-template-columns: 1fr; } }
+
+    .sos-visual {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sos-button-demo {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: var(--coral);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 16px rgba(255,107,107,0.15), 0 0 0 32px rgba(255,107,107,0.07);
+      animation: pulse 2.8s ease-in-out infinite;
+      cursor: default;
+    }
+    .sos-button-demo .sos-label { font-weight: 800; font-size: 1.4rem; letter-spacing: 0.1em; }
+    .sos-button-demo .sos-sub   { font-size: 0.7rem; opacity: 0.8; margin-top: 2px; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 16px rgba(255,107,107,0.15), 0 0 0 32px rgba(255,107,107,0.07); }
+      50%       { box-shadow: 0 0 0 22px rgba(255,107,107,0.20), 0 0 0 44px rgba(255,107,107,0.09); }
+    }
+    .sos-text h2 { margin-bottom: 18px; }
+    .sos-text p  { opacity: 0.8; margin-bottom: 16px; }
+    .sos-points { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .sos-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; opacity: 0.82; }
+    .sos-points li::before { content: '✓'; color: var(--mint); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── MASCOT ───────────────────────────────────── */
+    #mascot { position: relative; overflow: hidden; }
+    #mascot .blob-6 { width: 300px; height: 300px; background: var(--yellow); bottom: -60px; right: -60px; }
+
+    .mascot-stages {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 48px;
+      flex-wrap: wrap;
+    }
+    .mascot-stage {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      text-align: center;
+    }
+    .mascot-owl {
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .mascot-owl.sm { width: 64px;  height: 64px;  font-size: 2rem;   background: rgba(255,217,61,0.15);  border: 2px solid rgba(255,217,61,0.3); }
+    .mascot-owl.md { width: 88px;  height: 88px;  font-size: 2.8rem; background: rgba(107,203,119,0.15); border: 2px solid rgba(107,203,119,0.3); }
+    .mascot-owl.lg { width: 116px; height: 116px; font-size: 3.8rem; background: rgba(255,107,107,0.15); border: 2px solid rgba(255,107,107,0.3); }
+    .mascot-arrow { color: rgba(255,255,255,0.25); font-size: 1.5rem; align-self: center; margin-top: -24px; }
+    @media (max-width: 480px) { .mascot-arrow { display: none; } .mascot-stages { gap: 24px; } }
+    .mascot-age { font-weight: 700; font-size: 0.85rem; }
+    .mascot-label { font-size: 0.78rem; opacity: 0.6; }
+    .mascot-blurb { text-align: center; max-width: 540px; margin: 36px auto 0; font-size: 0.95rem; opacity: 0.75; line-height: 1.7; }
+
+    /* ── COMING SOON ──────────────────────────────── */
+    #routines { position: relative; overflow: hidden; }
+    #routines .blob-7 { width: 400px; height: 400px; background: var(--blue-light); top: -80px; right: -80px; }
+
+    .routines-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: calc(var(--radius) + 4px);
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .routines-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(107,203,119,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .coming-soon-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--yellow);
+      color: var(--navy);
+      font-weight: 700; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 100px;
+      margin-bottom: 22px;
+    }
+    .routines-card h2 { margin-bottom: 16px; }
+    .routines-card p  { opacity: 0.75; max-width: 580px; line-height: 1.75; }
+    .routines-features { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .routines-features span {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 100px;
+      padding: 7px 16px;
+      font-size: 0.85rem;
+    }
+
+    /* ── ACCESSORIES ──────────────────────────────── */
+    #accessories .accessories-row {
+      display: flex; gap: 18px; flex-wrap: wrap; margin-top: 28px;
+    }
+    .accessory-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 100px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+    }
+
+    /* ── STORY ────────────────────────────────────── */
+    #story { position: relative; overflow: hidden; }
+    #story .blob-8 { width: 350px; height: 350px; background: var(--mint); top: -60px; left: -80px; }
+
+    .story-card {
+      background: var(--white);
+      color: var(--text-dark);
+      border-radius: calc(var(--radius) + 4px);
+      padding: 48px 44px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .story-card blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.1rem, 3vw, 1.45rem);
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--navy);
+      border-left: 4px solid var(--coral);
+      padding-left: 24px;
+      margin: 28px 0;
+    }
+    .story-card p { color: var(--text-mid); line-height: 1.8; margin-bottom: 16px; font-size: 0.97rem; }
+    .story-card p:last-child { margin-bottom: 0; }
+    .story-authors {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 28px;
+    }
+    .authors-emoji { font-size: 2rem; }
+    .authors-name { font-weight: 700; font-size: 1rem; color: var(--text-dark); }
+    .authors-title { font-size: 0.82rem; color: var(--text-mid); }
+
+    /* ── COVERAGE ─────────────────────────────────── */
+    #coverage {
+      text-align: center;
+      padding: 70px 0;
+    }
+    .coverage-stat {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 700;
+      color: var(--yellow);
+      line-height: 1;
+      display: block;
+    }
+    .coverage-label { font-size: 1rem; opacity: 0.75; margin-top: 6px; }
+
+    /* ── FINAL CTA ────────────────────────────────── */
+    #cta {
+      background: linear-gradient(135deg, var(--navy) 0%, #1A3254 100%);
+      text-align: center;
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta .blob-9  { width: 400px; height: 400px; background: var(--coral); top: -120px; right: -100px; }
+    #cta .blob-10 { width: 300px; height: 300px; background: var(--mint);  bottom: -80px; left: -80px; }
+
+    .cta-owl { font-size: 3.5rem; display: block; margin-bottom: 16px; }
+    #cta h2  { margin-bottom: 16px; }
+    #cta p   { opacity: 0.75; max-width: 480px; margin: 0 auto 36px; }
+    .cta-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 480px; margin: 0 auto; }
+    .cta-form input {
+      flex: 1 1 200px;
+      padding: 14px 20px;
+      border-radius: 100px;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.09);
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-form input::placeholder { color: rgba(255,255,255,0.5); }
+    .cta-form input:focus { border-color: rgba(255,255,255,0.5); }
+    .cta-note { font-size: 0.8rem; opacity: 0.45; margin-top: 14px; }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    footer {
+      background: #111E30;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .footer-logo { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .footer-logo span { opacity: 0.45; font-weight: 400; }
+    .footer-meta { font-size: 0.82rem; opacity: 0.4; line-height: 1.8; }
+    .footer-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── SUCCESS STATE ────────────────────────────── */
+    .form-success {
+      display: none;
+      background: rgba(107,203,119,0.15);
+      border: 1px solid rgba(107,203,119,0.4);
+      border-radius: 100px;
+      padding: 14px 28px;
+      font-size: 0.95rem;
+      color: var(--mint);
+    }
+
+    /* ── MOBILE TWEAKS ────────────────────────────── */
+    @media (max-width: 600px) {
+      section { padding: 70px 0; }
+      .routines-card { padding: 32px 24px; }
+      .story-card { padding: 32px 24px; }
+      .diff-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo"><span class="owl">🦉</span> Shield</a>
+  <a href="#cta" class="nav-cta">Get Early Access</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="container">
+    <div class="hero-inner reveal">
+      <span class="hero-owl">🦉</span>
+      <div class="tag tag--blue">Child Safety Device</div>
+      <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
+      <p class="hero-tagline">Safety at heart.</p>
+      <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
+      <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
+        <input type="email" placeholder="Your email address" required autocomplete="email" />
+        <button type="submit" class="btn-primary">Join the Waitlist</button>
+      </form>
+      <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
+      <p class="hero-note">No spam. Just an update when we're ready to launch.</p>
+      <div class="hero-badges">
+        <div class="badge"><span class="icon">🌍</span> 135+ countries</div>
+        <div class="badge"><span class="icon">💳</span> No subscription</div>
+        <div class="badge"><span class="icon">🔒</span> Hidden by design</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" class="section-navy">
+  <div class="blob blob-3"></div>
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag tag--coral">The Problem</div>
+      <h2>Existing trackers weren't built for real family life.</h2>
+      <p>Most child safety devices solve a narrow problem — and create new ones along the way.</p>
+    </div>
+    <div class="problem-grid reveal">
+      <div class="problem-card">
+        <div class="problem-icon">💸</div>
+        <h3>Subscription fatigue</h3>
+        <p>Most devices require ongoing monthly fees just to stay connected. Costs add up, coverage lapses, and families give up.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🎒</div>
+        <h3>Kids lose them</h3>
+        <p>Wearable trackers get left on desks, forgotten in bags, or simply taken off. If it's not on your child, it's not protecting them.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📱</div>
+        <h3>Anxiety, not peace</h3>
+        <p>Staring at a live map doesn't make you feel safer. It just means you're glued to your phone while life happens around you.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📡</div>
+        <h3>Unreliable coverage</h3>
+        <p>Devices that depend on Wi-Fi or Bluetooth fail the moment your child steps outside a familiar area.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW SHIELD IS DIFFERENT -->
+<section id="different" class="section-light">
+  <div class="blob blob-4"></div>
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag tag--mint">How Shield Is Different</div>
+      <h2>Built for the moments you can't predict.</h2>
+      <p>Shield was designed around one idea: parents shouldn't have to think about it until they need to.</p>
+    </div>
+    <div class="diff-grid reveal">
+      <div class="diff-card coral">
+        <div class="diff-icon">🫥</div>
+        <h3>Hidden by design</h3>
+        <p>Shield is concealed inside clothing, a school bag, or accessories. Children don't wear it visibly — so they can't lose it, forget it, or have it taken from them. Non-metallic construction keeps signal strong and provides body separation for RF safety.</p>
+      </div>
+      <div class="diff-card mint">
+        <div class="diff-icon">🔔</div>
+        <h3>Early alert, not just tracking</h3>
+        <p>Yes, you can check the map whenever you want. But Shield's real value is what happens when you're not looking. It monitors silently and alerts you the moment something seems off — a missed arrival, a zone exit, an SOS press.</p>
+      </div>
+      <div class="diff-card yellow">
+        <div class="diff-icon">✅</div>
+        <h3>One purchase. No fees ever.</h3>
+        <p>Cellular data is included for the life of the device. No monthly subscription. No SIM cards to manage. No coverage that quietly lapses. You pay once, and Shield stays connected.</p>
+      </div>
+      <div class="diff-card blue">
+        <div class="diff-icon">🌍</div>
+        <h3>Truly international</h3>
+        <p>Cellular coverage across 135+ countries. Built from the start for families who travel, move, or have children studying or living abroad.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section-mid">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag tag--yellow">How It Works</div>
+      <h2>Set it up once. Then forget about it.</h2>
+      <p>Shield is designed to run in the background of your family's life — not in the foreground of your anxiety.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num coral">1</div>
+        <div class="step-body">
+          <span class="step-emoji">🫥</span>
+          <h3>Hide it</h3>
+          <p>Tuck Shield into your child's bag, jacket lining, or a favourite accessory. It's small, light, and designed to stay put. Your child doesn't need to know it's there — or can be told it's their guardian owl.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num yellow">2</div>
+        <div class="step-body">
+          <span class="step-emoji">📍</span>
+          <h3>Set your safe zones</h3>
+          <p>In the Shield app, draw zones around school, home, a grandparent's house — anywhere your child should be. Shield watches the boundaries for you.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num mint">3</div>
+        <div class="step-body">
+          <span class="step-emoji">☀️</span>
+          <h3>Live your life</h3>
+          <p>You don't need to stare at a map. Shield runs quietly, checks in silently, and stays out of your way. Check in when you want to — or just let it watch.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num blue">4</div>
+        <div class="step-body">
+          <span class="step-emoji">🔔</span>
+          <h3>Get alerted only when it matters</h3>
+          <p>If something's off — your child left a zone, didn't arrive at school, or pressed the SOS button — you'll know instantly. With location. With context. When you need it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOS -->
+<section id="sos" class="section-navy">
+  <div class="blob blob-5"></div>
+  <div class="container">
+    <div class="sos-inner reveal">
+      <div class="sos-visual">
+        <div class="sos-button-demo">
+          <span class="sos-label">SOS</span>
+          <span class="sos-sub">press to alert</span>
+        </div>
+      </div>
+      <div class="sos-text">
+        <div class="tag tag--coral">Child-Initiated Alert</div>
+        <h2>A button for the moments your child needs you.</h2>
+        <p>Sometimes kids just need a pickup. Sometimes it's more serious. Either way, one press sends an instant alert to a parent's phone — with location, time, and a clear signal that something needs attention.</p>
+        <ul class="sos-points">
+          <li>Instant push notification to parent</li>
+          <li>Live GPS location shared immediately</li>
+          <li>Works silently — no need to speak or be seen</li>
+          <li>Parent can call back or respond via the app</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MASCOT / GROWING WITH YOUR CHILD -->
+<section id="mascot" class="section-mid">
+  <div class="blob blob-6"></div>
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <div class="tag tag--yellow">Growing With Your Child</div>
+      <h2>A companion that grows up with them.</h2>
+      <p style="margin:14px auto 0; max-width:580px;">Every child using Shield gets their own mascot character in the app. As your child grows, their mascot evolves too — getting more detailed, more expressive, more theirs. It gives kids a reason to keep the device charged and care about it.</p>
+    </div>
+    <div class="mascot-stages reveal">
+      <div class="mascot-stage">
+        <div class="mascot-owl sm">🦉</div>
+        <div class="mascot-age">Age 4</div>
+        <div class="mascot-label">Just hatched</div>
+      </div>
+      <div class="mascot-arrow">→</div>
+      <div class="mascot-stage">
+        <div class="mascot-owl md">🦉</div>
+        <div class="mascot-age">Age 7</div>
+        <div class="mascot-label">Growing up</div>
+      </div>
+      <div class="mascot-arrow">→</div>
+      <div class="mascot-stage">
+        <div class="mascot-owl lg">🦉</div>
+        <div class="mascot-age">Age 11</div>
+        <div class="mascot-label">Fully grown</div>
+      </div>
+    </div>
+    <p class="mascot-blurb reveal">The mascot isn't decoration. It's a thread that connects your child to their Shield over the years — something that feels like theirs, not just another device their parents make them carry.</p>
+  </div>
+</section>
+
+<!-- COMING SOON: SMART ROUTINES -->
+<section id="routines" class="section-navy">
+  <div class="blob blob-7"></div>
+  <div class="container">
+    <div class="reveal">
+      <div class="routines-card">
+        <div class="coming-soon-badge">✦ Coming Soon</div>
+        <h2>Shield will learn your family's routine.</h2>
+        <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal — and alert you only when something genuinely isn't. No configuration required. No false alarms. Just quiet intelligence watching in the background.</p>
+        <div class="routines-features">
+          <span>📅 Daily routine learning</span>
+          <span>🧠 AI anomaly detection</span>
+          <span>🔕 Fewer false alerts</span>
+          <span>⚙️ Zero manual setup</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESSORIES -->
+<section id="accessories" class="section-mid">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag tag--mint">Optional Add-ons</div>
+      <h2>Extra eyes where you need them.</h2>
+      <p>Small Bluetooth sensors that can be hidden in shoes, hairbands, or jacket linings. If your child becomes separated from their main Shield device beyond a safe distance, you're alerted immediately. Sold separately.</p>
+    </div>
+    <div class="accessories-row reveal">
+      <div class="accessory-chip">👟 Shoe insert</div>
+      <div class="accessory-chip">🎀 Hairband sensor</div>
+      <div class="accessory-chip">🧥 Jacket lining tag</div>
+      <div class="accessory-chip">📏 Proximity alerts</div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE STAT -->
+<section id="coverage" class="section-navy">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="tag tag--yellow">Global Coverage</div>
+      <span class="coverage-stat">135+</span>
+      <p class="coverage-label">countries with active cellular coverage — included, always.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section id="story" class="section-light">
+  <div class="blob blob-8"></div>
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="tag tag--coral">Our Story</div>
+      <h2>Built by a family, for families.</h2>
+    </div>
+    <div class="story-card reveal">
+      <div class="story-authors">
+        <div class="authors-emoji">👫</div>
+        <div>
+          <div class="authors-name">Mariessa and Evan</div>
+          <div class="authors-title">Auntie Reesa and Uncle Evan — Founders of Shield</div>
+        </div>
+      </div>
+      <p>Mariessa and Evan are a husband and wife filmmaking team who've spent years working in remote locations across the world. Through that work, they've seen how quickly things can go wrong — silently, suddenly, and in ways designed to go unnoticed.</p>
+      <blockquote>"We wanted to give our four nieces an extra layer of protection. Not to watch their every move, but to alert someone the moment something seemed out of the ordinary."</blockquote>
+      <p>Nothing on the market did that. The trackers they found were either too visible, too unreliable, or too dependent on a parent glued to a phone. So they built Shield themselves.</p>
+      <p>Shield isn't a tech company chasing a market. It's a family that solved their own problem — and decided to share the solution.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="cta">
+  <div class="blob blob-9"></div>
+  <div class="blob blob-10"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="reveal" style="text-align:center;">
+      <span class="cta-owl">🦉</span>
+      <div class="tag tag--coral">Early Access</div>
+      <h2>Be the first to know when Shield is ready.</h2>
+      <p>We're in the final stages of development. Leave your email and we'll reach out when we're ready to launch — no spam, just one email when it matters.</p>
+      <form class="cta-form" onsubmit="handleSignup(event, 'cta-success')">
+        <input type="email" placeholder="Your email address" required autocomplete="email" />
+        <button type="submit" class="btn-primary">Get Early Access</button>
+      </form>
+      <p class="form-success" id="cta-success">You're on the list. We'll be in touch soon.</p>
+      <p class="cta-note">No spam. Just an update when we're ready.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🦉 Shield <span>by MxE</span></div>
+  <div class="footer-meta">
+    <a href="mailto:hello@shieldfamilies.com">hello@shieldfamilies.com</a><br>
+    Charlotte, NC &amp; London, UK
+  </div>
+</footer>
+
+<script>
+  // Intersection observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Stagger children in grids
+  document.querySelectorAll('.problem-grid, .diff-grid, .steps').forEach(parent => {
+    const children = parent.querySelectorAll('.problem-card, .diff-card, .step');
+    children.forEach((child, i) => {
+      child.style.transitionDelay = `${i * 0.08}s`;
+    });
+  });
+
+  // Simple waitlist form handler
+  function handleSignup(e, successId) {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.querySelector('input[type="email"]').value;
+    const success = document.getElementById(successId);
+
+    // Build mailto link as fallback (real implementation would POST to a backend)
+    const mailto = `mailto:hello@shieldfamilies.com?subject=Waitlist%20Signup&body=Please%20add%20me%20to%20the%20Shield%20waitlist.%20Email%3A%20${encodeURIComponent(email)}`;
+
+    // Show success state
+    form.style.display = 'none';
+    success.style.display = 'block';
+
+    // Open mailto as a courtesy fallback
+    setTimeout(() => { window.location.href = mailto; }, 600);
+  }
+</script>
+</body>
+</html>
