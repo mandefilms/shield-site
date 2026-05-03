@@ -111,6 +111,14 @@
     .hero-owl { font-size: clamp(3.5rem, 10vw, 6rem); display: block; margin-bottom: 16px; line-height: 1; }
     .hero-title { margin-bottom: 18px; }
     .hero-title em { font-style: italic; color: var(--yellow); }
+    .hero-tagline {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-style: italic;
+      color: var(--mint);
+      margin-bottom: 22px;
+      opacity: 0.9;
+    }
     .hero-sub {
       font-size: clamp(1rem, 2.5vw, 1.2rem);
       opacity: 0.85;
@@ -508,8 +516,9 @@
     <div class="hero-inner reveal">
       <span class="hero-owl">🦉</span>
       <div class="tag tag--blue">Child Safety Device</div>
-      <h1 class="hero-title">Always watching.<br><em>Never intrusive.</em></h1>
-      <p class="hero-sub">Shield is a small, hidden safety device that quietly monitors your child's world and alerts you the moment something needs attention. Not a tracker you obsess over — a guardian that speaks up only when it matters.</p>
+      <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
+      <p class="hero-tagline">Safety at heart.</p>
+      <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
       <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
         <input type="email" placeholder="Your email address" required autocomplete="email" />
         <button type="submit" class="btn-primary">Join the Waitlist</button>
