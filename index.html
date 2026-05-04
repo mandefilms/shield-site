@@ -82,7 +82,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.07);
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-decoration: none; color: var(--white); }
-    .nav-logo img { width: 32px; height: 32px; object-fit: contain; }
+    .nav-logo img { width: 44px; height: 44px; object-fit: contain; }
     .nav-name-wrap { display: flex; align-items: baseline; gap: 5px; }
     .nav-child-name { display: inline-block; min-width: 60px; opacity: 0; transition: opacity 0.5s ease; font-style: italic; color: var(--yellow); font-size: 1.2rem; }
     .nav-child-name.visible { opacity: 1; }
@@ -111,14 +111,29 @@
     #hero .blob-2 { width: 400px; height: 400px; background: var(--mint);  bottom: -80px; left: -120px; }
 
     .hero-inner { position: relative; z-index: 2; }
-    .hero-owl { display: block; margin-bottom: 16px; width: clamp(100px, 18vw, 160px); height: auto; }
+    .hero-logo-row { display: flex; align-items: center; gap: 22px; margin-bottom: 44px; flex-wrap: wrap; }
+    .hero-owl { width: clamp(110px, 20vw, 180px); height: auto; flex-shrink: 0; }
+    .hero-rotating-name {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 8vw, 5.4rem);
+      font-weight: 700;
+      line-height: 1.05;
+    }
+    .hero-rotating-name .hero-child {
+      font-style: italic;
+      color: var(--yellow);
+      display: inline-block;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .hero-rotating-name .hero-child.visible { opacity: 1; }
+    .hero-rotating-name .hero-shield-word { color: var(--white); }
     .mascot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; max-width: 960px; margin-left: auto; margin-right: auto; }
     @media (max-width: 600px) { .mascot-grid { grid-template-columns: 1fr; gap: 20px; } }
-    .mascot-grid-item { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+    .mascot-grid-item { display: flex; flex-direction: column; align-items: center; }
     .mascot-grid-item img { width: 100%; max-width: 480px; height: auto; transition: transform 0.3s ease; }
     .mascot-grid-item img:hover { transform: scale(1.04); }
-    .mascot-grid-item span { font-size: 1rem; opacity: 0.75; font-weight: 600; letter-spacing: 0.03em; }
-    .hero-title { margin-bottom: 18px; }
+    .hero-title { margin-bottom: 14px; font-size: clamp(1.6rem, 4vw, 2.6rem); }
     .hero-title em { font-style: italic; color: var(--yellow); }
     .hero-tagline {
       font-family: 'Fraunces', serif;
@@ -328,33 +343,17 @@
       display: flex; align-items: center; justify-content: center;
       line-height: 1;
     }
-    .mascot-owl.sm { width: 64px;  height: 64px;  font-size: 2rem;   background: rgba(255,217,61,0.15);  border: 2px solid rgba(255,217,61,0.3); }
-    .mascot-owl.md { width: 88px;  height: 88px;  font-size: 2.8rem; background: rgba(107,203,119,0.15); border: 2px solid rgba(107,203,119,0.3); }
-    .mascot-owl.lg { width: 116px; height: 116px; font-size: 3.8rem; background: rgba(255,107,107,0.15); border: 2px solid rgba(255,107,107,0.3); }
+    .mascot-owl.sm { width: 80px;  height: 80px;  background: rgba(255,217,61,0.15);  border: 2px solid rgba(255,217,61,0.3); }
+    .mascot-owl.md { width: 120px; height: 120px; background: rgba(107,203,119,0.15); border: 2px solid rgba(107,203,119,0.3); }
+    .mascot-owl.lg { width: 160px; height: 160px; background: rgba(255,107,107,0.15); border: 2px solid rgba(255,107,107,0.3); }
+    .mascot-owl img { width: 90%; height: 90%; object-fit: contain; }
     .mascot-arrow { color: rgba(255,255,255,0.25); font-size: 1.5rem; align-self: center; margin-top: -24px; }
     @media (max-width: 480px) { .mascot-arrow { display: none; } .mascot-stages { gap: 24px; } }
     .mascot-age { font-weight: 700; font-size: 0.85rem; }
     .mascot-label { font-size: 0.78rem; opacity: 0.6; }
     .mascot-blurb { text-align: center; max-width: 540px; margin: 36px auto 0; font-size: 0.95rem; opacity: 0.75; line-height: 1.7; }
 
-    /* rotating hero name */
-    .hero-rotating-name {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2.6rem, 8vw, 5.2rem);
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 28px;
-      display: block;
-    }
-    .hero-rotating-name .hero-child {
-      font-style: italic;
-      color: var(--yellow);
-      display: inline-block;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    .hero-rotating-name .hero-child.visible { opacity: 1; }
-    .hero-rotating-name .hero-shield-word { color: var(--white); }
+    /* ── FIGURINE ─────────────────────────────────── */
     .figurine-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -585,10 +584,12 @@
   <div class="blob blob-2"></div>
   <div class="container">
     <div class="hero-inner reveal">
-      <img src="Main logo.png" alt="Shield mascot" class="hero-owl" />
+      <div class="hero-logo-row">
+        <img src="Main logo.png" alt="Shield" class="hero-owl" id="hero-mascot-img" />
+        <span class="hero-rotating-name"><span class="hero-child visible" id="hero-child-name">Mya's</span><br><span class="hero-shield-word">Shield</span></span>
+      </div>
       <div class="tag tag--blue">Early-alert child safety device</div>
       <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
-      <span class="hero-rotating-name"><span class="hero-child visible" id="hero-child-name">Mya's</span> <span class="hero-shield-word">Shield</span></span>
       <p class="hero-tagline">Safety at heart.</p>
       <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
       <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
@@ -688,17 +689,37 @@
       <h2>A companion that grows up with them.</h2>
       <p style="margin:14px auto 0; max-width:580px;">Every child using Shield gets their own mascot character in the app. As your child grows, their mascot evolves too — getting more detailed, more expressive, more theirs. It gives kids a reason to keep the device charged and care about it.</p>
     </div>
-    <div class="mascot-grid reveal">
-      <div class="mascot-grid-item"><img src="Main logo.png" alt="Owl" /><span>Owl</span></div>
-      <div class="mascot-grid-item"><img src="mascot-butterfly.png" alt="Butterfly" /><span>Butterfly</span></div>
-      <div class="mascot-grid-item"><img src="mascot-cat.png" alt="Cat" /><span>Cat</span></div>
-      <div class="mascot-grid-item"><img src="mascot-dog.png" alt="Dog" /><span>Dog</span></div>
-      <div class="mascot-grid-item"><img src="mascot-flamingo.png" alt="Flamingo" /><span>Flamingo</span></div>
-      <div class="mascot-grid-item"><img src="mascot-zebra.png" alt="Zebra" /><span>Zebra</span></div>
-      <div class="mascot-grid-item"><img src="mascot-dolphin.png" alt="Dolphin" /><span>Dolphin</span></div>
-      <div class="mascot-grid-item"><img src="mascot-frog.png" alt="Frog" /><span>Frog</span></div>
+    <div class="mascot-stages reveal">
+      <div class="mascot-stage">
+        <div class="mascot-owl sm"><img src="Main logo.png" alt="Young shield companion" /></div>
+        <div class="mascot-age">Age 4</div>
+        <div class="mascot-label">Just starting out</div>
+      </div>
+      <div class="mascot-arrow">→</div>
+      <div class="mascot-stage">
+        <div class="mascot-owl md"><img src="Main logo.png" alt="Growing shield companion" /></div>
+        <div class="mascot-age">Age 7</div>
+        <div class="mascot-label">Growing up</div>
+      </div>
+      <div class="mascot-arrow">→</div>
+      <div class="mascot-stage">
+        <div class="mascot-owl lg"><img src="Main logo.png" alt="Grown shield companion" /></div>
+        <div class="mascot-age">Age 11</div>
+        <div class="mascot-label">Fully grown</div>
+      </div>
     </div>
     <p class="mascot-blurb reveal">Every child creates their own shield companion. It's theirs — not just another device their parents make them carry.</p>
+
+    <div class="mascot-grid reveal" style="margin-top:60px;">
+      <div class="mascot-grid-item"><img src="Main logo.png" alt="Owl mascot" /></div>
+      <div class="mascot-grid-item"><img src="mascot-butterfly.png" alt="Butterfly mascot" /></div>
+      <div class="mascot-grid-item"><img src="mascot-cat.png" alt="Cat mascot" /></div>
+      <div class="mascot-grid-item"><img src="mascot-dog.png" alt="Dog mascot" /></div>
+      <div class="mascot-grid-item"><img src="mascot-flamingo.png" alt="Flamingo mascot" /></div>
+      <div class="mascot-grid-item"><img src="mascot-zebra.png" alt="Zebra mascot" /></div>
+      <div class="mascot-grid-item"><img src="mascot-dolphin.png" alt="Dolphin mascot" /></div>
+      <div class="mascot-grid-item"><img src="mascot-frog.png" alt="Frog mascot" /></div>
+    </div>
   </div>
 </section>
 
@@ -853,24 +874,30 @@
   });
 
   // Simple waitlist form handler
-  // Rotating child name in nav + hero
+  // Rotating child name in nav + hero, with matching mascot swap
   const childNames = ["Mya's","Evan's","Mariessa's","Sarah's","Tim's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Kai's","Zoe's","Luca's","Maya's","River's"];
+  const mascotImgs = ["Main logo.png","mascot-butterfly.png","mascot-cat.png","mascot-dog.png","mascot-flamingo.png","mascot-zebra.png","mascot-dolphin.png","mascot-frog.png","mascot-monkey.png"];
   let nameIndex = 0;
-  const navNameEl  = document.getElementById('nav-child-name');
-  const heroNameEl = document.getElementById('hero-child-name');
+  const navNameEl   = document.getElementById('nav-child-name');
+  const heroNameEl  = document.getElementById('hero-child-name');
+  const heroMascImg = document.getElementById('hero-mascot-img');
   function rotateName() {
     navNameEl.classList.remove('visible');
     heroNameEl.classList.remove('visible');
+    if (heroMascImg) heroMascImg.style.opacity = '0';
     setTimeout(() => {
       nameIndex = (nameIndex + 1) % childNames.length;
+      const mascotSrc = mascotImgs[nameIndex % mascotImgs.length];
       navNameEl.textContent  = childNames[nameIndex];
       heroNameEl.textContent = childNames[nameIndex];
+      if (heroMascImg) { heroMascImg.src = mascotSrc; heroMascImg.style.opacity = '1'; }
       navNameEl.classList.add('visible');
       heroNameEl.classList.add('visible');
     }, 500);
   }
   navNameEl.classList.add('visible');
   heroNameEl.classList.add('visible');
+  if (heroMascImg) heroMascImg.style.transition = 'opacity 0.5s ease';
   setInterval(rotateName, 2800);
 
   function handleSignup(e, successId) {
