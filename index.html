@@ -82,7 +82,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.07);
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-decoration: none; color: var(--white); }
-    .nav-logo .owl { font-size: 1.4rem; }
+    .nav-logo img { width: 32px; height: 32px; object-fit: contain; }
     .nav-cta {
       background: var(--coral);
       color: var(--white);
@@ -108,7 +108,13 @@
     #hero .blob-2 { width: 400px; height: 400px; background: var(--mint);  bottom: -80px; left: -120px; }
 
     .hero-inner { position: relative; z-index: 2; }
-    .hero-owl { font-size: clamp(3.5rem, 10vw, 6rem); display: block; margin-bottom: 16px; line-height: 1; }
+    .hero-owl { display: block; margin-bottom: 16px; width: clamp(100px, 18vw, 160px); height: auto; }
+    .mascot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
+    @media (max-width: 600px) { .mascot-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+    .mascot-grid-item { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+    .mascot-grid-item img { width: 100%; max-width: 120px; height: auto; mix-blend-mode: multiply; transition: transform 0.25s ease; }
+    .mascot-grid-item img:hover { transform: scale(1.06); }
+    .mascot-grid-item span { font-size: 0.78rem; opacity: 0.65; font-weight: 500; }
     .hero-title { margin-bottom: 18px; }
     .hero-title em { font-style: italic; color: var(--yellow); }
     .hero-tagline {
@@ -549,7 +555,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo"><span class="owl">🦉</span> Shield</a>
+  <a href="#hero" class="nav-logo"><img src="Main logo.png" alt="Shield" /> Shield</a>
   <a href="#cta" class="nav-cta">Get Early Access</a>
 </nav>
 
@@ -559,7 +565,7 @@
   <div class="blob blob-2"></div>
   <div class="container">
     <div class="hero-inner reveal">
-      <span class="hero-owl">🦉</span>
+      <img src="Main logo.png" alt="Shield mascot" class="hero-owl" />
       <div class="tag tag--blue">Early-alert child safety device</div>
       <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
       <p class="hero-tagline">Safety at heart.</p>
@@ -661,26 +667,17 @@
       <h2>A companion that grows up with them.</h2>
       <p style="margin:14px auto 0; max-width:580px;">Every child using Shield gets their own mascot character in the app. As your child grows, their mascot evolves too — getting more detailed, more expressive, more theirs. It gives kids a reason to keep the device charged and care about it.</p>
     </div>
-    <div class="mascot-stages reveal">
-      <div class="mascot-stage">
-        <div class="mascot-owl sm">🦉</div>
-        <div class="mascot-age">Age 4</div>
-        <div class="mascot-label">Just hatched</div>
-      </div>
-      <div class="mascot-arrow">→</div>
-      <div class="mascot-stage">
-        <div class="mascot-owl md">🦉</div>
-        <div class="mascot-age">Age 7</div>
-        <div class="mascot-label">Growing up</div>
-      </div>
-      <div class="mascot-arrow">→</div>
-      <div class="mascot-stage">
-        <div class="mascot-owl lg">🦉</div>
-        <div class="mascot-age">Age 11</div>
-        <div class="mascot-label">Fully grown</div>
-      </div>
+    <div class="mascot-grid reveal">
+      <div class="mascot-grid-item"><img src="Main logo.png" alt="Owl" /><span>Owl</span></div>
+      <div class="mascot-grid-item"><img src="mascot-butterfly.png" alt="Butterfly" /><span>Butterfly</span></div>
+      <div class="mascot-grid-item"><img src="mascot-cat.png" alt="Cat" /><span>Cat</span></div>
+      <div class="mascot-grid-item"><img src="mascot-dog.png" alt="Dog" /><span>Dog</span></div>
+      <div class="mascot-grid-item"><img src="mascot-flamingo.png" alt="Flamingo" /><span>Flamingo</span></div>
+      <div class="mascot-grid-item"><img src="mascot-zebra.png" alt="Zebra" /><span>Zebra</span></div>
+      <div class="mascot-grid-item"><img src="mascot-dolphin.png" alt="Dolphin" /><span>Dolphin</span></div>
+      <div class="mascot-grid-item"><img src="mascot-frog.png" alt="Frog" /><span>Frog</span></div>
     </div>
-    <p class="mascot-blurb reveal">The mascot isn't decoration. It's a thread that connects your child to their Shield over the years — something that feels like theirs, not just another device their parents make them carry.</p>
+    <p class="mascot-blurb reveal">Every child picks their own companion. It's theirs — not just another device their parents make them carry. The monkey is coming soon too.</p>
   </div>
 </section>
 
@@ -690,7 +687,7 @@
     <div class="figurine-inner reveal">
       <div class="figurine-visual">
         <div class="figurine-demo">
-          <span class="figurine-body">🦉</span>
+          <img src="Main logo.png" alt="Shield companion" class="figurine-body" style="width:90px;height:auto;mix-blend-mode:multiply;" />
           <div class="figurine-heart">
             <span class="heart-icon">♥</span>
           </div>
@@ -790,7 +787,7 @@
   <div class="blob blob-10"></div>
   <div class="container" style="position:relative;z-index:2;">
     <div class="reveal" style="text-align:center;">
-      <span class="cta-owl">🦉</span>
+      <img src="Main logo.png" alt="Shield" class="cta-owl" style="width:80px;height:auto;" />
       <div class="tag tag--coral">Early Access</div>
       <h2>Be the first to know when Shield is ready.</h2>
       <p>We're in the final stages of development. Leave your email and we'll reach out when we're ready to launch — no spam, just one email when it matters.</p>
@@ -806,7 +803,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">🦉 Shield <span>by MxE</span></div>
+  <div class="footer-logo"><img src="Main logo.png" alt="Shield" style="width:24px;height:auto;vertical-align:middle;margin-right:6px;" /> Shield <span>by MxE</span></div>
   <div class="footer-meta">
     <a href="mailto:hello@shieldfamilies.com">hello@shieldfamilies.com</a><br>
     Charlotte, NC &amp; London, UK
