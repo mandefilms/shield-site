@@ -196,19 +196,6 @@
     .section-white .section-header p { color: var(--text-mid); opacity: 1; }
 
     /* ── PROBLEM ──────────────────────────────────── */
-    #problem { position: relative; overflow: hidden; }
-    #problem .blob-3 { width: 360px; height: 360px; background: var(--coral); top: -60px; left: -100px; }
-
-    .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-    .problem-card {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: var(--radius);
-      padding: 28px;
-    }
-    .problem-icon { font-size: 1.8rem; margin-bottom: 12px; }
-    .problem-card h3 { margin-bottom: 8px; font-size: 1rem; }
-    .problem-card p { font-size: 0.9rem; opacity: 0.7; line-height: 1.6; }
 
     /* ── DIFFERENTIATORS ──────────────────────────── */
     #different { position: relative; overflow: hidden; }
@@ -573,7 +560,7 @@
   <div class="container">
     <div class="hero-inner reveal">
       <span class="hero-owl">🦉</span>
-      <div class="tag tag--blue">Child Safety Device</div>
+      <div class="tag tag--blue">Early-alert child safety device</div>
       <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
       <p class="hero-tagline">Safety at heart.</p>
       <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
@@ -582,7 +569,7 @@
         <button type="submit" class="btn-primary">Join the Waitlist</button>
       </form>
       <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
-      <p class="hero-note">No spam. Just an update when we're ready to launch.</p>
+      <p class="hero-note">Trust us, we hate spam too — that's why we'll only ever send important updates.</p>
       <div class="hero-badges">
         <div class="badge"><span class="icon">🌍</span> 135+ countries</div>
         <div class="badge"><span class="icon">💳</span> No subscription</div>
@@ -593,39 +580,6 @@
 </section>
 
 <!-- PROBLEM -->
-<section id="problem" class="section-navy">
-  <div class="blob blob-3"></div>
-  <div class="container">
-    <div class="section-header reveal">
-      <div class="tag tag--coral">The Problem</div>
-      <h2>Existing trackers weren't built for real family life.</h2>
-      <p>Most child safety devices solve a narrow problem — and create new ones along the way.</p>
-    </div>
-    <div class="problem-grid reveal">
-      <div class="problem-card">
-        <div class="problem-icon">💸</div>
-        <h3>Subscription fatigue</h3>
-        <p>Most devices require ongoing monthly fees just to stay connected. Costs add up, coverage lapses, and families give up.</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">🎒</div>
-        <h3>Kids lose them</h3>
-        <p>Wearable trackers get left on desks, forgotten in bags, or simply taken off. If it's not on your child, it's not protecting them.</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">📱</div>
-        <h3>Anxiety, not peace</h3>
-        <p>Staring at a live map doesn't make you feel safer. It just means you're glued to your phone while life happens around you.</p>
-      </div>
-      <div class="problem-card">
-        <div class="problem-icon">📡</div>
-        <h3>Unreliable coverage</h3>
-        <p>Devices that depend on Wi-Fi or Bluetooth fail the moment your child steps outside a familiar area.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- HOW SHIELD IS DIFFERENT -->
 
 <!-- HOW IT WORKS -->
@@ -845,7 +799,7 @@
         <button type="submit" class="btn-primary">Get Early Access</button>
       </form>
       <p class="form-success" id="cta-success">You're on the list. We'll be in touch soon.</p>
-      <p class="cta-note">No spam. Just an update when we're ready.</p>
+      <p class="cta-note">Trust us, we hate spam too — that's why we'll only ever send important updates.</p>
     </div>
   </div>
 </section>
@@ -873,8 +827,8 @@
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   // Stagger children in grids
-  document.querySelectorAll('.problem-grid, .diff-grid, .steps').forEach(parent => {
-    const children = parent.querySelectorAll('.problem-card, .diff-card, .step');
+  document.querySelectorAll('.diff-grid, .steps').forEach(parent => {
+    const children = parent.querySelectorAll('.diff-card, .step');
     children.forEach((child, i) => {
       child.style.transitionDelay = `${i * 0.08}s`;
     });
