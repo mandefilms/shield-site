@@ -83,6 +83,9 @@
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-decoration: none; color: var(--white); }
     .nav-logo img { width: 32px; height: 32px; object-fit: contain; }
+    .nav-name-wrap { display: flex; align-items: baseline; gap: 5px; }
+    .nav-child-name { display: inline-block; min-width: 52px; opacity: 0; transition: opacity 0.5s ease; font-style: italic; color: var(--yellow); }
+    .nav-child-name.visible { opacity: 1; }
     .nav-cta {
       background: var(--coral);
       color: var(--white);
@@ -112,7 +115,7 @@
     .mascot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
     @media (max-width: 600px) { .mascot-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
     .mascot-grid-item { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
-    .mascot-grid-item img { width: 100%; max-width: 120px; height: auto; mix-blend-mode: multiply; transition: transform 0.25s ease; }
+    .mascot-grid-item img { width: 100%; max-width: 240px; height: auto; transition: transform 0.25s ease; }
     .mascot-grid-item img:hover { transform: scale(1.06); }
     .mascot-grid-item span { font-size: 0.78rem; opacity: 0.65; font-weight: 500; }
     .hero-title { margin-bottom: 18px; }
@@ -555,7 +558,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo"><img src="Main logo.png" alt="Shield" /> Shield</a>
+  <a href="#hero" class="nav-logo"><img src="Main logo.png" alt="Shield" /><span class="nav-name-wrap"><span class="nav-child-name" id="nav-child-name">Mya's</span> Shield</span></a>
   <a href="#cta" class="nav-cta">Get Early Access</a>
 </nav>
 
@@ -677,7 +680,7 @@
       <div class="mascot-grid-item"><img src="mascot-dolphin.png" alt="Dolphin" /><span>Dolphin</span></div>
       <div class="mascot-grid-item"><img src="mascot-frog.png" alt="Frog" /><span>Frog</span></div>
     </div>
-    <p class="mascot-blurb reveal">Every child picks their own companion. It's theirs — not just another device their parents make them carry. The monkey is coming soon too.</p>
+    <p class="mascot-blurb reveal">Every child creates their own shield companion. It's theirs — not just another device their parents make them carry.</p>
   </div>
 </section>
 
@@ -832,6 +835,21 @@
   });
 
   // Simple waitlist form handler
+  // Rotating child name in nav
+  const childNames = ["Mya's","Evan's","Mariessa's","Sarah's","Tim's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Kai's","Zoe's","Luca's","Maya's","River's"];
+  let nameIndex = 0;
+  const nameEl = document.getElementById('nav-child-name');
+  function rotateName() {
+    nameEl.classList.remove('visible');
+    setTimeout(() => {
+      nameIndex = (nameIndex + 1) % childNames.length;
+      nameEl.textContent = childNames[nameIndex];
+      nameEl.classList.add('visible');
+    }, 500);
+  }
+  nameEl.classList.add('visible');
+  setInterval(rotateName, 2800);
+
   function handleSignup(e, successId) {
     e.preventDefault();
     const form = e.target;
