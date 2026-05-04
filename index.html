@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shield — Always Watching. Never Intrusive.</title>
+  <title>Shield. Always Watching. Never Intrusive.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -368,22 +368,23 @@
     }
     .figurine-demo {
       position: relative;
-      width: 140px; height: 160px;
+      width: 200px; height: 220px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
-    .figurine-body { font-size: 5rem; line-height: 1; display: block; }
+    .figurine-body { width: 180px; height: auto; display: block; }
     .figurine-heart {
       position: absolute;
-      bottom: 28px;
-      width: 34px; height: 34px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px; height: 44px;
       background: var(--coral);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(255,107,107,0.4);
+      box-shadow: 0 0 0 10px rgba(255,107,107,0.2), 0 4px 16px rgba(255,107,107,0.4);
       animation: heartbeat 2.4s ease-in-out infinite;
     }
-    .heart-icon { color: white; font-size: 1rem; }
+    .heart-icon { color: white; font-size: 1.2rem; }
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
       14%       { transform: scale(1.15); }
@@ -567,6 +568,8 @@
       .routines-card { padding: 32px 24px; }
       .story-card { padding: 32px 24px; }
       .diff-grid { grid-template-columns: 1fr; }
+      .nav-cta { font-size: 0.72rem; padding: 7px 13px; }
+      .hero-owl { width: clamp(140px, 38vw, 200px); }
     }
   </style>
 </head>
@@ -597,7 +600,7 @@
         <button type="submit" class="btn-primary">Join the Waitlist</button>
       </form>
       <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
-      <p class="hero-note">Trust us, we hate spam too — that's why we'll only ever send important updates.</p>
+      <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
       <div class="hero-badges">
         <div class="badge"><span class="icon">🌍</span> 135+ countries</div>
         <div class="badge"><span class="icon">💳</span> No subscription</div>
@@ -616,7 +619,7 @@
     <div class="section-header reveal">
       <div class="tag tag--yellow">How It Works</div>
       <h2>Set it up once. Then forget about it.</h2>
-      <p>Shield is designed to run in the background of your family's life — not in the foreground of your anxiety.</p>
+      <p>Shield is designed to run in the background of your family's life: not in the foreground of your anxiety.</p>
     </div>
     <div class="steps reveal">
       <div class="step">
@@ -624,7 +627,7 @@
         <div class="step-body">
           <span class="step-emoji">🫥</span>
           <h3>Hide it</h3>
-          <p>Tuck Shield into your child's bag, jacket lining, or a favourite accessory. It's small, light, and designed to stay put. Your child doesn't need to know it's there — or can be told it's their guardian owl.</p>
+          <p>Tuck Shield into your child's bag, jacket lining, or a favourite accessory. It's small, light, and designed to stay put. Your child doesn't need to know it's there, or can be told it's their guardian owl.</p>
         </div>
       </div>
       <div class="step">
@@ -632,7 +635,7 @@
         <div class="step-body">
           <span class="step-emoji">📍</span>
           <h3>Set your safe zones</h3>
-          <p>In the Shield app, draw zones around school, home, a grandparent's house — anywhere your child should be. Shield watches the boundaries for you.</p>
+          <p>In the Shield app, draw zones around school, home, a grandparent's house. Anywhere your child should be. Shield watches the boundaries for you.</p>
         </div>
       </div>
       <div class="step">
@@ -640,7 +643,7 @@
         <div class="step-body">
           <span class="step-emoji">☀️</span>
           <h3>Live your life</h3>
-          <p>You don't need to stare at a map. Shield runs quietly, checks in silently, and stays out of your way. Check in when you want to — or just let it watch.</p>
+          <p>You don't need to stare at a map. Shield runs quietly, checks in silently, and stays out of your way. Check in when you want to, or just let it watch.</p>
         </div>
       </div>
       <div class="step">
@@ -648,7 +651,7 @@
         <div class="step-body">
           <span class="step-emoji">🔔</span>
           <h3>Get alerted only when it matters</h3>
-          <p>If something's off — your child left a zone, didn't arrive at school, or pressed the SOS button — you'll know instantly. With location. With context. When you need it.</p>
+          <p>If something's off, whether your child left a zone, didn't arrive at school, or pressed the SOS button, you'll know instantly. With location. With context. When you need it.</p>
         </div>
       </div>
     </div>
@@ -669,11 +672,11 @@
       <div class="sos-text">
         <div class="tag tag--coral">Child-Initiated Alert</div>
         <h2>A button for the moments your child needs you.</h2>
-        <p>Sometimes kids just need a pickup. Sometimes it's more serious. Either way, one press sends an instant alert to a parent's phone — with location, time, and a clear signal that something needs attention.</p>
+        <p>Sometimes kids just need a pickup. Sometimes it's more serious. Either way, one press sends an instant alert to a parent's phone: with location, time, and a clear signal that something needs attention.</p>
         <ul class="sos-points">
           <li>Instant push notification to parent</li>
           <li>Live GPS location shared immediately</li>
-          <li>Works silently — no need to speak or be seen</li>
+          <li>Works silently: no need to speak or be seen</li>
         </ul>
       </div>
     </div>
@@ -687,7 +690,7 @@
     <div class="section-header reveal" style="text-align:center;">
       <div class="tag tag--yellow">Growing With Your Child</div>
       <h2>A companion that grows up with them.</h2>
-      <p style="margin:14px auto 0; max-width:580px;">Every child using Shield gets their own mascot character in the app. As your child grows, their mascot evolves too — getting more detailed, more expressive, more theirs. It gives kids a reason to keep the device charged and care about it.</p>
+      <p style="margin:14px auto 0; max-width:580px;">Every child using Shield gets their own mascot character in the app. As your child grows, their mascot evolves too: getting more detailed, more expressive, more theirs. It gives kids a reason to keep the device charged and care about it.</p>
     </div>
     <div class="mascot-stages reveal">
       <div class="mascot-stage">
@@ -708,18 +711,7 @@
         <div class="mascot-label">Fully grown</div>
       </div>
     </div>
-    <p class="mascot-blurb reveal">Every child creates their own shield companion. It's theirs — not just another device their parents make them carry.</p>
-
-    <div class="mascot-grid reveal" style="margin-top:60px;">
-      <div class="mascot-grid-item"><img src="Main logo.png" alt="Owl mascot" /></div>
-      <div class="mascot-grid-item"><img src="mascot-butterfly.png" alt="Butterfly mascot" /></div>
-      <div class="mascot-grid-item"><img src="mascot-cat.png" alt="Cat mascot" /></div>
-      <div class="mascot-grid-item"><img src="mascot-dog.png" alt="Dog mascot" /></div>
-      <div class="mascot-grid-item"><img src="mascot-flamingo.png" alt="Flamingo mascot" /></div>
-      <div class="mascot-grid-item"><img src="mascot-zebra.png" alt="Zebra mascot" /></div>
-      <div class="mascot-grid-item"><img src="mascot-dolphin.png" alt="Dolphin mascot" /></div>
-      <div class="mascot-grid-item"><img src="mascot-frog.png" alt="Frog mascot" /></div>
-    </div>
+    <p class="mascot-blurb reveal">Every child creates their own shield companion. It's theirs, not just another device their parents make them carry.</p>
   </div>
 </section>
 
@@ -743,7 +735,7 @@
       <div class="figurine-text">
         <div class="tag tag--coral">Meet the Companion</div>
         <h2>A little figure that keeps Shield charged.</h2>
-        <p>Every Shield comes with a small printed companion figurine — a physical version of your child's mascot. It connects to the device via Bluetooth and lives on a shelf, a desk, or wherever your child loves most.</p>
+        <p>Every Shield comes with a small printed companion figurine: a physical version of your child's mascot. It connects to the device via Bluetooth and lives on a shelf, a desk, or wherever your child loves most.</p>
         <p>Press the heart on its chest and it tells you the battery level. That's it. Simple enough for a four-year-old, fun enough that they actually do it.</p>
         <p>It turns "keep your Shield charged" from a parent's nagging into something a child wants to do themselves.</p>
       </div>
@@ -759,7 +751,7 @@
       <div class="routines-card">
         <div class="coming-soon-badge">✦ Coming Soon</div>
         <h2>Shield will learn your family's routine.</h2>
-        <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal — and alert you only when something genuinely isn't. No configuration required. No false alarms. Just quiet intelligence watching in the background.</p>
+        <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal: and alert you only when something genuinely isn't. No configuration required. No false alarms. Just quiet intelligence watching in the background.</p>
         <div class="routines-features">
           <span>📅 Daily routine learning</span>
           <span>🧠 AI anomaly detection</span>
@@ -794,7 +786,7 @@
     <div class="reveal" style="text-align:center;">
       <div class="tag tag--yellow">Global Coverage</div>
       <span class="coverage-stat">135+</span>
-      <p class="coverage-label">countries with active cellular coverage — included, always.</p>
+      <p class="coverage-label">countries with active cellular coverage. Included, always.</p>
     </div>
   </div>
 </section>
@@ -812,13 +804,13 @@
         <div class="authors-emoji">👫</div>
         <div>
           <div class="authors-name">Mariessa and Evan</div>
-          <div class="authors-title">Auntie Reesa and Uncle Evan — Founders of Shield</div>
+          <div class="authors-title">Auntie Reesa and Uncle Evan, Founders of Shield</div>
         </div>
       </div>
-      <p>Mariessa and Evan are a husband and wife filmmaking team who've spent years working in remote locations across the world. Through that work, they've seen how quickly things can go wrong — silently, suddenly, and in ways designed to go unnoticed.</p>
+      <p>Mariessa and Evan are a husband and wife filmmaking team who've spent years working in remote locations across the world. Through that work, they've seen how quickly things can go wrong. Silently, suddenly, and in ways designed to go unnoticed.</p>
       <blockquote>"We wanted to give our four nieces an extra layer of protection. Not to watch their every move, but to alert someone the moment something seemed out of the ordinary."</blockquote>
       <p>Nothing on the market did that. The trackers they found were either too visible, too unreliable, or too dependent on a parent glued to a phone. So they built Shield themselves.</p>
-      <p>Shield isn't a tech company chasing a market. It's a family that solved their own problem — and decided to share the solution.</p>
+      <p>Shield isn't a tech company chasing a market. It's a family that solved their own problem and decided to share the solution.</p>
     </div>
   </div>
 </section>
@@ -832,13 +824,13 @@
       <img src="Main logo.png" alt="Shield" class="cta-owl" style="width:80px;height:auto;" />
       <div class="tag tag--coral">Early Access</div>
       <h2>Be the first to know when Shield is ready.</h2>
-      <p>We're in the final stages of development. Leave your email and we'll reach out when we're ready to launch — no spam, just one email when it matters.</p>
+      <p>We're in the final stages of development. Leave your email and we'll reach out when we're ready to launch. Just one email when it matters.</p>
       <form class="cta-form" onsubmit="handleSignup(event, 'cta-success')">
         <input type="email" placeholder="Your email address" required autocomplete="email" />
         <button type="submit" class="btn-primary">Get Early Access</button>
       </form>
       <p class="form-success" id="cta-success">You're on the list. We'll be in touch soon.</p>
-      <p class="cta-note">Trust us, we hate spam too — that's why we'll only ever send important updates.</p>
+      <p class="cta-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
     </div>
   </div>
 </section>
@@ -875,7 +867,7 @@
 
   // Simple waitlist form handler
   // Rotating child name in nav + hero, with matching mascot swap
-  const childNames = ["Mya's","Evan's","Mariessa's","Sarah's","Tim's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Kai's","Zoe's","Luca's","Maya's","River's"];
+  const childNames = ["Mya's","Evan's","Mariessa's","Sarah's","Tim's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Kai's","Zoe's","Luca's","Maya's","River's","Allyssa's","Gurinder's","Sue's","Wes's","Jessica's","Charlie's"];
   const mascotImgs = ["Main logo.png","mascot-butterfly.png","mascot-cat.png","mascot-dog.png","mascot-flamingo.png","mascot-zebra.png","mascot-dolphin.png","mascot-frog.png","mascot-monkey.png"];
   let nameIndex = 0;
   const navNameEl   = document.getElementById('nav-child-name');
