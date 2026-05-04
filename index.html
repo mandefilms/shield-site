@@ -111,8 +111,8 @@
     #hero .blob-2 { width: 400px; height: 400px; background: var(--mint);  bottom: -80px; left: -120px; }
 
     .hero-inner { position: relative; z-index: 2; }
-    .hero-logo-row { display: flex; align-items: center; gap: 22px; margin-bottom: 44px; flex-wrap: wrap; }
-    .hero-owl { width: clamp(110px, 20vw, 180px); height: auto; flex-shrink: 0; }
+    .hero-logo-row { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 44px; }
+    .hero-owl { width: clamp(260px, 55vw, 520px); height: auto; flex-shrink: 0; }
     .hero-rotating-name {
       font-family: 'Fraunces', serif;
       font-size: clamp(2.8rem, 8vw, 5.4rem);
@@ -368,23 +368,23 @@
     }
     .figurine-demo {
       position: relative;
-      width: 200px; height: 220px;
+      width: clamp(280px, 55vw, 520px);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
-    .figurine-body { width: 180px; height: auto; display: block; }
+    .figurine-body { width: 100%; height: auto; display: block; }
     .figurine-heart {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 52%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 44px; height: 44px;
+      width: clamp(54px, 10vw, 90px); height: clamp(54px, 10vw, 90px);
       background: var(--coral);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      box-shadow: 0 0 0 10px rgba(255,107,107,0.2), 0 4px 16px rgba(255,107,107,0.4);
+      box-shadow: 0 0 0 14px rgba(255,107,107,0.18), 0 0 0 28px rgba(255,107,107,0.08), 0 6px 24px rgba(255,107,107,0.4);
       animation: heartbeat 2.4s ease-in-out infinite;
     }
-    .heart-icon { color: white; font-size: 1.2rem; }
+    .heart-icon { color: white; font-size: clamp(1.4rem, 3vw, 2.4rem); }
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
       14%       { transform: scale(1.15); }
@@ -569,7 +569,7 @@
       .story-card { padding: 32px 24px; }
       .diff-grid { grid-template-columns: 1fr; }
       .nav-cta { font-size: 0.72rem; padding: 7px 13px; }
-      .hero-owl { width: clamp(140px, 38vw, 200px); }
+      .hero-owl { width: clamp(240px, 80vw, 360px); }
     }
   </style>
 </head>
@@ -721,7 +721,7 @@
     <div class="figurine-inner reveal">
       <div class="figurine-visual">
         <div class="figurine-demo">
-          <img src="Main logo.png" alt="Shield companion" class="figurine-body" style="width:90px;height:auto;mix-blend-mode:multiply;" />
+          <img src="Main logo.png" alt="Shield companion" class="figurine-body" />
           <div class="figurine-heart">
             <span class="heart-icon">♥</span>
           </div>
