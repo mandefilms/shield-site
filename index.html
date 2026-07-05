@@ -287,6 +287,21 @@
     .step-body p  { font-size: 0.95rem; opacity: 0.72; line-height: 1.65; }
     .step-mascot { width: 90px; height: 90px; object-fit: contain; margin-bottom: 12px; display: block; }
 
+    /* ── DEVICE ───────────────────────────────────── */
+    .device-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 640px) { .device-inner { grid-template-columns: 1fr; } }
+    .device-visual { display: flex; align-items: center; justify-content: center; }
+    .device-photo { width: 100%; max-width: 380px; height: auto; display: block; border-radius: var(--radius); }
+    .device-text h2 { color: var(--text-dark); margin-bottom: 18px; }
+    .device-text p  { color: var(--text-mid); margin-bottom: 14px; font-size: 0.97rem; }
+    .device-text p:last-child { margin-bottom: 0; }
+    .device-text .tag { margin-bottom: 16px; }
+
     /* ── SOS ──────────────────────────────────────── */
     #sos { position: relative; overflow: hidden; }
     #sos .blob-5 { width: 380px; height: 380px; background: var(--coral); opacity: 0.12; top: 50%; left: 50%; transform: translate(-50%,-50%); }
@@ -372,26 +387,6 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .figurine-body { width: 100%; height: auto; display: block; }
-    .figurine-heart {
-      position: absolute;
-      top: 52%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: clamp(54px, 10vw, 90px); height: clamp(54px, 10vw, 90px);
-      background: var(--coral);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 0 0 14px rgba(255,107,107,0.18), 0 0 0 28px rgba(255,107,107,0.08), 0 6px 24px rgba(255,107,107,0.4);
-      animation: heartbeat 2.4s ease-in-out infinite;
-    }
-    .heart-icon { color: white; font-size: clamp(1.4rem, 3vw, 2.4rem); }
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      14%       { transform: scale(1.15); }
-      28%       { transform: scale(1); }
-      42%       { transform: scale(1.1); }
-      56%       { transform: scale(1); }
-    }
     .battery-popup {
       display: flex; align-items: center; gap: 8px;
       background: var(--navy);
@@ -613,6 +608,23 @@
 <!-- PROBLEM -->
 <!-- HOW SHIELD IS DIFFERENT -->
 
+<!-- THE DEVICE -->
+<section id="device" class="section-light">
+  <div class="container">
+    <div class="device-inner reveal">
+      <div class="device-visual">
+        <img src="shield-device.webp" alt="The Shield device, a small tag with a shield-and-owl badge on one side and a magnetic mount on the other" class="device-photo" />
+      </div>
+      <div class="device-text">
+        <div class="tag tag--mint">The Device</div>
+        <h2>Small enough to disappear. Built to stay put.</h2>
+        <p>Shield clips or mounts wherever it needs to: a backpack, a shoe, a jacket lining. The magnetic back keeps it secure without anyone noticing it's there.</p>
+        <p>Just the badge on front, and everything that matters happening quietly underneath.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section id="how" class="section-mid">
   <div class="container">
@@ -721,11 +733,7 @@
     <div class="figurine-inner reveal">
       <div class="figurine-visual">
         <div class="figurine-demo">
-          <img src="Main logo.png" alt="Shield companion" class="figurine-body" />
-          <div class="figurine-heart">
-            <span class="heart-icon">♥</span>
-          </div>
-          <div class="figurine-pulse"></div>
+          <img src="shield-figurine.webp" alt="Shield companion figurine with a heart-shaped battery indicator" class="figurine-body" />
         </div>
         <div class="battery-popup reveal-pop">
           <img src="mascot-zebra.png" alt="" style="width:22px;height:22px;object-fit:contain;">
