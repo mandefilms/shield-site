@@ -138,14 +138,18 @@
     .hero-title { margin-bottom: 14px; font-size: clamp(1.6rem, 4vw, 2.6rem); }
     .hero-title em { font-style: italic; color: var(--yellow); }
     .hero-tagline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       font-family: 'Fraunces', serif;
       font-size: clamp(1.6rem, 4.4vw, 2.2rem);
       font-weight: 700;
       font-style: italic;
-      color: var(--mint);
+      color: var(--coral);
       margin-bottom: 24px;
       opacity: 1;
     }
+    .hero-tagline img { width: clamp(32px, 6vw, 44px); height: auto; flex-shrink: 0; }
     .hero-sub {
       font-size: clamp(1rem, 2.5vw, 1.2rem);
       opacity: 0.85;
@@ -599,7 +603,7 @@
       </div>
       <div class="tag tag--blue">Early-alert child safety device</div>
       <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
-      <p class="hero-tagline">Safety at heart.</p>
+      <p class="hero-tagline"><img src="shield-figurine.webp" alt="" /> Safety at heart.</p>
       <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
       <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
         <input type="email" placeholder="Your email address" required autocomplete="email" />
@@ -868,7 +872,8 @@
 <footer>
   <div class="footer-logo"><img src="Main logo.png" alt="Shield" style="width:24px;height:auto;vertical-align:middle;margin-right:6px;" /> Shield <span>by MxE</span></div>
   <div class="footer-meta">
-    Charlotte, NC &amp; London, UK
+    Charlotte, NC &amp; London, UK<br>
+    <a href="mailto:contact.myashield@gmail.com">contact.myashield@gmail.com</a>
   </div>
 </footer>
 
