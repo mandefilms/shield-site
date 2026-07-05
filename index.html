@@ -111,7 +111,9 @@
     #hero .blob-2 { width: 400px; height: 400px; background: var(--mint);  bottom: -80px; left: -120px; }
 
     .hero-inner { position: relative; z-index: 2; }
-    .hero-logo-row { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; margin-bottom: 44px; }
+    .hero-top { display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 44px; }
+    .hero-device-photo { width: clamp(140px, 22vw, 220px); height: auto; flex-shrink: 0; }
+    .hero-logo-row { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
     .hero-owl { width: clamp(260px, 55vw, 520px); height: auto; flex-shrink: 0; }
     .hero-rotating-name {
       display: block;
@@ -597,9 +599,12 @@
   <div class="blob blob-2"></div>
   <div class="container">
     <div class="hero-inner reveal">
-      <div class="hero-logo-row">
-        <img src="Main logo.png" alt="Shield" class="hero-owl" id="hero-mascot-img" />
-        <span class="hero-rotating-name"><span class="hero-child visible" id="hero-child-name">Mya's</span><br><span class="hero-shield-word">Shield</span></span>
+      <div class="hero-top">
+        <img src="shield-device.webp" alt="The actual Shield device" class="hero-device-photo" />
+        <div class="hero-logo-row">
+          <img src="Main logo.png" alt="Shield" class="hero-owl" id="hero-mascot-img" />
+          <span class="hero-rotating-name"><span class="hero-child visible" id="hero-child-name">Mya's</span><br><span class="hero-shield-word">Shield</span></span>
+        </div>
       </div>
       <div class="tag tag--blue">Early-alert child safety device</div>
       <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
