@@ -288,7 +288,7 @@
     .step-body { padding-top: 10px; }
     .step-body h3 { font-size: 1.2rem; margin-bottom: 8px; }
     .step-body p  { font-size: 0.95rem; opacity: 0.72; line-height: 1.65; }
-    .step-mascot { width: 90px; height: 90px; object-fit: contain; margin-bottom: 12px; display: block; }
+    .step-mascot { width: 130px; height: 130px; object-fit: contain; margin-bottom: 12px; display: block; }
 
     /* ── DEVICE ───────────────────────────────────── */
     .device-inner {
@@ -370,10 +370,6 @@
     .mascot-age { font-weight: 700; font-size: 0.85rem; }
     .mascot-label { font-size: 0.78rem; opacity: 0.6; }
     .mascot-blurb { text-align: center; max-width: 540px; margin: 36px auto 0; font-size: 0.95rem; opacity: 0.75; line-height: 1.7; }
-    .mascot-examples { display: flex; justify-content: center; gap: 32px; margin-top: 40px; flex-wrap: wrap; }
-    .mascot-example { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .mascot-example img { width: 150px; height: auto; display: block; }
-    .mascot-example span { font-size: 0.82rem; opacity: 0.65; }
 
     /* ── FIGURINE ─────────────────────────────────── */
     .figurine-inner {
@@ -450,8 +446,16 @@
       padding: 7px 16px;
       font-size: 0.85rem;
     }
+    .routines-inner { display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: center; position: relative; z-index: 1; }
+    @media (max-width: 640px) { .routines-inner { grid-template-columns: 1fr; text-align: center; } }
+    .routines-visual { display: flex; align-items: center; justify-content: center; }
+    .routines-photo { width: 100%; max-width: 190px; height: auto; display: block; }
 
     /* ── ACCESSORIES ──────────────────────────────── */
+    .accessories-inner { display: grid; grid-template-columns: 1fr 200px; gap: 40px; align-items: center; }
+    @media (max-width: 640px) { .accessories-inner { grid-template-columns: 1fr; } }
+    .accessories-visual { display: flex; align-items: center; justify-content: center; }
+    .accessories-photo { width: 100%; max-width: 190px; height: auto; display: block; }
     #accessories .accessories-row {
       display: flex; gap: 18px; flex-wrap: wrap; margin-top: 28px;
     }
@@ -604,9 +608,9 @@
       <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
       <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
       <div class="hero-badges">
-        <div class="badge"><img src="mascot-dolphin.png" alt="" style="width:32px;height:32px;object-fit:contain;"> 135+ countries</div>
-        <div class="badge"><img src="mascot-frog.png" alt="" style="width:32px;height:32px;object-fit:contain;"> No subscription</div>
-        <div class="badge"><img src="Main logo.png" alt="" style="width:32px;height:32px;object-fit:contain;"> Hidden by design</div>
+        <div class="badge"><img src="mascot-dolphin.png" alt="" style="width:40px;height:40px;object-fit:contain;"> 135+ countries</div>
+        <div class="badge"><img src="mascot-frog.png" alt="" style="width:40px;height:40px;object-fit:contain;"> No subscription</div>
+        <div class="badge"><img src="Main logo.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Hidden by design</div>
       </div>
     </div>
   </div>
@@ -731,11 +735,6 @@
       </div>
     </div>
     <p class="mascot-blurb reveal">Every child creates their own shield companion. It's theirs, not just another device their parents make them carry.</p>
-    <div class="mascot-examples reveal">
-      <div class="mascot-example"><img src="shield-zebra-3d.webp" alt="Zebra shield design"><span>Zebra</span></div>
-      <div class="mascot-example"><img src="shield-dog-3d.webp" alt="Dog shield design"><span>Dog</span></div>
-      <div class="mascot-example"><img src="shield-flamingo-3d.webp" alt="Flamingo shield design"><span>Flamingo</span></div>
-    </div>
   </div>
 </section>
 
@@ -748,7 +747,7 @@
           <img src="shield-figurine.webp" alt="Shield companion figurine with a heart-shaped battery indicator" class="figurine-body" />
         </div>
         <div class="battery-popup reveal-pop">
-          <img src="mascot-zebra.png" alt="" style="width:32px;height:32px;object-fit:contain;">
+          <img src="mascot-zebra.png" alt="" style="width:40px;height:40px;object-fit:contain;">
           <span class="battery-text">84% charged</span>
         </div>
       </div>
@@ -769,12 +768,19 @@
   <div class="container">
     <div class="reveal">
       <div class="routines-card">
-        <div class="coming-soon-badge">✦ Coming Soon</div>
-        <h2>Shield will learn your family's routine.</h2>
-        <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal: and alert you only when something genuinely isn't.</p>
-        <div class="routines-features">
-          <span><img src="mascot-butterfly.png" alt="" style="width:32px;height:32px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
-          <span><img src="mascot-dog.png" alt="" style="width:32px;height:32px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
+        <div class="routines-inner">
+          <div class="routines-visual">
+            <img src="shield-dog-3d.webp" alt="Dog shield design" class="routines-photo">
+          </div>
+          <div class="routines-content">
+            <div class="coming-soon-badge">✦ Coming Soon</div>
+            <h2>Shield will learn your family's routine.</h2>
+            <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal: and alert you only when something genuinely isn't.</p>
+            <div class="routines-features">
+              <span><img src="mascot-butterfly.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
+              <span><img src="mascot-dog.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -784,16 +790,21 @@
 <!-- ACCESSORIES -->
 <section id="accessories" class="section-mid">
   <div class="container">
-    <div class="section-header reveal">
-      <div class="tag tag--mint">Optional Add-ons</div>
-      <h2>Optional add-on sensors for every parent who wants more.</h2>
-      <p>Every parent has the option of additional Bluetooth sensors that can be placed in shoes, hairbands, or jacket linings. If your child becomes separated from their main Shield device beyond a safe distance, you're alerted immediately. Available separately.</p>
-    </div>
-    <div class="accessories-row reveal">
-      <div class="accessory-chip"><img src="mascot-zebra.png" alt="" style="width:32px;height:32px;object-fit:contain;"> Shoe sensor</div>
-      <div class="accessory-chip"><img src="mascot-monkey.png" alt="" style="width:32px;height:32px;object-fit:contain;"> Hairband sensor</div>
-      <div class="accessory-chip"><img src="mascot-dolphin.png" alt="" style="width:32px;height:32px;object-fit:contain;"> Jacket lining tag</div>
-      <div class="accessory-chip"><img src="mascot-frog.png" alt="" style="width:32px;height:32px;object-fit:contain;"> Proximity alerts</div>
+    <div class="accessories-inner reveal">
+      <div class="accessories-text">
+        <div class="tag tag--mint">Optional Add-ons</div>
+        <h2>Optional add-on sensors for every parent who wants more.</h2>
+        <p>Every parent has the option of additional Bluetooth sensors that can be placed in shoes, hairbands, or jacket linings. If your child becomes separated from their main Shield device beyond a safe distance, you're alerted immediately. Available separately.</p>
+        <div class="accessories-row">
+          <div class="accessory-chip"><img src="mascot-zebra.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Shoe sensor</div>
+          <div class="accessory-chip"><img src="mascot-monkey.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Hairband sensor</div>
+          <div class="accessory-chip"><img src="mascot-dolphin.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Jacket lining tag</div>
+          <div class="accessory-chip"><img src="mascot-frog.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Proximity alerts</div>
+        </div>
+      </div>
+      <div class="accessories-visual">
+        <img src="shield-zebra-3d.webp" alt="Zebra shield design" class="accessories-photo">
+      </div>
     </div>
   </div>
 </section>
@@ -819,7 +830,7 @@
     </div>
     <div class="story-card reveal">
       <div class="story-authors">
-        <img src="mascot-cat.png" alt="" style="width:56px;height:56px;object-fit:contain;">
+        <img src="shield-flamingo-3d.webp" alt="" style="width:72px;height:72px;object-fit:contain;">
         <div>
           <div class="authors-name">Mariessa and Evan</div>
           <div class="authors-title">Auntie Reesa and Uncle Evan, Founders of Shield</div>
