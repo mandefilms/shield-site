@@ -114,6 +114,8 @@
     .hero-logo-row { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; margin-bottom: 44px; }
     .hero-owl { width: clamp(260px, 55vw, 520px); height: auto; flex-shrink: 0; }
     .hero-rotating-name {
+      display: block;
+      width: 100%;
       font-family: 'Fraunces', serif;
       font-size: clamp(2.8rem, 8vw, 5.4rem);
       font-weight: 700;
@@ -137,11 +139,12 @@
     .hero-title em { font-style: italic; color: var(--yellow); }
     .hero-tagline {
       font-family: 'Fraunces', serif;
-      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-size: clamp(1.6rem, 4.4vw, 2.2rem);
+      font-weight: 700;
       font-style: italic;
       color: var(--mint);
-      margin-bottom: 22px;
-      opacity: 0.9;
+      margin-bottom: 24px;
+      opacity: 1;
     }
     .hero-sub {
       font-size: clamp(1rem, 2.5vw, 1.2rem);
@@ -285,7 +288,22 @@
     .step-body { padding-top: 10px; }
     .step-body h3 { font-size: 1.2rem; margin-bottom: 8px; }
     .step-body p  { font-size: 0.95rem; opacity: 0.72; line-height: 1.65; }
-    .step-mascot { width: 90px; height: 90px; object-fit: contain; margin-bottom: 12px; display: block; }
+    .step-mascot { width: 130px; height: 130px; object-fit: contain; margin-bottom: 12px; display: block; }
+
+    /* ── DEVICE ───────────────────────────────────── */
+    .device-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 640px) { .device-inner { grid-template-columns: 1fr; } }
+    .device-visual { display: flex; align-items: center; justify-content: center; }
+    .device-photo { width: 100%; max-width: 380px; height: auto; display: block; border-radius: var(--radius); }
+    .device-text h2 { color: var(--text-dark); margin-bottom: 18px; }
+    .device-text p  { color: var(--text-mid); margin-bottom: 14px; font-size: 0.97rem; }
+    .device-text p:last-child { margin-bottom: 0; }
+    .device-text .tag { margin-bottom: 16px; }
 
     /* ── SOS ──────────────────────────────────────── */
     #sos { position: relative; overflow: hidden; }
@@ -343,9 +361,9 @@
       display: flex; align-items: center; justify-content: center;
       line-height: 1;
     }
-    .mascot-owl.sm { width: 80px;  height: 80px;  background: rgba(255,217,61,0.15);  border: 2px solid rgba(255,217,61,0.3); }
-    .mascot-owl.md { width: 120px; height: 120px; background: rgba(107,203,119,0.15); border: 2px solid rgba(107,203,119,0.3); }
-    .mascot-owl.lg { width: 160px; height: 160px; background: rgba(255,107,107,0.15); border: 2px solid rgba(255,107,107,0.3); }
+    .mascot-owl.sm { width: 110px; height: 110px; background: rgba(255,217,61,0.15);  border: 2px solid rgba(255,217,61,0.3); }
+    .mascot-owl.md { width: 160px; height: 160px; background: rgba(107,203,119,0.15); border: 2px solid rgba(107,203,119,0.3); }
+    .mascot-owl.lg { width: 220px; height: 220px; background: rgba(255,107,107,0.15); border: 2px solid rgba(255,107,107,0.3); }
     .mascot-owl img { width: 90%; height: 90%; object-fit: contain; }
     .mascot-arrow { color: rgba(255,255,255,0.25); font-size: 1.5rem; align-self: center; margin-top: -24px; }
     @media (max-width: 480px) { .mascot-arrow { display: none; } .mascot-stages { gap: 24px; } }
@@ -372,26 +390,6 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .figurine-body { width: 100%; height: auto; display: block; }
-    .figurine-heart {
-      position: absolute;
-      top: 52%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: clamp(54px, 10vw, 90px); height: clamp(54px, 10vw, 90px);
-      background: var(--coral);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 0 0 14px rgba(255,107,107,0.18), 0 0 0 28px rgba(255,107,107,0.08), 0 6px 24px rgba(255,107,107,0.4);
-      animation: heartbeat 2.4s ease-in-out infinite;
-    }
-    .heart-icon { color: white; font-size: clamp(1.4rem, 3vw, 2.4rem); }
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      14%       { transform: scale(1.15); }
-      28%       { transform: scale(1); }
-      42%       { transform: scale(1.1); }
-      56%       { transform: scale(1); }
-    }
     .battery-popup {
       display: flex; align-items: center; gap: 8px;
       background: var(--navy);
@@ -448,8 +446,16 @@
       padding: 7px 16px;
       font-size: 0.85rem;
     }
+    .routines-inner { display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: center; position: relative; z-index: 1; }
+    @media (max-width: 640px) { .routines-inner { grid-template-columns: 1fr; text-align: center; } }
+    .routines-visual { display: flex; align-items: center; justify-content: center; }
+    .routines-photo { width: 100%; max-width: 190px; height: auto; display: block; }
 
     /* ── ACCESSORIES ──────────────────────────────── */
+    .accessories-inner { display: grid; grid-template-columns: 1fr 200px; gap: 40px; align-items: center; }
+    @media (max-width: 640px) { .accessories-inner { grid-template-columns: 1fr; } }
+    .accessories-visual { display: flex; align-items: center; justify-content: center; }
+    .accessories-photo { width: 100%; max-width: 190px; height: auto; display: block; }
     #accessories .accessories-row {
       display: flex; gap: 18px; flex-wrap: wrap; margin-top: 28px;
     }
@@ -602,9 +608,9 @@
       <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
       <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
       <div class="hero-badges">
-        <div class="badge"><img src="mascot-dolphin.png" alt="" style="width:22px;height:22px;object-fit:contain;"> 135+ countries</div>
-        <div class="badge"><img src="mascot-frog.png" alt="" style="width:22px;height:22px;object-fit:contain;"> No subscription</div>
-        <div class="badge"><img src="Main logo.png" alt="" style="width:22px;height:22px;object-fit:contain;"> Hidden by design</div>
+        <div class="badge"><img src="mascot-dolphin.png" alt="" style="width:40px;height:40px;object-fit:contain;"> 135+ countries</div>
+        <div class="badge"><img src="mascot-frog.png" alt="" style="width:40px;height:40px;object-fit:contain;"> No subscription</div>
+        <div class="badge"><img src="Main logo.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Hidden by design</div>
       </div>
     </div>
   </div>
@@ -613,12 +619,29 @@
 <!-- PROBLEM -->
 <!-- HOW SHIELD IS DIFFERENT -->
 
+<!-- THE DEVICE -->
+<section id="device" class="section-light">
+  <div class="container">
+    <div class="device-inner reveal">
+      <div class="device-visual">
+        <img src="shield-device.webp" alt="The Shield device, a small tag with a shield-and-owl badge on one side and a magnetic mount on the other" class="device-photo" />
+      </div>
+      <div class="device-text">
+        <div class="tag tag--mint">The Device</div>
+        <h2>Small enough to disappear. Built to stay put.</h2>
+        <p>Shield is designed to attach invisibly to clothing, the same way a security tag attaches to a garment.</p>
+        <p>A built-in motion sensor detects on-person movement, so we can tell it's actually being worn, not just left behind in a bag.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section id="how" class="section-mid">
   <div class="container">
     <div class="section-header reveal">
       <div class="tag tag--yellow">How It Works</div>
-      <h2>Set it up once. Then forget about it.</h2>
+      <h2>A little setup. Then it mostly stays out of your way.</h2>
       <p>Shield is designed to run in the background of your family's life: not in the foreground of your anxiety.</p>
     </div>
     <div class="steps reveal">
@@ -721,21 +744,17 @@
     <div class="figurine-inner reveal">
       <div class="figurine-visual">
         <div class="figurine-demo">
-          <img src="Main logo.png" alt="Shield companion" class="figurine-body" />
-          <div class="figurine-heart">
-            <span class="heart-icon">♥</span>
-          </div>
-          <div class="figurine-pulse"></div>
+          <img src="shield-figurine.webp" alt="Shield companion figurine with a heart-shaped battery indicator" class="figurine-body" />
         </div>
         <div class="battery-popup reveal-pop">
-          <img src="mascot-zebra.png" alt="" style="width:22px;height:22px;object-fit:contain;">
+          <img src="mascot-zebra.png" alt="" style="width:40px;height:40px;object-fit:contain;">
           <span class="battery-text">84% charged</span>
         </div>
       </div>
       <div class="figurine-text">
         <div class="tag tag--coral">Meet the Companion</div>
         <h2>A little figure that keeps Shield charged.</h2>
-        <p>Each device comes with an optional add-on figure, a physical version of your child's companion. It connects to the device via Bluetooth and lives on a shelf, a desk, or wherever your child loves most.</p>
+        <p>Each device comes with an optional add-on figure, a physical version of your child's companion. It connects to the device via Bluetooth and lives on a shelf, a keyring, or wherever your child loves most.</p>
         <p>Press the heart on its chest and it tells you the battery level. That's it. Simple enough for a four-year-old, fun enough that they actually do it.</p>
         <p>It turns "keep your Shield charged" from a parent's nagging into something a child wants to do themselves.</p>
       </div>
@@ -749,14 +768,19 @@
   <div class="container">
     <div class="reveal">
       <div class="routines-card">
-        <div class="coming-soon-badge">✦ Coming Soon</div>
-        <h2>Shield will learn your family's routine.</h2>
-        <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal: and alert you only when something genuinely isn't. No configuration required. No false alarms. Just quiet intelligence watching in the background.</p>
-        <div class="routines-features">
-          <span><img src="mascot-butterfly.png" alt="" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
-          <span><img src="mascot-dog.png" alt="" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
-          <span><img src="mascot-flamingo.png" alt="" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;">Fewer false alerts</span>
-          <span><img src="Main logo.png" alt="" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:6px;">Zero manual setup</span>
+        <div class="routines-inner">
+          <div class="routines-visual">
+            <img src="shield-dog-3d.webp" alt="Dog shield design" class="routines-photo">
+          </div>
+          <div class="routines-content">
+            <div class="coming-soon-badge">✦ Coming Soon</div>
+            <h2>Shield will learn your family's routine.</h2>
+            <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal: and alert you only when something genuinely isn't.</p>
+            <div class="routines-features">
+              <span><img src="mascot-butterfly.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
+              <span><img src="mascot-dog.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -766,16 +790,21 @@
 <!-- ACCESSORIES -->
 <section id="accessories" class="section-mid">
   <div class="container">
-    <div class="section-header reveal">
-      <div class="tag tag--mint">Optional Add-ons</div>
-      <h2>Optional add-on sensors for every parent who wants more.</h2>
-      <p>Every parent has the option of additional Bluetooth sensors that can be placed in shoes, hairbands, or jacket linings. If your child becomes separated from their main Shield device beyond a safe distance, you're alerted immediately. Available separately.</p>
-    </div>
-    <div class="accessories-row reveal">
-      <div class="accessory-chip"><img src="mascot-zebra.png" alt="" style="width:22px;height:22px;object-fit:contain;"> Shoe sensor</div>
-      <div class="accessory-chip"><img src="mascot-monkey.png" alt="" style="width:22px;height:22px;object-fit:contain;"> Hairband sensor</div>
-      <div class="accessory-chip"><img src="mascot-dolphin.png" alt="" style="width:22px;height:22px;object-fit:contain;"> Jacket lining tag</div>
-      <div class="accessory-chip"><img src="mascot-frog.png" alt="" style="width:22px;height:22px;object-fit:contain;"> Proximity alerts</div>
+    <div class="accessories-inner reveal">
+      <div class="accessories-text">
+        <div class="tag tag--mint">Optional Add-ons</div>
+        <h2>Optional add-on sensors for every parent who wants more.</h2>
+        <p>Every parent has the option of additional Bluetooth sensors that can be placed in shoes, hairbands, or jacket linings. If your child becomes separated from their main Shield device beyond a safe distance, you're alerted immediately. Available separately.</p>
+        <div class="accessories-row">
+          <div class="accessory-chip"><img src="mascot-zebra.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Shoe sensor</div>
+          <div class="accessory-chip"><img src="mascot-monkey.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Hairband sensor</div>
+          <div class="accessory-chip"><img src="mascot-dolphin.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Jacket lining tag</div>
+          <div class="accessory-chip"><img src="mascot-frog.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Proximity alerts</div>
+        </div>
+      </div>
+      <div class="accessories-visual">
+        <img src="shield-zebra-3d.webp" alt="Zebra shield design" class="accessories-photo">
+      </div>
     </div>
   </div>
 </section>
@@ -801,7 +830,7 @@
     </div>
     <div class="story-card reveal">
       <div class="story-authors">
-        <img src="mascot-cat.png" alt="" style="width:56px;height:56px;object-fit:contain;">
+        <img src="shield-flamingo-3d.webp" alt="" style="width:72px;height:72px;object-fit:contain;">
         <div>
           <div class="authors-name">Mariessa and Evan</div>
           <div class="authors-title">Auntie Reesa and Uncle Evan, Founders of Shield</div>
@@ -866,7 +895,7 @@
 
   // Simple waitlist form handler
   // Rotating child name in nav + hero, with matching mascot swap
-  const childNames = ["Mya's","Evan's","Mariessa's","Sarah's","Tim's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Kai's","Zoe's","Luca's","Maya's","River's","Allyssa's","Gurinder's","Sue's","Wes's","Jessica's","Charlie's"];
+  const childNames = ["Mya's","Evan's","Mariessa's","Sarah's","Tim's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Kai's","Zoe's","Luca's","Maya's","River's","Allyssa's","Gurinder's","Sue's","Charlie's","Bernie's","Stella's","Krystal's","Rob's"];
   const mascotImgs = ["Main logo.png","mascot-butterfly.png","mascot-cat.png","mascot-dog.png","mascot-flamingo.png","mascot-zebra.png","mascot-dolphin.png","mascot-frog.png","mascot-monkey.png"];
   // Preload all mascot images so swaps are instant
   mascotImgs.forEach(src => { const i = new Image(); i.src = src; });
