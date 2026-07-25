@@ -1,11 +1,29 @@
-# Otter Mascot Toy — v4 (hollow shell, heart button, bulb row)
+# Otter Mascot Toy — v5 (hollow shell, heart button, bulb row, face colours)
 
 Built from the `OtterLEDH2S.3mf` sculpt you provided, scaled to 4.5" (114mm)
 tall, hollowed for electronics, with a pressable heart button and 4x 3mm
 bulb holes on the belly. This is a **fast build under time pressure** —
 see "What's simplified / not done" below before printing.
 
-![preview](otter_v4_preview.png)
+![preview](otter_v5_preview.png)
+![face detail](otter_v5_face.png)
+
+## Colour parts (4 total, matching your ACE Pro's 4-slot budget)
+
+| Slot | File(s) | Colour |
+|---|---|---|
+| 1 | `stl/front_shell.stl` + `stl/back_shell.stl` | body |
+| 2 | `stl/heart_cap.stl` (hand-inserted, see Assembly) + `stl/nose_pink.stl` (fused, printed in place) | pink |
+| 3 | `stl/eye_white.stl` | white |
+| 4 | `stl/eye_black.stl` | black |
+
+Nose, eye-white and eye-black are all fused into the shell during printing
+(same mechanism as the body/heart-cutout — no post-print placement needed).
+Only `heart_cap.stl` is a separate hand-inserted part, because it's the
+one piece that has to physically move to act as a button. Whiskers were
+discussed but left un-added — the geometry is too fine/thin for this
+patch technique or reliable FDM colour resolution; paint them by hand if
+you want them coloured.
 
 ## Revision history
 
@@ -26,6 +44,12 @@ see "What's simplified / not done" below before printing.
   visible on the side profile near the shoulder, from the same patched
   area — much smaller than the v3 defect but not fully smoothed out.
   Flag if it's visible enough to bother you and I'll take another pass.
+- **v5**: added eye-white, pupil-black, and nose-pink (shares the
+  heart's pink) as fused colour patches on the face, using the same
+  flush-patch technique as the heart/nose. Eye/nose placement was found
+  by sampling the actual sculpted indents/bump rather than assuming a
+  fixed offset — reasonably close but not laser-precise; check the face
+  preview image and flag if either eye needs nudging.
 
 ## Parts (3 STL)
 
