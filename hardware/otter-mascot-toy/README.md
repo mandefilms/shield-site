@@ -50,6 +50,23 @@ you want them coloured.
   by sampling the actual sculpted indents/bump rather than assuming a
   fixed offset — reasonably close but not laser-precise; check the face
   preview image and flag if either eye needs nudging.
+- **v6**: fixed a serious mesh-quality bug found when actually loading
+  these files in Orca — `front_shell.stl` contained ~6170 disconnected
+  mesh fragments and `back_shell.stl` ~35,000, almost all microscopic
+  debris left over from chaining many boolean operations against the
+  814k-face fur-textured source mesh. Root cause: each successive cut
+  (cavity, notch, heart, 4 bulbs, 2 eyes, nose, split, dowels — ~11
+  operations in sequence) compounded small numerical artifacts. Fixed
+  by combining all the "subtract" shapes into one union first and
+  doing a single difference against the body mesh, instead of ~8
+  sequential differences. Front is now 3 pieces, back is 2 — this is
+  expected/correct, not a defect: a hollow shell is normally
+  represented as an outer surface + an inner cavity surface as two
+  separate closed shells, which slicers handle natively.
+  **Known remaining issue**: the internal mounting platform is still
+  not fused to the back shell (prints as a loose ~437mm³ piece sitting
+  inside the cavity, not a fixed shelf) — ran out of time to chase a
+  proper fuse for this revision. Flag if you want it revisited.
 
 ## Parts (3 STL)
 
