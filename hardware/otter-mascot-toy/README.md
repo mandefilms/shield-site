@@ -1,12 +1,16 @@
-# Otter Mascot Toy — v1 (hollow shell, heart button, bulb row)
+# Otter Mascot Toy — v2 (hollow shell, heart button, bulb row)
 
 Built from the `OtterLEDH2S.3mf` sculpt you provided, scaled to 4.5" (114mm)
 tall, hollowed for electronics, with a pressable heart button and 4x 3mm
-bulb holes on the belly. This is a **fast first pass built under time
-pressure** — see "What's simplified / not done" below before printing.
+bulb holes on the belly. This is a **fast build under time pressure** —
+see "What's simplified / not done" below before printing.
 
-![preview](otter_final_preview.png)
-![belly detail](front_shell_check.png)
+v2 fixes from your feedback: heart is now upright (lobes toward the top,
+point toward the bottom — was rotated 90° in v1), the 4 bulb holes are
+centred as a group under the heart, and the snap-bump clip feature on the
+back has been removed (closure is now dowels-only — see Assembly).
+
+![preview](otter_v2_preview.png)
 
 ## Parts (3 STL)
 
@@ -27,8 +31,12 @@ pressure** — see "What's simplified / not done" below before printing.
    the hole so it can't be inserted from outside, but it seats in a
    shallow counterbore that lets it move ~0.8mm to press a switch you
    position behind it.
-3. Close the two halves — 2 alignment dowels + 2 snap-bumps (top and
-   bottom) hold them together, same clip mechanism as the earlier build.
+3. Close the two halves — 2 alignment dowels hold them in register
+   (left/right, near the shoulder height). With the snap-bumps removed
+   there's no positive click-shut retention anymore, just the dowels'
+   friction fit — plan on a dab of glue or tape at the seam to keep it
+   closed, or ask if you want a different closure mechanism added back
+   (e.g. bumps recessed so they don't show externally, or screws).
 
 ## What's simplified / not done (given the deadline)
 
