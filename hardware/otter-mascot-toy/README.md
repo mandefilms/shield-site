@@ -1,16 +1,31 @@
-# Otter Mascot Toy — v2 (hollow shell, heart button, bulb row)
+# Otter Mascot Toy — v4 (hollow shell, heart button, bulb row)
 
 Built from the `OtterLEDH2S.3mf` sculpt you provided, scaled to 4.5" (114mm)
 tall, hollowed for electronics, with a pressable heart button and 4x 3mm
 bulb holes on the belly. This is a **fast build under time pressure** —
 see "What's simplified / not done" below before printing.
 
-v2 fixes from your feedback: heart is now upright (lobes toward the top,
-point toward the bottom — was rotated 90° in v1), the 4 bulb holes are
-centred as a group under the heart, and the snap-bump clip feature on the
-back has been removed (closure is now dowels-only — see Assembly).
+![preview](otter_v4_preview.png)
 
-![preview](otter_v2_preview.png)
+## Revision history
+
+- **v2**: heart made upright (lobes up, point down — was rotated 90° in
+  v1), bulb holes centred as a group, snap-bump clip removed (dowels only).
+- **v3→v4**: heart re-centred on the body's *actual* silhouette centreline
+  (X≈-8mm, not X=0 — the sculpted pose itself isn't perfectly symmetric,
+  confirmed by raycasting the outer surface), bulb hole spacing widened
+  from a 4mm to a 7mm pitch (was leaving only ~1mm of material between
+  holes, now ~4mm), and the leftover tealight-candle cavity on the back
+  is patched smooth on the *outside* and turned into a flat internal
+  mounting platform/shelf on the *inside*, reachable from the main
+  cavity. v3 had a build bug where that platform punched straight
+  through the outer surface (visible rectangular block on the side) —
+  fixed in v4 by re-clipping everything against the true exterior
+  surface after adding it.
+  **Known remaining issue**: a small cosmetic step is still faintly
+  visible on the side profile near the shoulder, from the same patched
+  area — much smaller than the v3 defect but not fully smoothed out.
+  Flag if it's visible enough to bother you and I'll take another pass.
 
 ## Parts (3 STL)
 
