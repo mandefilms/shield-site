@@ -56,27 +56,10 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # ---------------------------------------------------------------------------
 BUTTON_HOLE_R = 10.80/2.0
 
-heart_pt_raw, heart_n_raw = lm_body["heart"]
-heart_pt_raw = scale_pt(heart_pt_raw)
-
-# moved up per your ask -- it was sitting down near the feet. Same
-# surface-tangent-shift + raycast-reproject technique used for the bulbs,
-# just in the "up" direction instead of "down".
-world_up = np.array([0,0,1.0])
-up_tangent = world_up - np.dot(world_up, heart_n_raw) * heart_n_raw
-up_tangent /= np.linalg.norm(up_tangent)
-BUTTON_SHIFT_UP = 14.0
-target = heart_pt_raw + up_tangent * BUTTON_SHIFT_UP
-ray_origin = target + np.array(heart_n_raw) * 30.0
-locs, ir, it = mesh.ray.intersects_location(ray_origin.reshape(1,3), (-np.array(heart_n_raw)).reshape(1,3))
-if len(locs):
-    dists = np.linalg.norm(locs - ray_origin, axis=1)
-    heart_pt = locs[np.argmin(dists)]
-    heart_n = mesh.face_normals[it[np.argmin(dists)]]
-    heart_n /= np.linalg.norm(heart_n)
-else:
-    heart_pt = target; heart_n = heart_n_raw
-print("button moved up", BUTTON_SHIFT_UP, "mm: old", heart_pt_raw, "-> new", heart_pt, time.time()-t0)
+# kept at its original landmark position -- the "moved up" edit is reverted
+# per your feedback, button stays where it originally was.
+heart_pt, heart_n = lm_body["heart"]
+heart_pt = scale_pt(heart_pt)
 
 button_cutter = cyl_at(heart_pt, heart_n, BUTTON_HOLE_R, inside=3.0, outside=6.0)
 
@@ -94,16 +77,15 @@ center_pt_raw = bulb_pts.mean(axis=0)
 row_dir = bulb_pts[-1]-bulb_pts[0]
 row_dir /= np.linalg.norm(row_dir)
 
-# moved down a bit per your ask -- shift along the local surface-tangent
-# "down" direction, then re-project onto the actual belly surface (raycast)
-# so the holes stay properly seated on the curved shell, not just floating
-# in space at the shifted coordinate.
+# moved UP per your latest feedback (the earlier "down" move was the wrong
+# direction) -- shift along the local surface-tangent "up" direction, then
+# re-project onto the actual belly surface (raycast) so the holes stay
+# properly seated on the curved shell, not just floating in space.
 world_up = np.array([0,0,1.0])
 up_tangent = world_up - np.dot(world_up, bulb_normal) * bulb_normal
 up_tangent /= np.linalg.norm(up_tangent)
-down_dir = -up_tangent
-SHIFT_DOWN = 6.0
-target = center_pt_raw + down_dir * SHIFT_DOWN
+SHIFT_UP = 18.0
+target = center_pt_raw + up_tangent * SHIFT_UP
 ray_origin = target + bulb_normal * 30.0
 locs, ir, it = mesh.ray.intersects_location(ray_origin.reshape(1,3), (-bulb_normal).reshape(1,3))
 if len(locs):
@@ -113,7 +95,7 @@ if len(locs):
     bulb_normal /= np.linalg.norm(bulb_normal)
 else:
     center_pt = target  # fallback, shouldn't happen
-print("bulb row moved down", SHIFT_DOWN, "mm: old center", center_pt_raw, "-> new center", center_pt, time.time()-t0)
+print("bulb row moved up", SHIFT_UP, "mm: old center", center_pt_raw, "-> new center", center_pt, time.time()-t0)
 
 PITCH = 4.5
 BULB_R = 1.6  # 3.2mm dia

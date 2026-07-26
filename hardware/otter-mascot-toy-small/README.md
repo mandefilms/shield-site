@@ -37,11 +37,18 @@ heart glued on top.
   independent of shell scale. Also **moved the whole row down ~6mm** per
   your ask, re-projected onto the actual belly surface (not just shifted in
   a straight line) so the holes stay properly seated on the curved shell.
-  It's now ~13mm from the button hole — no overlap risk.
-- **Button moved up ~14mm** — it was sitting low enough to read as being on
-  the otter's feet rather than its belly/chest. Same surface-tangent-shift
-  + raycast-reproject technique as the bulb move, just upward. New button
-  centre is roughly mid-torso height now.
+  **Update**: button is back at its original position (see below), and the
+  bulb row is now moved **up ~18mm** instead of down — it turned out the
+  button and the original bulb-row position were already close together
+  (only ~0.75mm of real clearance between them), so a straight "up" shift
+  actually collides with/overlaps the button hole for shifts roughly
+  between 2mm and 12mm along this path (checked numerically before
+  picking a number — several smaller "up" values I tried first would have
+  merged the bulb holes into the button hole). 18mm clears the button by
+  a healthy ~4mm and reads as clearly higher up the belly/chest.
+- **Button: reverted to its original landmark position** — an earlier pass
+  moved it up ~14mm, but per your feedback it should stay where it
+  originally was; only the bulb row moves now.
 - **Dowels sized down slightly** (1.1–1.25mm radius, was 1.6–1.8mm) to suit
   the thinner walls at this size.
 - **No mounting platform/shelf** carried over from the 114mm version's
