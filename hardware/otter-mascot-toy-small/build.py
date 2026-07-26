@@ -51,24 +51,14 @@ cavity = main_cavity.union(button_pocket, engine="manifold")
 print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.split(only_watertight=False)), time.time()-t0)
 
 # ---------------------------------------------------------------------------
-# Button mount: countersunk hole for a real tactile button.
-# User-measured: cap 16.88mm dia, body/shaft 13.86mm dia -- +0.2-0.3mm
-# clearance each => ~17.1mm counterbore, ~14.1mm through-hole.
+# Button mount: simple straight through-hole, no counterbore/countersink.
+# Confirmed size: 10.80mm diameter -- that's the only number needed.
 # ---------------------------------------------------------------------------
-BUTTON_HOLE_R = 14.1/2.0
-BUTTON_COUNTERBORE_R = 17.1/2.0
-COUNTERBORE_DEPTH = 1.4
-WALL_EST = 1.4
+BUTTON_HOLE_R = 10.80/2.0
 
 heart_pt, heart_n = lm_body["heart"]
 heart_pt = scale_pt(heart_pt)
-T_heart = transform_upright(heart_pt, heart_n)
-
-through_hole = trimesh.creation.cylinder(radius=BUTTON_HOLE_R, height=20, sections=48)
-counterbore = trimesh.creation.cylinder(radius=BUTTON_COUNTERBORE_R, height=COUNTERBORE_DEPTH, sections=48)
-counterbore.apply_translation([0,0,-WALL_EST/2 - COUNTERBORE_DEPTH/2 + 0.4])
-button_cutter = through_hole.union(counterbore, engine="manifold")
-button_cutter.apply_transform(T_heart)
+button_cutter = cyl_at(heart_pt, heart_n, BUTTON_HOLE_R, inside=3.0, outside=6.0)
 
 # ---------------------------------------------------------------------------
 # Bulb holes: kept at their real physical size (3.2mm dia, "a hair" bigger
@@ -80,9 +70,31 @@ button_cutter.apply_transform(T_heart)
 bulb_pts = np.array([scale_pt(lm_body[n][0]) for n in ["bulb1","bulb2","bulb3","bulb4"]])
 bulb_normal = np.mean([lm_body[n][1] for n in ["bulb1","bulb2","bulb3","bulb4"]], axis=0)
 bulb_normal /= np.linalg.norm(bulb_normal)
-center_pt = bulb_pts.mean(axis=0)
+center_pt_raw = bulb_pts.mean(axis=0)
 row_dir = bulb_pts[-1]-bulb_pts[0]
 row_dir /= np.linalg.norm(row_dir)
+
+# moved down a bit per your ask -- shift along the local surface-tangent
+# "down" direction, then re-project onto the actual belly surface (raycast)
+# so the holes stay properly seated on the curved shell, not just floating
+# in space at the shifted coordinate.
+world_up = np.array([0,0,1.0])
+up_tangent = world_up - np.dot(world_up, bulb_normal) * bulb_normal
+up_tangent /= np.linalg.norm(up_tangent)
+down_dir = -up_tangent
+SHIFT_DOWN = 6.0
+target = center_pt_raw + down_dir * SHIFT_DOWN
+ray_origin = target + bulb_normal * 30.0
+locs, ir, it = mesh.ray.intersects_location(ray_origin.reshape(1,3), (-bulb_normal).reshape(1,3))
+if len(locs):
+    dists = np.linalg.norm(locs - ray_origin, axis=1)
+    center_pt = locs[np.argmin(dists)]
+    bulb_normal = mesh.face_normals[it[np.argmin(dists)]]
+    bulb_normal /= np.linalg.norm(bulb_normal)
+else:
+    center_pt = target  # fallback, shouldn't happen
+print("bulb row moved down", SHIFT_DOWN, "mm: old center", center_pt_raw, "-> new center", center_pt, time.time()-t0)
+
 PITCH = 4.5
 BULB_R = 1.6  # 3.2mm dia
 offsets = (np.arange(4) - 1.5) * PITCH

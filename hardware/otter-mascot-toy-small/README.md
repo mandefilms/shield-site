@@ -20,20 +20,24 @@ heart glued on top.
   *actual* 60mm shell geometry, validated by sampling real wall thickness
   after the cut (see Verification below), not assumed from the original's
   proportions.
-- **Button: real hardware, not a printed pressable cap.** The belly now has
-  a countersunk hole sized for your button (16.88mm cap / 13.86mm body
-  measurements + ~0.2–0.3mm clearance each): **17.1mm counterbore**,
-  **14.1mm through-hole**, 1.4mm counterbore depth. The button mounts from
-  outside; `heart_cap.stl` is a **separate decorative heart** (23×20.8×2.2mm,
-  flat-backed, no plunger) sized to overhang the button's cap — glue it on
-  after the button is in place. It is *not* part of the printed shell and
-  does not need to be inserted before closing the halves.
-- **Bulb holes: kept at real size, re-spaced.** You asked for them "a hair"
-  bigger — bumped to **3.2mm diameter** (from 3.0mm). Bulb size doesn't
-  scale with the shell (they have to fit real 3mm bulbs), so the old
-  114mm-scaled 7mm pitch would have shrunk to ~3.7mm — nearly merging four
-  3.2mm holes. Re-laid-out at a fixed **4.5mm pitch** instead, which is
-  independent of the shell scale and leaves real material between holes.
+- **Button: real hardware, not a printed pressable cap.** The belly has a
+  **simple straight through-hole, 10.80mm diameter** (your confirmed final
+  number — the earlier 16.88mm/13.86mm countersunk-mount numbers turned out
+  to be wrong/oversized and are no longer used; no counterbore/countersink
+  feature at all now, just one hole). The button mounts through it from
+  outside; `heart_cap.stl` is a **separate decorative heart**
+  (23×20.8×2.2mm, flat-backed, no plunger) — glue it on after the button is
+  in place. It is *not* part of the printed shell and does not need to be
+  inserted before closing the halves.
+- **Bulb holes: kept at real size, re-spaced, moved down.** You asked for
+  them "a hair" bigger — bumped to **3.2mm diameter** (from 3.0mm). Bulb
+  size doesn't scale with the shell (they have to fit real 3mm bulbs), so
+  the old 114mm-scaled 7mm pitch would have shrunk to ~3.7mm — nearly
+  merging four 3.2mm holes. Re-laid-out at a fixed **4.5mm pitch** instead,
+  independent of shell scale. Also **moved the whole row down ~6mm** per
+  your ask, re-projected onto the actual belly surface (not just shifted in
+  a straight line) so the holes stay properly seated on the curved shell.
+  It's now ~13mm from the button hole — no overlap risk.
 - **Dowels sized down slightly** (1.1–1.25mm radius, was 1.6–1.8mm) to suit
   the thinner walls at this size.
 - **No mounting platform/shelf** carried over from the 114mm version's
@@ -63,19 +67,17 @@ cavity too unless it's re-fit. After building, I checked it two ways:
    knife-edge fit.**
 2. **Wall-thickness sampling** on the actual post-boolean shell (sampling
    thousands of real exterior-surface points, measuring distance to the
-   nearest interior/cavity surface): back shell is healthy, **min ~3.5mm**
-   in the torso region. Front shell is healthy almost everywhere too, but
-   there's a **localised thin spot down to ~0.56mm** right at the edge of
-   the new button counterbore (belly area, roughly under/beside the
-   button opening). Everywhere else nearby is 2.7mm+.
+   nearest interior/cavity surface): back shell **min ~3.0mm** in the torso
+   region. Front shell **min ~1.4mm**, at the main cavity's edge on the
+   side away from the button (not the button hole itself — switching the
+   button mount to a plain 10.8mm through-hole removed the earlier, worse
+   ~0.56mm thin spot that the old wider counterbore was causing). Almost
+   everywhere else nearby is 5mm+.
 
-**Known remaining issue**: that ~0.56mm spot at the button-hole rim is
-thin enough to be a real fragility risk — worth a visual check in the
-slicer before printing, and if it looks concerning, either print a couple
-extra perimeters locally or ask me to shift the button pocket slightly to
-push more material into that corner. I did not spend further iteration on
-it given the fast turnaround, same trade-off called out on the original
-YC-deadline build — flag it and I'll take another pass.
+**Known remaining issue**: that ~1.4mm spot is thinner than ideal but
+should be printable without extra measures — worth a visual check in the
+slicer before printing. Flag it and I can pull the cavity in slightly on
+that side if you want more margin.
 
 ## Parts (3 STL, 2 colours — no face detail on this version)
 
@@ -87,9 +89,9 @@ YC-deadline build — flag it and I'll take another pass.
 
 ## Assembly
 
-1. Mount your tactile button through the belly counterbore from outside
-   (17.1mm recess, 14.1mm body through-hole) before closing the shell —
-   wire it to the XIAO the same as any other switch input.
+1. Mount your tactile button through the belly hole from outside (10.80mm
+   straight through-hole, no recess) before closing the shell — wire it to
+   the XIAO the same as any other switch input.
 2. Fit the XIAO nRF52840 + CR2032 in the main cavity — there's genuine
    room now (see Verification above), but it's still hand-placed/taped,
    no built-in mounts in this pass.
