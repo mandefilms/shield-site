@@ -56,8 +56,28 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # ---------------------------------------------------------------------------
 BUTTON_HOLE_R = 10.80/2.0
 
-heart_pt, heart_n = lm_body["heart"]
-heart_pt = scale_pt(heart_pt)
+heart_pt_raw, heart_n_raw = lm_body["heart"]
+heart_pt_raw = scale_pt(heart_pt_raw)
+
+# moved up per your ask -- it was sitting down near the feet. Same
+# surface-tangent-shift + raycast-reproject technique used for the bulbs,
+# just in the "up" direction instead of "down".
+world_up = np.array([0,0,1.0])
+up_tangent = world_up - np.dot(world_up, heart_n_raw) * heart_n_raw
+up_tangent /= np.linalg.norm(up_tangent)
+BUTTON_SHIFT_UP = 14.0
+target = heart_pt_raw + up_tangent * BUTTON_SHIFT_UP
+ray_origin = target + np.array(heart_n_raw) * 30.0
+locs, ir, it = mesh.ray.intersects_location(ray_origin.reshape(1,3), (-np.array(heart_n_raw)).reshape(1,3))
+if len(locs):
+    dists = np.linalg.norm(locs - ray_origin, axis=1)
+    heart_pt = locs[np.argmin(dists)]
+    heart_n = mesh.face_normals[it[np.argmin(dists)]]
+    heart_n /= np.linalg.norm(heart_n)
+else:
+    heart_pt = target; heart_n = heart_n_raw
+print("button moved up", BUTTON_SHIFT_UP, "mm: old", heart_pt_raw, "-> new", heart_pt, time.time()-t0)
+
 button_cutter = cyl_at(heart_pt, heart_n, BUTTON_HOLE_R, inside=3.0, outside=6.0)
 
 # ---------------------------------------------------------------------------

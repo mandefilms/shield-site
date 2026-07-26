@@ -38,6 +38,10 @@ heart glued on top.
   your ask, re-projected onto the actual belly surface (not just shifted in
   a straight line) so the holes stay properly seated on the curved shell.
   It's now ~13mm from the button hole — no overlap risk.
+- **Button moved up ~14mm** — it was sitting low enough to read as being on
+  the otter's feet rather than its belly/chest. Same surface-tangent-shift
+  + raycast-reproject technique as the bulb move, just upward. New button
+  centre is roughly mid-torso height now.
 - **Dowels sized down slightly** (1.1–1.25mm radius, was 1.6–1.8mm) to suit
   the thinner walls at this size.
 - **No mounting platform/shelf** carried over from the 114mm version's
@@ -68,16 +72,14 @@ cavity too unless it's re-fit. After building, I checked it two ways:
 2. **Wall-thickness sampling** on the actual post-boolean shell (sampling
    thousands of real exterior-surface points, measuring distance to the
    nearest interior/cavity surface): back shell **min ~3.0mm** in the torso
-   region. Front shell **min ~1.4mm**, at the main cavity's edge on the
-   side away from the button (not the button hole itself — switching the
-   button mount to a plain 10.8mm through-hole removed the earlier, worse
-   ~0.56mm thin spot that the old wider counterbore was causing). Almost
-   everywhere else nearby is 5mm+.
+   region. Front shell **min ~0.9-1.4mm** at two spots — one at the main
+   cavity's edge on the side away from the button, one near the belly
+   close to the bulb-hole row. Almost everywhere else nearby is 4mm+.
 
-**Known remaining issue**: that ~1.4mm spot is thinner than ideal but
-should be printable without extra measures — worth a visual check in the
-slicer before printing. Flag it and I can pull the cavity in slightly on
-that side if you want more margin.
+**Known remaining issue**: those two sub-1.5mm spots are thinner than
+ideal but should still be printable — worth a visual check in the slicer
+before printing. Flag it and I can pull the cavity in slightly, or nudge
+the bulb row, for more margin there.
 
 ## Parts (3 STL, 2 colours — no face detail on this version)
 
