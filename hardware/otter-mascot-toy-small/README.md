@@ -29,26 +29,24 @@ heart glued on top.
   (23×20.8×2.2mm, flat-backed, no plunger) — glue it on after the button is
   in place. It is *not* part of the printed shell and does not need to be
   inserted before closing the halves.
-- **Bulb holes: kept at real size, re-spaced, moved down.** You asked for
-  them "a hair" bigger — bumped to **3.2mm diameter** (from 3.0mm). Bulb
-  size doesn't scale with the shell (they have to fit real 3mm bulbs), so
-  the old 114mm-scaled 7mm pitch would have shrunk to ~3.7mm — nearly
-  merging four 3.2mm holes. Re-laid-out at a fixed **4.5mm pitch** instead,
-  independent of shell scale. Also **moved the whole row down ~6mm** per
-  your ask, re-projected onto the actual belly surface (not just shifted in
-  a straight line) so the holes stay properly seated on the curved shell.
-  **Update**: button is back at its original position (see below), and the
-  bulb row is now moved **up ~18mm** instead of down — it turned out the
-  button and the original bulb-row position were already close together
-  (only ~0.75mm of real clearance between them), so a straight "up" shift
-  actually collides with/overlaps the button hole for shifts roughly
-  between 2mm and 12mm along this path (checked numerically before
-  picking a number — several smaller "up" values I tried first would have
-  merged the bulb holes into the button hole). 18mm clears the button by
-  a healthy ~4mm and reads as clearly higher up the belly/chest.
-- **Button: reverted to its original landmark position** — an earlier pass
-  moved it up ~14mm, but per your feedback it should stay where it
-  originally was; only the bulb row moves now.
+- **Layout: button with the 4 LED holes just below it** — both are back at
+  their original landmark positions (some up/down repositioning was tried
+  and reverted in between based on a miscommunication about where things
+  should sit; final layout is button + bulb row close together, not
+  shifted toward the feet or up near the arms).
+- **Bulb holes: kept at real size, re-spaced.** You asked for them "a hair"
+  bigger — bumped to **3.2mm diameter** (from 3.0mm). Bulb size doesn't
+  scale with the shell (they have to fit real 3mm bulbs), so the old
+  114mm-scaled 7mm pitch would have shrunk to ~3.7mm — nearly merging four
+  3.2mm holes. Re-laid-out at a fixed **4.5mm pitch** instead, independent
+  of shell scale.
+- **Heads-up: the gap between the button hole and the nearest bulb hole is
+  only ~0.75mm** at this original spacing (button 10.8mm dia + bulb 3.2mm
+  dia, centres ~7.75mm apart). That's tight enough to be a real fragility
+  risk between the two openings — worth a close look in the slicer, and
+  say the word if you'd like a little more breathing room (e.g. nudging the
+  bulb row very slightly further from the button, or trimming the pitch)
+  without changing the overall "just below the button" layout.
 - **Dowels sized down slightly** (1.1–1.25mm radius, was 1.6–1.8mm) to suit
   the thinner walls at this size.
 - **No mounting platform/shelf** carried over from the 114mm version's
@@ -78,15 +76,11 @@ cavity too unless it's re-fit. After building, I checked it two ways:
    knife-edge fit.**
 2. **Wall-thickness sampling** on the actual post-boolean shell (sampling
    thousands of real exterior-surface points, measuring distance to the
-   nearest interior/cavity surface): back shell **min ~3.0mm** in the torso
-   region. Front shell **min ~0.9-1.4mm** at two spots — one at the main
-   cavity's edge on the side away from the button, one near the belly
-   close to the bulb-hole row. Almost everywhere else nearby is 4mm+.
-
-**Known remaining issue**: those two sub-1.5mm spots are thinner than
-ideal but should still be printable — worth a visual check in the slicer
-before printing. Flag it and I can pull the cavity in slightly, or nudge
-the bulb row, for more margin there.
+   nearest interior/cavity surface), at the final button+bulb layout below:
+   back shell **min ~3.0mm**, front shell **min ~2.3mm**, both in the torso
+   region — healthy, no fragile spots from the cavity itself. The one real
+   thin point in this build is the ~0.75mm gap *between the button hole and
+   the nearest bulb hole* (see layout note above), not the shell wall.
 
 ## Parts (3 STL, 2 colours — no face detail on this version)
 

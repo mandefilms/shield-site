@@ -77,25 +77,11 @@ center_pt_raw = bulb_pts.mean(axis=0)
 row_dir = bulb_pts[-1]-bulb_pts[0]
 row_dir /= np.linalg.norm(row_dir)
 
-# moved UP per your latest feedback (the earlier "down" move was the wrong
-# direction) -- shift along the local surface-tangent "up" direction, then
-# re-project onto the actual belly surface (raycast) so the holes stay
-# properly seated on the curved shell, not just floating in space.
-world_up = np.array([0,0,1.0])
-up_tangent = world_up - np.dot(world_up, bulb_normal) * bulb_normal
-up_tangent /= np.linalg.norm(up_tangent)
-SHIFT_UP = 18.0
-target = center_pt_raw + up_tangent * SHIFT_UP
-ray_origin = target + bulb_normal * 30.0
-locs, ir, it = mesh.ray.intersects_location(ray_origin.reshape(1,3), (-bulb_normal).reshape(1,3))
-if len(locs):
-    dists = np.linalg.norm(locs - ray_origin, axis=1)
-    center_pt = locs[np.argmin(dists)]
-    bulb_normal = mesh.face_normals[it[np.argmin(dists)]]
-    bulb_normal /= np.linalg.norm(bulb_normal)
-else:
-    center_pt = target  # fallback, shouldn't happen
-print("bulb row moved up", SHIFT_UP, "mm: old center", center_pt_raw, "-> new center", center_pt, time.time()-t0)
+# Back to the original landmark position -- button + bulb row just below it,
+# close together, as originally intended. Earlier up/down experiments were
+# based on a misreading of what you wanted; reverted per your clarification.
+center_pt = center_pt_raw
+print("bulb row at original position:", center_pt, time.time()-t0)
 
 PITCH = 4.5
 BULB_R = 1.6  # 3.2mm dia
