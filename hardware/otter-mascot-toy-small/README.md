@@ -39,7 +39,9 @@ heart glued on top.
 - **No mounting platform/shelf** carried over from the 114mm version's
   patched tealight-notch area — skipped for time, same as the "no
   standoffs" simplification on the original build.
-- Eyes/nose scaled down proportionally with the shell (cosmetic only).
+- **No eye/nose colour patches on this version** — per your call, the face
+  stays plain on this build (2 colours total: body + heart cap), unlike
+  the 114mm version's 4-colour face detail.
 
 ## Slicing note
 
@@ -75,16 +77,13 @@ push more material into that corner. I did not spend further iteration on
 it given the fast turnaround, same trade-off called out on the original
 YC-deadline build — flag it and I'll take another pass.
 
-## Parts (6 STL, same colour-slot structure as before)
+## Parts (3 STL, 2 colours — no face detail on this version)
 
 | File | Colour | Contents |
 |---|---|---|
-| `stl/front_shell.stl` | body | front half — face, belly, button hole, 4 bulb holes, hollow interior |
+| `stl/front_shell.stl` | body | front half — plain face, belly, button hole, 4 bulb holes, hollow interior |
 | `stl/back_shell.stl` | body | back half, mates to front via 2 alignment dowels |
 | `stl/heart_cap.stl` | pink | separate decorative heart — glue onto the real button's cap after mounting, **not printed fused in** |
-| `stl/nose_pink.stl` | pink | fused nose patch (prints in place) |
-| `stl/eye_white.stl` | white | fused eye-white patches (prints in place) |
-| `stl/eye_black.stl` | black | fused pupil patches (prints in place) |
 
 ## Assembly
 

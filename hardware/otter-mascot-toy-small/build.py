@@ -91,39 +91,15 @@ for off in offsets:
     pt = center_pt + row_dir*off
     bulb_holes.append(cyl_at(pt, bulb_normal, BULB_R, inside=2.0, outside=6.0))
 
-# ---------------------------------------------------------------------------
-# Eyes / nose colour patches -- scaled proportionally with the shell (purely
-# cosmetic, should look right at the smaller size).
-# ---------------------------------------------------------------------------
-eye_regions = []
-for name in ["eye_l","eye_r"]:
-    pt,n = lm_face[name]
-    eye_regions.append(cyl_at(scale_pt(pt), n, 7.0*SCALE))
-nose_pt, nose_n = lm_face["nose"]
-nose_region = cyl_at(scale_pt(nose_pt), nose_n, 6.0*SCALE)
+# NOTE: no eye/nose colour patches on this build -- face stays plain, per your
+# call to skip those details on the small version.
 
 print("all cutters built", time.time()-t0)
 
-all_cutters = trimesh.util.concatenate([cavity, button_cutter] + bulb_holes + eye_regions + [nose_region])
+all_cutters = trimesh.util.concatenate([cavity, button_cutter] + bulb_holes)
 work = mesh.difference(all_cutters, engine="manifold")
 print("shell+cavity+cutouts done: watertight=", work.is_watertight,
       "pieces=", len(work.split(only_watertight=False)), time.time()-t0)
-
-# eye white/black + nose colour patches (flush surface patches, same technique as before)
-eye_white_parts=[]; eye_black_parts=[]
-for name in ["eye_l","eye_r"]:
-    pt,n = lm_face[name]
-    pt = scale_pt(pt)
-    white_region = cyl_at(pt, n, 7.0*SCALE)
-    pupil_region = cyl_at(pt, n, 3.0*SCALE)
-    white_patch = outer_pristine.intersection(white_region, engine="manifold")
-    pupil_patch = outer_pristine.intersection(pupil_region, engine="manifold")
-    white_patch = white_patch.difference(pupil_region, engine="manifold")
-    eye_white_parts.append(white_patch); eye_black_parts.append(pupil_patch)
-eye_white = trimesh.util.concatenate(eye_white_parts)
-eye_black = trimesh.util.concatenate(eye_black_parts)
-nose_patch = outer_pristine.intersection(nose_region, engine="manifold")
-print("colour patches done", time.time()-t0)
 
 # split front/back
 def half_box(sign, big=300):
@@ -148,10 +124,7 @@ print("clip done: front pieces=", len(front.split(only_watertight=False)),
 
 front.export("front_shell_small.stl")
 back.export("back_shell_small.stl")
-nose_patch.export("nose_pink_small.stl")
-eye_white.export("eye_white_small.stl")
-eye_black.export("eye_black_small.stl")
-print("exported shells+patches", time.time()-t0)
+print("exported shells", time.time()-t0)
 
 # ---------------------------------------------------------------------------
 # Decorative heart cap -- glued on top of the real button afterward, NOT a
