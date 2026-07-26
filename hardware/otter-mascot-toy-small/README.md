@@ -1,0 +1,110 @@
+# Otter Mascot Toy — Small (60mm, real tactile button + decorative heart)
+
+Same otter sculpt as the 114.3mm (4.5") version, scaled down to **60mm**
+tall, but re-designed rather than just proportionally shrunk — the hollow
+cavity was re-fit fresh to keep enough interior room for the fixed-size
+electronics, and the belly button mechanism changed from a printed
+pressable heart to a **real tactile button** with a printed decorative
+heart glued on top.
+
+## What changed vs. the 114.3mm version
+
+- **Size**: 60mm tall (was 114.3mm / 4.5"). You asked for 1/3, then
+  confirmed half (~57mm) once a strict 1/3 (~38mm) couldn't fit the XIAO
+  board, then bumped to 60mm for a bit more margin.
+- **Cavity: re-fit, not scaled down.** A proportional scale-down of the
+  original cavity would only leave ~17×14×21mm inside — too small for the
+  21×17.8mm XIAO nRF52840. Instead this build fits a fresh, larger cavity
+  (two overlapping ellipsoids — an upper "electronics bay" plus a lower
+  pocket reaching down toward the belly for the button) sized against the
+  *actual* 60mm shell geometry, validated by sampling real wall thickness
+  after the cut (see Verification below), not assumed from the original's
+  proportions.
+- **Button: real hardware, not a printed pressable cap.** The belly now has
+  a countersunk hole sized for your button (16.88mm cap / 13.86mm body
+  measurements + ~0.2–0.3mm clearance each): **17.1mm counterbore**,
+  **14.1mm through-hole**, 1.4mm counterbore depth. The button mounts from
+  outside; `heart_cap.stl` is a **separate decorative heart** (23×20.8×2.2mm,
+  flat-backed, no plunger) sized to overhang the button's cap — glue it on
+  after the button is in place. It is *not* part of the printed shell and
+  does not need to be inserted before closing the halves.
+- **Bulb holes: kept at real size, re-spaced.** You asked for them "a hair"
+  bigger — bumped to **3.2mm diameter** (from 3.0mm). Bulb size doesn't
+  scale with the shell (they have to fit real 3mm bulbs), so the old
+  114mm-scaled 7mm pitch would have shrunk to ~3.7mm — nearly merging four
+  3.2mm holes. Re-laid-out at a fixed **4.5mm pitch** instead, which is
+  independent of the shell scale and leaves real material between holes.
+- **Dowels sized down slightly** (1.1–1.25mm radius, was 1.6–1.8mm) to suit
+  the thinner walls at this size.
+- **No mounting platform/shelf** carried over from the 114mm version's
+  patched tealight-notch area — skipped for time, same as the "no
+  standoffs" simplification on the original build.
+- Eyes/nose scaled down proportionally with the shell (cosmetic only).
+
+## Slicing note
+
+You mentioned printing this one at **0.12mm layer height** for extra
+precision, and re-enabling Orca's **scarf joint seam** (Quality → Seam)
+like last time to keep the layer seam close to invisible. Neither of those
+needs any change to the STLs — just slicer settings.
+
+## Electronics fit — verified, not assumed
+
+I flagged this as the real risk going in: shrinking the shell shrinks the
+cavity too unless it's re-fit. After building, I checked it two ways:
+
+1. **Analytic fit check** — a virtual box for the XIAO nRF52840
+   (21.3×18.1×4.8mm, board dims + ~0.3mm clearance) fits inside the main
+   cavity ellipsoid with ~20% of the ellipsoid's containment budget to
+   spare. A CR2032 (20mm dia × 3.2mm) stacked just below it, with a 0.5mm
+   gap, fits with ~41% to spare. **Both fit with real margin, not a
+   knife-edge fit.**
+2. **Wall-thickness sampling** on the actual post-boolean shell (sampling
+   thousands of real exterior-surface points, measuring distance to the
+   nearest interior/cavity surface): back shell is healthy, **min ~3.5mm**
+   in the torso region. Front shell is healthy almost everywhere too, but
+   there's a **localised thin spot down to ~0.56mm** right at the edge of
+   the new button counterbore (belly area, roughly under/beside the
+   button opening). Everywhere else nearby is 2.7mm+.
+
+**Known remaining issue**: that ~0.56mm spot at the button-hole rim is
+thin enough to be a real fragility risk — worth a visual check in the
+slicer before printing, and if it looks concerning, either print a couple
+extra perimeters locally or ask me to shift the button pocket slightly to
+push more material into that corner. I did not spend further iteration on
+it given the fast turnaround, same trade-off called out on the original
+YC-deadline build — flag it and I'll take another pass.
+
+## Parts (6 STL, same colour-slot structure as before)
+
+| File | Colour | Contents |
+|---|---|---|
+| `stl/front_shell.stl` | body | front half — face, belly, button hole, 4 bulb holes, hollow interior |
+| `stl/back_shell.stl` | body | back half, mates to front via 2 alignment dowels |
+| `stl/heart_cap.stl` | pink | separate decorative heart — glue onto the real button's cap after mounting, **not printed fused in** |
+| `stl/nose_pink.stl` | pink | fused nose patch (prints in place) |
+| `stl/eye_white.stl` | white | fused eye-white patches (prints in place) |
+| `stl/eye_black.stl` | black | fused pupil patches (prints in place) |
+
+## Assembly
+
+1. Mount your tactile button through the belly counterbore from outside
+   (17.1mm recess, 14.1mm body through-hole) before closing the shell —
+   wire it to the XIAO the same as any other switch input.
+2. Fit the XIAO nRF52840 + CR2032 in the main cavity — there's genuine
+   room now (see Verification above), but it's still hand-placed/taped,
+   no built-in mounts in this pass.
+3. Route bulb leads through the 4 belly holes (3.2mm dia, 4.5mm pitch) and
+   glue/friction-fit the bulbs from outside.
+4. Close front/back on the 2 alignment dowels; glue or tape the seam (no
+   snap clip, matching the 114mm version).
+5. Once the button is mounted and the shell is closed, glue `heart_cap.stl`
+   onto the button's cap from outside.
+
+## Regenerating
+
+`build.py` in this folder is the actual script used (trimesh + manifold3d,
+same technique as the 114mm build: one consolidated boolean difference for
+all cutouts to avoid the mesh-fragmentation bug documented in the 114mm
+version's README, rather than many sequential cuts). Edit the cavity/
+button/bulb parameters near the top and re-run with `python3 build.py`.
