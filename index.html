@@ -36,7 +36,6 @@
 
     /* ── UTILITIES ────────────────────────────────── */
     .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-    .container--wide { max-width: 1180px; }
     .tag {
       display: inline-block;
       font-size: 0.7rem;
@@ -113,26 +112,41 @@
 
     .hero-inner {
       position: relative; z-index: 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 56px;
+      display: flex;
       align-items: center;
+      gap: 40px;
     }
     @media (max-width: 860px) {
-      .hero-inner { grid-template-columns: 1fr; text-align: center; }
-      .hero-visual { order: -1; }
+      .hero-inner { flex-direction: column; text-align: center; }
+      .hero-copy { padding-left: 0 !important; max-width: none !important; }
+      .hero-visual { order: -1; width: 100%; height: 320px; }
       .hero-form { justify-content: center; }
       .hero-badges { justify-content: center; }
     }
-    .hero-visual { display: flex; align-items: center; justify-content: center; }
-    .hero-device-photo { width: 100%; max-width: 480px; height: auto; display: block; }
+    .hero-copy { flex: 1 1 480px; max-width: 560px; padding-left: clamp(24px, 5vw, 96px); }
+    .hero-visual {
+      flex: 1 1 50%;
+      position: relative;
+      height: 620px;
+      overflow: hidden;
+    }
+    .hero-device-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 80% 25%;
+      display: block;
+    }
     .mascot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; max-width: 960px; margin-left: auto; margin-right: auto; }
     @media (max-width: 600px) { .mascot-grid { grid-template-columns: 1fr; gap: 20px; } }
     .mascot-grid-item { display: flex; flex-direction: column; align-items: center; }
     .mascot-grid-item img { width: 100%; max-width: 480px; height: auto; transition: transform 0.3s ease; }
     .mascot-grid-item img:hover { transform: scale(1.04); }
-    .hero-title { margin-bottom: 14px; font-size: clamp(1.6rem, 4vw, 2.6rem); }
-    .hero-title em { font-style: italic; color: var(--yellow); }
+    .hero-label { font-family: 'Fraunces', serif; font-size: clamp(1.05rem, 2.4vw, 1.3rem); font-weight: 600; color: var(--text-mid); margin-bottom: 10px; }
+    .hero-title { margin-bottom: 14px; font-size: clamp(2rem, 5vw, 3.2rem); }
+    .hero-title em { font-style: italic; color: var(--blue-light); }
     .hero-tagline {
       display: flex;
       align-items: center;
@@ -600,7 +614,6 @@
       .story-card { padding: 32px 24px; }
       .diff-grid { grid-template-columns: 1fr; }
       .nav-cta { font-size: 0.72rem; padding: 7px 13px; }
-      .hero-device-photo { width: clamp(200px, 65vw, 300px); }
     }
   </style>
 </head>
@@ -616,17 +629,17 @@
 <section id="hero">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
-  <div class="container container--wide">
-    <div class="hero-inner reveal">
+  <div class="hero-inner reveal">
       <div class="hero-copy">
-        <h1 class="hero-title">Early-alert child safety device.</h1>
-        <p class="hero-tagline">Always there. When it matters most.</p>
+        <p class="hero-label">Shield, early-alert child safety device</p>
+        <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
         <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
         <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
           <input type="email" placeholder="Your email address" required autocomplete="email" />
           <button type="submit" class="btn-primary">Join the Waitlist</button>
         </form>
         <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
+        <p class="hero-tagline">Safety at heart.</p>
         <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
         <div class="hero-badges">
           <div class="badge"><img src="mascot-dolphin.png" alt="" style="width:40px;height:40px;object-fit:contain;"> 135+ countries</div>
@@ -637,7 +650,6 @@
       <div class="hero-visual">
         <img src="shield-hand-hold.png" alt="A hand holding the Shield device, showing its size" class="hero-device-photo" id="hero-device-img" />
       </div>
-    </div>
   </div>
 </section>
 
@@ -729,9 +741,9 @@
       </div>
       <div class="checkin-text">
         <div class="tag tag--mint">Peace of Mind</div>
-        <h2>Check in when you want to. Not because you have to.</h2>
-        <p>Open the app and see exactly where they are within seconds. No refreshing, no guessing, just quiet reassurance whenever you need it.</p>
-        <p>Shield runs in the background the rest of the time, so checking in is always a choice, never a chore.</p>
+        <h2>Quietly watching, so everyone stays safe.</h2>
+        <p>Shield runs in the background of your family's life, watching so everyone stays safe, guided entirely by you.</p>
+        <p>Open the app and see exactly where they are within seconds. No refreshing, no guessing, just quiet reassurance whenever you want it.</p>
       </div>
     </div>
   </div>
