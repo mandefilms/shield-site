@@ -35,7 +35,8 @@
     }
 
     /* ── UTILITIES ────────────────────────────────── */
-    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    .container--wide { max-width: 1180px; }
     .tag {
       display: inline-block;
       font-size: 0.7rem;
@@ -84,9 +85,6 @@
     .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-decoration: none; color: var(--white); }
     .nav-logo-icon { width: 44px; height: 44px; overflow: hidden; border-radius: 8px; flex-shrink: 0; display: block; }
     .nav-logo-icon img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transform: scale(1.25); display: block; }
-    .nav-name-wrap { display: flex; align-items: baseline; gap: 5px; }
-    .nav-child-name { display: inline-block; min-width: 60px; opacity: 0; transition: opacity 0.5s ease; font-style: italic; color: var(--yellow); font-size: 1.2rem; }
-    .nav-child-name.visible { opacity: 1; }
     .nav-cta {
       background: var(--coral);
       color: var(--white);
@@ -107,33 +105,27 @@
       display: flex; align-items: center;
       padding: 120px 0 80px;
       overflow: hidden;
+      background: var(--off-white);
+      color: var(--text-dark);
     }
     #hero .blob-1 { width: 500px; height: 500px; background: var(--coral); top: -120px; right: -160px; }
     #hero .blob-2 { width: 400px; height: 400px; background: var(--mint);  bottom: -80px; left: -120px; }
 
-    .hero-inner { position: relative; z-index: 2; }
-    .hero-logo-row { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; margin-bottom: 32px; }
-    .hero-device-photo { width: clamp(220px, 45vw, 430px); height: auto; flex-shrink: 0; }
-    .hero-rotating-name {
-      display: block;
-      width: 100%;
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2.8rem, 8vw, 5.4rem);
-      font-weight: 700;
-      line-height: 1.05;
+    .hero-inner {
+      position: relative; z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
     }
-    .hero-name-row { display: flex; align-items: center; justify-content: center; gap: 14px; }
-    .hero-mascot-inline { width: clamp(92px, 16.5vw, 155px); height: auto; flex-shrink: 0; transition: opacity 0.45s ease; }
-    .hero-rotating-name .hero-child {
-      font-size: clamp(2.3rem, 6.5vw, 4.3rem);
-      font-style: italic;
-      color: var(--yellow);
-      display: inline-block;
-      opacity: 0;
-      transition: opacity 0.5s ease;
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-visual { order: -1; }
+      .hero-form { justify-content: center; }
+      .hero-badges { justify-content: center; }
     }
-    .hero-rotating-name .hero-child.visible { opacity: 1; }
-    .hero-rotating-name .hero-shield-word { color: var(--white); }
+    .hero-visual { display: flex; align-items: center; justify-content: center; }
+    .hero-device-photo { width: 100%; max-width: 480px; height: auto; display: block; }
     .mascot-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; max-width: 960px; margin-left: auto; margin-right: auto; }
     @media (max-width: 600px) { .mascot-grid { grid-template-columns: 1fr; gap: 20px; } }
     .mascot-grid-item { display: flex; flex-direction: column; align-items: center; }
@@ -166,16 +158,16 @@
       flex: 1 1 220px;
       padding: 14px 20px;
       border-radius: 100px;
-      border: 2px solid rgba(255,255,255,0.25);
-      background: rgba(255,255,255,0.1);
-      color: var(--white);
+      border: 2px solid rgba(30,58,95,0.18);
+      background: rgba(30,58,95,0.04);
+      color: var(--text-dark);
       font-family: 'Outfit', sans-serif;
       font-size: 1rem;
       outline: none;
       transition: border-color 0.2s;
     }
-    .hero-form input::placeholder { color: rgba(255,255,255,0.55); }
-    .hero-form input:focus { border-color: rgba(255,255,255,0.6); }
+    .hero-form input::placeholder { color: rgba(26,43,64,0.45); }
+    .hero-form input:focus { border-color: rgba(30,58,95,0.45); }
     .btn-primary {
       background: var(--coral);
       color: var(--white);
@@ -197,14 +189,28 @@
     .hero-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
     .badge {
       display: flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(30,58,95,0.05);
+      border: 1px solid rgba(30,58,95,0.12);
       border-radius: 100px;
       padding: 7px 16px;
       font-size: 0.82rem;
       font-weight: 500;
     }
     .badge .icon { font-size: 1rem; }
+
+    /* ── PERSONALIZE ──────────────────────────────── */
+    #personalize { position: relative; overflow: hidden; }
+    .personalize-demo { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
+    .personalize-mascot { width: clamp(80px, 14vw, 120px); height: auto; transition: opacity 0.45s ease; }
+    .personalize-name { font-family: 'Fraunces', serif; font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; }
+    .personalize-name .child {
+      font-style: italic;
+      color: var(--yellow);
+      display: inline-block;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .personalize-name .child.visible { opacity: 1; }
 
     /* ── SECTION BASE ─────────────────────────────── */
     section { padding: 90px 0; }
@@ -306,12 +312,21 @@
       align-items: center;
     }
     @media (max-width: 640px) { .device-inner { grid-template-columns: 1fr; } }
-    .device-visual { display: flex; align-items: center; justify-content: center; }
-    .device-photo { width: 100%; max-width: 380px; height: auto; display: block; border-radius: var(--radius); }
-    .device-text h2 { color: var(--text-dark); margin-bottom: 18px; }
-    .device-text p  { color: var(--text-mid); margin-bottom: 14px; font-size: 0.97rem; }
-    .device-text p:last-child { margin-bottom: 0; }
-    .device-text .tag { margin-bottom: 16px; }
+
+    /* ── CHECK-IN ─────────────────────────────────── */
+    .checkin-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 640px) { .checkin-inner { grid-template-columns: 1fr; } }
+    .device-visual, .checkin-visual { display: flex; align-items: center; justify-content: center; }
+    .device-photo, .checkin-photo { width: 100%; max-width: 380px; height: auto; display: block; border-radius: var(--radius); }
+    .device-text h2, .checkin-text h2 { color: var(--text-dark); margin-bottom: 18px; }
+    .device-text p, .checkin-text p  { color: var(--text-mid); margin-bottom: 14px; font-size: 0.97rem; }
+    .device-text p:last-child, .checkin-text p:last-child { margin-bottom: 0; }
+    .device-text .tag, .checkin-text .tag { margin-bottom: 16px; }
 
     /* ── SOS ──────────────────────────────────────── */
     #sos { position: relative; overflow: hidden; }
@@ -487,6 +502,8 @@
       padding: 48px 44px;
       box-shadow: var(--shadow);
       position: relative;
+      max-width: 760px;
+      margin: 0 auto;
     }
     .story-card blockquote {
       font-family: 'Fraunces', serif;
@@ -591,7 +608,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo"><span class="nav-logo-icon"><img src="shield-prototype.png" alt="Shield" /></span><span class="nav-name-wrap"><span class="nav-child-name" id="nav-child-name">Mya's</span> Shield</span></a>
+  <a href="#hero" class="nav-logo"><span class="nav-logo-icon"><img src="shield-prototype.png" alt="Shield" /></span><span>Shield</span></a>
   <a href="#cta" class="nav-cta">Get Early Access</a>
 </nav>
 
@@ -599,38 +616,46 @@
 <section id="hero">
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
-  <div class="container">
+  <div class="container container--wide">
     <div class="hero-inner reveal">
-      <div class="hero-logo-row">
-        <img src="shield-prototype.png" alt="The Shield device" class="hero-device-photo" />
-        <span class="hero-rotating-name">
-          <span class="hero-name-row">
-            <img src="Main logo.png" alt="" class="hero-mascot-inline" id="hero-mascot-img" />
-            <span class="hero-child visible" id="hero-child-name">Mya's</span>
-          </span>
-          <span class="hero-shield-word">Shield</span>
-        </span>
+      <div class="hero-copy">
+        <h1 class="hero-title">Early-alert child safety device.</h1>
+        <p class="hero-tagline">Always there. When it matters most.</p>
+        <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
+        <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
+          <input type="email" placeholder="Your email address" required autocomplete="email" />
+          <button type="submit" class="btn-primary">Join the Waitlist</button>
+        </form>
+        <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
+        <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
+        <div class="hero-badges">
+          <div class="badge"><img src="mascot-dolphin.png" alt="" style="width:40px;height:40px;object-fit:contain;"> 135+ countries</div>
+          <div class="badge"><img src="mascot-frog.png" alt="" style="width:40px;height:40px;object-fit:contain;"> No subscription</div>
+          <div class="badge"><img src="Main logo.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Hidden by design</div>
+        </div>
       </div>
-      <div class="tag tag--blue">Early-alert child safety device</div>
-      <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
-      <p class="hero-tagline">Safety at heart.</p>
-      <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
-      <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
-        <input type="email" placeholder="Your email address" required autocomplete="email" />
-        <button type="submit" class="btn-primary">Join the Waitlist</button>
-      </form>
-      <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
-      <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
-      <div class="hero-badges">
-        <div class="badge"><img src="mascot-dolphin.png" alt="" style="width:40px;height:40px;object-fit:contain;"> 135+ countries</div>
-        <div class="badge"><img src="mascot-frog.png" alt="" style="width:40px;height:40px;object-fit:contain;"> No subscription</div>
-        <div class="badge"><img src="Main logo.png" alt="" style="width:40px;height:40px;object-fit:contain;"> Hidden by design</div>
+      <div class="hero-visual">
+        <img src="shield-hand-hold.png" alt="A hand holding the Shield device, showing its size" class="hero-device-photo" id="hero-device-img" />
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROBLEM -->
+<!-- PERSONALIZE -->
+<section id="personalize" class="section-mid">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;">
+      <div class="tag tag--yellow">Made Theirs</div>
+      <h2>Every Shield is named after your child.</h2>
+      <p style="margin:14px auto 0; max-width:560px;">From setup, Shield becomes theirs: not just another device you're asking them to wear.</p>
+    </div>
+    <div class="personalize-demo reveal">
+      <img src="Main logo.png" alt="" class="personalize-mascot" id="personalize-mascot-img" />
+      <span class="personalize-name"><span class="child visible" id="personalize-child-name">Mya's</span> Shield</span>
+    </div>
+  </div>
+</section>
+
 <!-- HOW SHIELD IS DIFFERENT -->
 
 <!-- THE DEVICE -->
@@ -638,7 +663,7 @@
   <div class="container">
     <div class="device-inner reveal">
       <div class="device-visual">
-        <img src="shield-prototype.png" alt="The actual printed Shield prototype enclosure" class="device-photo" />
+        <img src="shield-parent-child.jpg" alt="A parent attaching the Shield device to their child's shirt collar" class="device-photo" />
       </div>
       <div class="device-text">
         <div class="tag tag--mint">The Device</div>
@@ -690,6 +715,23 @@
           <h3>Get alerted only when it matters</h3>
           <p>If something's off, whether your child left a zone, didn't arrive at school, or pressed the SOS button, you'll know instantly. With location, time and device battery life.</p>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECK-IN -->
+<section id="checkin" class="section-light">
+  <div class="container">
+    <div class="checkin-inner reveal">
+      <div class="checkin-visual">
+        <img src="shield-checkin.png" alt="A parent checking their child's location on their phone at home" class="checkin-photo" />
+      </div>
+      <div class="checkin-text">
+        <div class="tag tag--mint">Peace of Mind</div>
+        <h2>Check in when you want to. Not because you have to.</h2>
+        <p>Open the app and see exactly where they are within seconds. No refreshing, no guessing, just quiet reassurance whenever you need it.</p>
+        <p>Shield runs in the background the rest of the time, so checking in is always a choice, never a chore.</p>
       </div>
     </div>
   </div>
@@ -910,35 +952,26 @@
   });
 
   // Simple waitlist form handler
-  // Rotating child name in nav + hero, with matching mascot swap
+  // Rotating child name + matching mascot swap, shown in the "Made Theirs" section
   const childNames = ["Mya's","Evan's","Mariessa's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Maya's","Allyssa's","Gurinder's","Sue's","Bernie's","Stella's","Krystal's","Rob's","Stan's"];
   const mascotImgs = ["Main logo.png","mascot-butterfly.png","mascot-cat.png","mascot-dog.png","mascot-flamingo.png","mascot-zebra.png","mascot-dolphin.png","mascot-frog.png","mascot-monkey.png"];
   // Preload all mascot images so swaps are instant
   mascotImgs.forEach(src => { const i = new Image(); i.src = src; });
   let nameIndex = 0;
-  const navNameEl   = document.getElementById('nav-child-name');
-  const heroNameEl  = document.getElementById('hero-child-name');
-  const heroMascImg = document.getElementById('hero-mascot-img');
-  if (heroMascImg) heroMascImg.style.transition = 'opacity 0.45s ease';
+  const personalizeNameEl = document.getElementById('personalize-child-name');
+  const personalizeMascImg = document.getElementById('personalize-mascot-img');
   function rotateName() {
-    navNameEl.classList.remove('visible');
-    heroNameEl.classList.remove('visible');
-    if (heroMascImg) heroMascImg.style.opacity = '0';
+    personalizeNameEl.classList.remove('visible');
+    personalizeMascImg.style.opacity = '0';
     setTimeout(() => {
       nameIndex = (nameIndex + 1) % childNames.length;
-      const nextSrc = mascotImgs[nameIndex % mascotImgs.length];
-      navNameEl.textContent  = childNames[nameIndex];
-      heroNameEl.textContent = childNames[nameIndex];
-      if (heroMascImg) {
-        heroMascImg.src = nextSrc;
-        heroMascImg.onload = () => { heroMascImg.style.opacity = '1'; };
-      }
-      navNameEl.classList.add('visible');
-      heroNameEl.classList.add('visible');
+      personalizeNameEl.textContent = childNames[nameIndex];
+      personalizeMascImg.src = mascotImgs[nameIndex % mascotImgs.length];
+      personalizeMascImg.onload = () => { personalizeMascImg.style.opacity = '1'; };
+      personalizeNameEl.classList.add('visible');
     }, 450);
   }
-  navNameEl.classList.add('visible');
-  heroNameEl.classList.add('visible');
+  personalizeNameEl.classList.add('visible');
   setInterval(rotateName, 3000);
 
   function handleSignup(e, successId) {
