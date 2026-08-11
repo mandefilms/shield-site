@@ -113,6 +113,8 @@
     .hero-inner {
       position: relative; z-index: 2;
       width: 100%;
+      max-width: 1360px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       gap: 40px;
@@ -513,10 +515,13 @@
       margin: 0 auto 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.18);
     }
     .spider-node-label { font-size: 0.8rem; font-weight: 600; color: var(--white); line-height: 1.25; }
-    .accessories-row.mobile-only { display: none; }
     @media (max-width: 640px) {
-      .spider-diagram { display: none; }
-      .accessories-row.mobile-only { display: flex; justify-content: center; }
+      .spider-diagram { max-width: 340px; margin-top: 40px; }
+      .spider-hub { width: 76px; height: 76px; }
+      .spider-node { width: 76px; }
+      .spider-node-icon { width: 38px; height: 38px; }
+      .spider-node-icon svg { width: 16px; height: 16px; }
+      .spider-node-label { font-size: 0.68rem; }
     }
 
     /* ── STORY ────────────────────────────────────── */
@@ -911,15 +916,6 @@
         <div class="spider-node-icon" style="border-color:var(--mint);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c0-2 1-3 3-4l5-2 3-3c1-1 2-1 3 0l3 3v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
         <div class="spider-node-label">Shoe insert</div>
       </div>
-    </div>
-
-    <div class="accessories-row mobile-only">
-      <div class="accessory-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 14a8 8 0 0 1 16 0"/><path d="M4 14v3M20 14v3"/></svg> Hairband</div>
-      <div class="accessory-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4c0 5 3 9 7 9s7-4 7-9"/><circle cx="12" cy="16" r="3"/></svg> Necklace</div>
-      <div class="accessory-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="14" height="12" rx="2"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/><path d="M9 13h6"/></svg> Backpack charm</div>
-      <div class="accessory-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="4"/><path d="M11 11l9 9M16 16l2-2M18 18l2-2"/></svg> Keychain clip</div>
-      <div class="accessory-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12V6a4 4 0 0 1 8 0v10a2 2 0 0 1-4 0V8"/></svg> Coat clip</div>
-      <div class="accessory-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c0-2 1-3 3-4l5-2 3-3c1-1 2-1 3 0l3 3v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Shoe insert</div>
     </div>
   </div>
 </section>
