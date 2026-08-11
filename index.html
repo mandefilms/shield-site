@@ -112,6 +112,7 @@
 
     .hero-inner {
       position: relative; z-index: 2;
+      width: 100%;
       display: flex;
       align-items: center;
       gap: 40px;
@@ -335,12 +336,24 @@
       align-items: center;
     }
     @media (max-width: 640px) { .checkin-inner { grid-template-columns: 1fr; } }
-    .device-visual, .checkin-visual { display: flex; align-items: center; justify-content: center; }
-    .device-photo, .checkin-photo { width: 100%; max-width: 380px; height: auto; display: block; border-radius: var(--radius); }
-    .device-text h2, .checkin-text h2 { color: var(--text-dark); margin-bottom: 18px; }
-    .device-text p, .checkin-text p  { color: var(--text-mid); margin-bottom: 14px; font-size: 0.97rem; }
-    .device-text p:last-child, .checkin-text p:last-child { margin-bottom: 0; }
-    .device-text .tag, .checkin-text .tag { margin-bottom: 16px; }
+
+    /* ── SECURITY ─────────────────────────────────── */
+    .security-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 640px) { .security-inner { grid-template-columns: 1fr; } }
+    .device-visual, .checkin-visual, .security-visual { display: flex; align-items: center; justify-content: center; }
+    .device-photo, .checkin-photo, .security-photo { width: 100%; max-width: 380px; height: auto; display: block; border-radius: var(--radius); }
+    .device-text h2, .checkin-text h2, .security-text h2 { margin-bottom: 18px; }
+    .device-text p, .checkin-text p, .security-text p  { margin-bottom: 14px; font-size: 0.97rem; }
+    .device-text p:last-child, .checkin-text p:last-child, .security-text p:last-child { margin-bottom: 0; }
+    .device-text .tag, .checkin-text .tag, .security-text .tag { margin-bottom: 16px; }
+    .device-text h2, .device-text p, .checkin-text h2, .checkin-text p { color: var(--text-dark); }
+    .device-text p, .checkin-text p { color: var(--text-mid); }
+    .security-line { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; color: var(--yellow); font-size: 1.05rem; margin: 20px 0 4px; }
 
     /* ── SOS ──────────────────────────────────────── */
     #sos { position: relative; overflow: hidden; }
@@ -377,36 +390,6 @@
     .sos-points { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
     .sos-points li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; opacity: 0.82; }
     .sos-points li::before { content: '✓'; color: var(--mint); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
-
-    /* ── MASCOT ───────────────────────────────────── */
-    #mascot { position: relative; overflow: hidden; }
-    #mascot .blob-6 { width: 300px; height: 300px; background: var(--yellow); bottom: -60px; right: -60px; }
-
-    .mascot-stages {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 48px;
-      flex-wrap: wrap;
-    }
-    .mascot-stage {
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-      text-align: center;
-    }
-    .mascot-owl {
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      line-height: 1;
-    }
-    .mascot-owl.sm { width: 110px; height: 110px; background: rgba(255,217,61,0.15);  border: 2px solid rgba(255,217,61,0.3); }
-    .mascot-owl.md { width: 160px; height: 160px; background: rgba(107,203,119,0.15); border: 2px solid rgba(107,203,119,0.3); }
-    .mascot-owl.lg { width: 220px; height: 220px; background: rgba(255,107,107,0.15); border: 2px solid rgba(255,107,107,0.3); }
-    .mascot-owl img { width: 90%; height: 90%; object-fit: contain; }
-    .mascot-arrow { color: rgba(255,255,255,0.25); font-size: 1.5rem; align-self: center; margin-top: -24px; }
-    @media (max-width: 480px) { .mascot-arrow { display: none; } .mascot-stages { gap: 24px; } }
-    .mascot-age { font-weight: 700; font-size: 0.85rem; }
-    .mascot-label { font-size: 0.78rem; opacity: 0.6; }
-    .mascot-blurb { text-align: center; max-width: 540px; margin: 36px auto 0; font-size: 0.95rem; opacity: 0.75; line-height: 1.7; }
 
     /* ── FIGURINE ─────────────────────────────────── */
     .figurine-inner {
@@ -658,8 +641,8 @@
   <div class="container">
     <div class="section-header reveal" style="text-align:center;">
       <div class="tag tag--yellow">Made Theirs</div>
-      <h2>Every Shield is named after your child.</h2>
-      <p style="margin:14px auto 0; max-width:560px;">From setup, Shield becomes theirs: not just another device you're asking them to wear.</p>
+      <h2>Every child is unique. Their Shield is unique to them.</h2>
+      <p style="margin:14px auto 0; max-width:560px;">Named after them, customised by them: their Shield is unique to them.</p>
     </div>
     <div class="personalize-demo reveal">
       <img src="Main logo.png" alt="" class="personalize-mascot" id="personalize-mascot-img" />
@@ -683,6 +666,24 @@
         <p>Shield is designed to attach invisibly to clothing, the same way a security tag attaches to a garment.</p>
         <p>A built-in motion sensor detects on-person movement, so we can tell it's actually being worn, not just left behind in a bag.</p>
         <p>Three layers of encryption protect every signal Shield sends, and there's no Bluetooth beacon broadcasting its presence, so it stays undetectable to anyone scanning nearby.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section id="security" class="section-navy">
+  <div class="container">
+    <div class="security-inner reveal">
+      <div class="security-visual">
+        <img src="shield-prototype.png" alt="The Shield device" class="security-photo" />
+      </div>
+      <div class="security-text">
+        <div class="tag tag--blue">Private &amp; Secure</div>
+        <h2>Encrypted. Unbroadcast. Invisible.</h2>
+        <p>Every signal Shield sends is protected by three layers of encryption. There's no Bluetooth beacon announcing its presence, so it stays undetectable to anyone scanning nearby.</p>
+        <p class="security-line">We don't use mesh networks. We are invisible.</p>
+        <p class="security-line" style="color: var(--white); opacity: 0.85;">Hidden by design. Always watching.</p>
       </div>
     </div>
   </div>
@@ -741,8 +742,8 @@
       </div>
       <div class="checkin-text">
         <div class="tag tag--mint">Peace of Mind</div>
-        <h2>Quietly watching, so everyone stays safe.</h2>
-        <p>Shield runs in the background of your family's life, watching so everyone stays safe, guided entirely by you.</p>
+        <h2>Early alert detection.</h2>
+        <p>Shield runs in the background of your life, protecting your family, guided by you.</p>
         <p>Open the app and see exactly where they are within seconds. No refreshing, no guessing, just quiet reassurance whenever you want it.</p>
       </div>
     </div>
@@ -774,39 +775,6 @@
   </div>
 </section>
 
-<!-- MASCOT / GROWING WITH YOUR CHILD -->
-<section id="mascot" class="section-mid">
-  <div class="blob blob-6"></div>
-  <div class="container">
-    <div class="section-header reveal" style="text-align:center;">
-      <div class="tag tag--yellow">Growing With Your Child</div>
-      <h2>A companion that grows up with them.</h2>
-      <p style="margin:14px auto 0; max-width:580px;">Every child using Shield designs their own companion in the app. As your child grows, their companion evolves too: getting more detailed, more expressive, more theirs. It gives kids a reason to keep the device charged and care about it.</p>
-    </div>
-    <div class="mascot-stages reveal">
-      <div class="mascot-stage">
-        <div class="mascot-owl sm"><img src="Main logo.png" alt="Young shield companion" /></div>
-        <div class="mascot-age">Age 0</div>
-        <div class="mascot-label">Just starting out</div>
-      </div>
-      <div class="mascot-arrow">→</div>
-      <div class="mascot-stage">
-        <div class="mascot-owl md"><img src="Main logo.png" alt="Growing shield companion" /></div>
-        <div class="mascot-age">Age 7</div>
-        <div class="mascot-label">Growing up</div>
-      </div>
-      <div class="mascot-arrow">→</div>
-      <div class="mascot-stage">
-        <div class="mascot-owl lg"><img src="Main logo.png" alt="Grown shield companion" /></div>
-        <div class="mascot-age">Age 15</div>
-        <div class="mascot-label">More independence</div>
-      </div>
-    </div>
-    <p class="mascot-blurb reveal">Every child creates their own shield companion. It's theirs, not just another device their parents make them carry.</p>
-    <p class="mascot-blurb reveal">For younger kids, that means a companion that makes charging feel like a game. As they get older, the story shifts: less about the mascot, more about earning a bit more independence, with parents still getting the peace of mind they need.</p>
-  </div>
-</section>
-
 <!-- FIGURINE -->
 <section id="figurine" class="section-light">
   <div class="container">
@@ -826,6 +794,7 @@
         <p>Each device comes with an optional add-on figure, a physical version of your child's companion. It connects to the device via Bluetooth and lives on a shelf, a keyring, or wherever your child loves most.</p>
         <p>Press the heart on its chest and it tells you the battery level. That's it. Simple enough for a four-year-old, fun enough that they actually do it.</p>
         <p>It turns "keep your Shield charged" from a parent's nagging into something a child wants to do themselves.</p>
+        <p>Keep it charged more days in a row, and your child earns entries toward reduced-price admission at kids' activity spots. What starts as a battery check turns into a streak worth keeping.</p>
       </div>
     </div>
   </div>
