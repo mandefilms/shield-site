@@ -60,8 +60,14 @@ def ellipsoid(rx,ry,rz,center,sub=3):
 HEAD_CAVITY_HALF   = np.array([10.5, 11.4, 7])   # scaled mm (X, Y, Z)
 HEAD_CAVITY_CENTER = np.array([0, 145, 52]) * SCALE
 
-TORSO_CAVITY_R      = np.array([20, 16, 12]) * SCALE
-TORSO_CAVITY_CENTER = np.array([0, 60, 36]) * SCALE
+# Whole torso hollowed out (not just a small pocket behind the belly) for
+# real room behind the button and general wiring space -- legs excluded
+# (too thin/pose-risky to hollow). Spans from just above the legs (raw
+# Y~34) up to the neck transition (raw Y~90), tapering at both ends since
+# it's an ellipsoid (safer than a box near the narrowing leg/neck zones,
+# same lesson learned from the head cavity).
+TORSO_CAVITY_R      = np.array([35, 28, 26]) * SCALE
+TORSO_CAVITY_CENTER = np.array([0, 62, 52]) * SCALE
 
 NECK_CHANNEL_R = 4.5 * SCALE
 NECK_TOP    = np.array([0, 118, 42]) * SCALE
@@ -139,7 +145,12 @@ def dowel_cyl(pt, axis, r, h):
     T = np.eye(4); T[:3,:3]=R[:3,:3]; T[:3,3]=pt
     c.apply_transform(T); return c
 
-DOWEL_Y = [40*SCALE, 130*SCALE]  # roughly torso and head-base height
+# repositioned out of the now-hollowed torso (Y 34-90 raw): lower dowel
+# sits in the solid leg/hip area, upper dowel in the solid gap between the
+# torso cavity's top (90) and the head cavity's bottom (~134), clear of
+# the thin neck channel too (checked: different Z-centre by ~3mm, bigger
+# than the channel's ~1.1mm radius).
+DOWEL_Y = [20*SCALE, 110*SCALE]
 pins = trimesh.util.concatenate([dowel_cyl((0,dy,SPLIT_Z+0.6), [0,0,1], 1.1, 2.6) for dy in DOWEL_Y])
 back = back.union(pins, engine="manifold")
 holes = trimesh.util.concatenate([dowel_cyl((0,dy,SPLIT_Z-0.4), [0,0,1], 1.25, 3.6) for dy in DOWEL_Y])
@@ -152,8 +163,12 @@ back.export("back_shell_monkey.stl")
 print("exported shells", time.time()-t0)
 
 # ---------------------------------------------------------------------------
-# Decorative heart cap -- same as the otter's final version, glued on top of
-# the real button afterward, no plunger.
+# Decorative heart cap -- rounded-out heart profile (Chaikin corner-cutting
+# smooths the pointed classic-heart curve while keeping the two-lobe heart
+# silhouette), and now built HOLLOW like a real cap/cup instead of a solid
+# block: a thin shell with a recessed pocket on the underside sized to fit
+# down over the real button's own cap, so it just sits over it rather than
+# needing to be glued as a solid lump.
 # ---------------------------------------------------------------------------
 import math
 def heart_pts_2d(scale):
@@ -164,10 +179,40 @@ def heart_pts_2d(scale):
         y = 13*math.cos(t)-5*math.cos(2*t)-2*math.cos(3*t)-math.cos(4*t)
         pts.append((x*scale,y*scale))
     return pts
+
+def chaikin_smooth(pts, iterations=3):
+    pts = list(pts)
+    for _ in range(iterations):
+        new_pts = []
+        n = len(pts)
+        for i in range(n):
+            p0 = np.array(pts[i]); p1 = np.array(pts[(i+1) % n])
+            new_pts.append(tuple(0.75*p0 + 0.25*p1))
+            new_pts.append(tuple(0.25*p0 + 0.75*p1))
+        pts = new_pts
+    return pts
+
 heart_scale = 0.72
-path2d = trimesh.load_path(np.array(heart_pts_2d(heart_scale) + [heart_pts_2d(heart_scale)[0]]))
-heart_cap = path2d.extrude(2.2)
-if isinstance(heart_cap, list):
-    heart_cap = trimesh.util.concatenate(heart_cap)
+outer_pts = chaikin_smooth(heart_pts_2d(heart_scale), iterations=3)
+outer_path = trimesh.load_path(np.array(outer_pts + [outer_pts[0]]))
+CAP_HEIGHT = 2.4
+shell = outer_path.extrude(CAP_HEIGHT)
+if isinstance(shell, list):
+    shell = trimesh.util.concatenate(shell)
+
+# pocket: a plain ellipse (not a small heart -- that curve self-intersects
+# and produces a broken mesh at this scale, confirmed via broken_faces()
+# check) recessed up from the open (button-facing) bottom face. It's a
+# hidden internal cavity, invisible from outside, so it doesn't need to be
+# heart-shaped -- just big enough to clear the button's own cap with a
+# comfortable ~0.9mm roof and wall margin all round.
+POCKET_DEPTH = 1.5
+pocket = trimesh.creation.cylinder(radius=1.0, height=POCKET_DEPTH, sections=48)
+pocket.apply_transform(np.diag([7.5, 6.5, 1, 1]))
+pocket.apply_translation([0, 0, POCKET_DEPTH/2])
+# extrude() builds Z=0..depth; align pocket's open face with the shell's
+# bottom (Z=0) so the recess opens downward onto the button
+heart_cap = shell.difference(pocket, engine="manifold")
 heart_cap.export("heart_cap_monkey.stl")
+print("heart cap: watertight=", heart_cap.is_watertight, "extents=", heart_cap.extents)
 print("ALL DONE", time.time()-t0)

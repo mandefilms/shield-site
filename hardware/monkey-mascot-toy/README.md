@@ -31,8 +31,11 @@ rounder/roomier than the torso at this scale.
   **The XIAO mounts vertically** (long edge running up toward the crown)
   rather than flat, because there's more spare room in that direction than
   side-to-side at head-centre height.
-- **Torso cavity**: smaller pocket behind the belly, for the CR2032 (or
-  extra wiring) and to give the button hole somewhere to open into.
+- **Torso cavity**: the *whole* torso is now hollow (not just a small
+  pocket behind the belly) — spans from just above the legs up to the neck,
+  tapering at both ends since it's a single big ellipsoid. Legs are left
+  solid (too thin/pose-risky to hollow). This gives real room behind the
+  button, plus space for the CR2032 and wiring.
 - **Neck channel**: a thin (~2.3mm dia) tunnel connecting the head cavity
   down to the torso cavity, for wiring between the XIAO and the button/
   LEDs. This needed real tuning — the neck is the tightest cross-section
@@ -48,9 +51,14 @@ rounder/roomier than the torso at this scale.
   scale with the model — lower belly, kept a healthy distance from the
   button (learned from the otter build, where a tight button/LED gap was
   a real fragility risk).
-- **Heart cap**: same flat decorative heart as the otter's final version
-  (23×20.8×2.2mm) — glue it onto the button's cap after mounting, not part
-  of the printed shell.
+- **Heart cap**: redesigned — rounder heart profile (Chaikin corner-
+  smoothing softens the classic pointed-heart curve while keeping the
+  two-lobe heart silhouette), and now **hollow like a real cap** rather
+  than a solid block: a thin shell (~0.9mm roof) with a recessed oval
+  pocket (15×13mm) on the underside sized to fit down over the real
+  button's own cap. It just sits over the button rather than needing to be
+  glued as a solid lump. Still a separate piece, not part of the printed
+  shell — press it on after the button is mounted.
 - **No eye/nose/mouth colour patches** — the sculpt already has the face
   as printed-in geometry (not a separate colour region), so there's
   nothing extra to add there; this is a 2-colour print like the small
@@ -78,7 +86,10 @@ sides, roughly where the head cavity's bottom corners sit) is a real
 fragility risk — more so than anything in the otter builds. Worth a close
 look in the slicer, and if it looks concerning, tell me and I'll shrink the
 head cavity further (trading some of the XIAO's fit margin for wall
-thickness) rather than leave it as-is.
+thickness) rather than leave it as-is. Enlarging the torso cavity didn't
+make this worse — same known spot, not a new one — though it did nudge a
+couple of points near the belly's front face down to a similarly thin
+(~0.1-0.6mm) range, worth the same slicer check.
 
 ## Parts (3 STL, 2 colours)
 
@@ -86,7 +97,7 @@ thickness) rather than leave it as-is.
 |---|---|---|
 | `stl/front_shell.stl` | body | front half — face, belly, button hole, 4 LED holes, hollow head+torso |
 | `stl/back_shell.stl` | body | back half, mates to front via 2 alignment dowels |
-| `stl/heart_cap.stl` | pink | separate decorative heart — glue onto the button's cap after mounting |
+| `stl/heart_cap.stl` | pink | separate decorative heart cap — presses over the button's own cap, glue optional |
 
 ## Assembly
 
@@ -94,12 +105,17 @@ thickness) rather than leave it as-is.
    through-hole) from outside before closing the shell.
 2. Fit the XIAO nRF52840 into the head cavity (vertical orientation — long
    edge up/down) and the CR2032 behind/below it. Route wires down through
-   the neck channel to the button and LED holes.
+   the neck channel, through the newly-hollowed torso, to the button and
+   LED holes.
 3. Route bulb leads through the 4 belly holes and glue/friction-fit the
    bulbs from outside.
-4. Close front/back on the 2 alignment dowels; glue or tape the seam (no
-   snap clip, same as the otter builds).
-5. Glue `heart_cap.stl` onto the button's cap from outside.
+4. Close front/back on the 2 alignment dowels (repositioned to the solid
+   leg/hip area and the solid gap above the torso cavity, now that the
+   torso itself is hollow); glue or tape the seam (no snap clip, same as
+   the otter builds).
+5. Press `heart_cap.stl` down over the button's own cap — its underside
+   pocket (15×13mm oval) is sized to clear it; glue if you want it
+   permanent.
 
 ## Regenerating
 
