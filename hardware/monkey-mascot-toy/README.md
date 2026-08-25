@@ -110,10 +110,17 @@ couple of points near the belly's front face down to a similarly thin
 
 ## Parts (3 STL, 2 colours)
 
+**Note on file names**: `front_shell.stl` is the plain half (no face, no
+holes) and `back_shell.stl` is the half with the face/button/LEDs — this
+is swapped from what the names would suggest, done deliberately per
+feedback since it matched what showed up as "back" in the viewer used to
+check the parts. If that ever needs flipping back, it's a straight rename,
+no geometry to touch.
+
 | File | Colour | Contents |
 |---|---|---|
-| `stl/front_shell.stl` | body | front half — face, belly, button hole, 4 LED holes, hollow head+torso |
-| `stl/back_shell.stl` | body | back half, mates to front via 2 alignment dowels |
+| `stl/front_shell.stl` | body | plain half, no holes — mates via 2 alignment dowels |
+| `stl/back_shell.stl` | body | face, belly, button hole, 4 LED holes, hollow head+torso |
 | `stl/heart_cap.stl` | pink | separate decorative heart cap — presses over the button's own cap, glue optional |
 
 ## Assembly
