@@ -390,18 +390,20 @@
 
     .sos-visual {
       display: flex; align-items: center; justify-content: center;
+      padding: 48px;
     }
     .sos-button-demo {
       width: 140px; height: 140px;
       border-radius: 50%;
-      background: var(--coral);
+      background: transparent;
+      border: 3px solid var(--coral);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       box-shadow: 0 0 0 16px rgba(255,107,107,0.15), 0 0 0 32px rgba(255,107,107,0.07);
       animation: pulse 2.8s ease-in-out infinite;
       cursor: default;
     }
-    .sos-button-demo .sos-label { font-weight: 800; font-size: 1.4rem; letter-spacing: 0.1em; }
-    .sos-button-demo .sos-sub   { font-size: 0.7rem; opacity: 0.8; margin-top: 2px; }
+    .sos-button-demo .sos-label { font-weight: 800; font-size: 1.4rem; letter-spacing: 0.1em; color: var(--coral); }
+    .sos-button-demo .sos-sub   { font-size: 0.7rem; opacity: 0.8; margin-top: 2px; color: var(--coral); }
     @keyframes pulse {
       0%, 100% { box-shadow: 0 0 0 16px rgba(255,107,107,0.15), 0 0 0 32px rgba(255,107,107,0.07); }
       50%       { box-shadow: 0 0 0 22px rgba(255,107,107,0.20), 0 0 0 44px rgba(255,107,107,0.09); }
