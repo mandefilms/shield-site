@@ -45,8 +45,10 @@ rounder/roomier than the torso at this scale.
   the neck. Fixed by keeping the head cavity's box entirely within the
   head's genuinely wide zone and letting the channel do the narrow
   crossing on its own.
-- **Button**: plain 10.80mm through-hole (your confirmed real size, same
-  hardware as the otter), upper belly, no counterbore.
+- **Button**: plain through-hole, **14.04mm diameter** (updated from
+  10.80mm per your caliper measurement), upper belly, no counterbore. A
+  dedicated pocket goes behind the hole for the button's own body/switch —
+  see "18mm clearance" below for the real number this landed on.
 - **LED holes**: 4× 3.2mm dia, 4.5mm pitch — real hardware size, doesn't
   scale with the model — lower belly, kept a healthy distance from the
   button (learned from the otter build, where a tight button/LED gap was
@@ -54,11 +56,27 @@ rounder/roomier than the torso at this scale.
 - **Heart cap**: redesigned — rounder heart profile (Chaikin corner-
   smoothing softens the classic pointed-heart curve while keeping the
   two-lobe heart silhouette), and now **hollow like a real cap** rather
-  than a solid block: a thin shell (~0.9mm roof) with a recessed oval
-  pocket (15×13mm) on the underside sized to fit down over the real
-  button's own cap. It just sits over the button rather than needing to be
-  glued as a solid lump. Still a separate piece, not part of the printed
-  shell — press it on after the button is mounted.
+  than a solid block: a thin shell (~1.2mm roof) with a recessed circular
+  pocket (18mm dia × 8.2mm deep — sized for your 14.04mm hole and 8.03mm
+  button height, +clearance) on the underside, so it fits down over the
+  real button's own cap rather than sitting as a solid lump. Grew
+  substantially to fit this (now 30×27×9.4mm, was 23×20.8×2.2mm). Still a
+  separate piece — press it on after the button is mounted.
+
+### About "18mm clearance behind the button"
+
+Checked this against the actual mesh before building anything: the whole
+monkey's body — outer front surface to outer back surface — is at most
+**~16.7mm thick at its single deepest point**, and only ~13.2mm thick at
+the button's actual height. 18mm of clearance physically cannot fit inside
+a 50mm-tall body anywhere, let alone behind one specific hole. Per your
+call to use the real achievable max instead: there's now a dedicated
+pocket behind the button reaching **7.3mm deep** — that's after three
+rounds of validating it against the real exterior surface (starting
+attempts at 11mm and 9.5mm both broke through the back skin in a small
+spot near the shoulder, confirmed by direct sampling, not assumed). 7.3mm
+is the deepest this specific spot can safely go; if you need more than
+that, the only way to get it is a taller model.
 - **No eye/nose/mouth colour patches** — the sculpt already has the face
   as printed-in geometry (not a separate colour region), so there's
   nothing extra to add there; this is a 2-colour print like the small
@@ -101,8 +119,9 @@ couple of points near the belly's front face down to a similarly thin
 
 ## Assembly
 
-1. Mount your tactile button through the belly hole (10.80mm straight
-   through-hole) from outside before closing the shell.
+1. Mount your tactile button through the belly hole (14.04mm straight
+   through-hole, 7.3mm of clearance pocket behind it) from outside before
+   closing the shell.
 2. Fit the XIAO nRF52840 into the head cavity (vertical orientation — long
    edge up/down) and the CR2032 behind/below it. Route wires down through
    the neck channel, through the newly-hollowed torso, to the button and

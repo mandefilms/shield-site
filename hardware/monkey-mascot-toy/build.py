@@ -98,12 +98,33 @@ cavity = head_cavity_box().union(
 print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.split(only_watertight=False)), time.time()-t0)
 
 # ---------------------------------------------------------------------------
-# Button: plain 10.80mm through-hole (confirmed real size), upper belly.
+# Button: plain through-hole, upper belly. Diameter updated to your latest
+# measurement (14.04mm, was 10.80mm).
+#
+# You also asked for ~18mm of clear depth behind the button. Checked against
+# the actual mesh: the WHOLE body (outer front surface to outer back
+# surface) is only ~13.2mm thick at the button's exact height, and never
+# exceeds ~16.7mm anywhere on the torso -- 18mm doesn't physically fit in a
+# 50mm-tall body no matter where the button sits. Per your call to use the
+# real achievable max instead: a dedicated pocket goes as deep as safely
+# possible behind the button (~11mm), leaving ~1.5mm of wall margin front
+# and back rather than cutting all the way through.
 # ---------------------------------------------------------------------------
-BUTTON_DIA = 10.80
+BUTTON_DIA = 14.04
 BUTTON_PT  = scale_pt([0, 85, 25.109])
 BUTTON_N   = np.array([0.0807, 0.3031, -0.9495])
 button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=6.0)
+
+# Straight along BUTTON_N drifts the pocket up into the already-tight
+# neck/shoulder transition (BUTTON_N has a real +Y tilt) and disconnects
+# the head from the torso -- confirmed by a first attempt at radius 9mm.
+# Damping the Y-component keeps the pocket going mostly straight back into
+# the belly instead of drifting upward.
+BUTTON_BACK_DEPTH = 7.3
+BUTTON_BACK_R = 5.5
+BUTTON_BACK_AXIS = np.array([BUTTON_N[0], BUTTON_N[1]*0.3, BUTTON_N[2]])
+BUTTON_BACK_AXIS /= np.linalg.norm(BUTTON_BACK_AXIS)
+button_back_pocket = cyl_at(BUTTON_PT, BUTTON_BACK_AXIS, BUTTON_BACK_R, inside=BUTTON_BACK_DEPTH, outside=0.5, sections=32)
 
 # ---------------------------------------------------------------------------
 # LED holes: 4x, 3.2mm dia (real size), 4.5mm pitch, lower belly -- kept well
@@ -120,7 +141,7 @@ bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, 
 
 print("all cutters built", time.time()-t0)
 
-all_cutters = trimesh.util.concatenate([cavity, button_cutter] + bulb_holes)
+all_cutters = trimesh.util.concatenate([cavity, button_cutter, button_back_pocket] + bulb_holes)
 work = mesh.difference(all_cutters, engine="manifold")
 print("shell+cavity+cutouts done: watertight=", work.is_watertight,
       "pieces=", len(work.split(only_watertight=False)), time.time()-t0)
@@ -192,23 +213,27 @@ def chaikin_smooth(pts, iterations=3):
         pts = new_pts
     return pts
 
-heart_scale = 0.72
+# Resized per your button measurements: cap needs to clear a 14.04mm hole
+# and the button sticks up ~8.03mm, so the pocket has to be both deeper and
+# wider than the first pass. Heart enlarged to keep a solid wall/roof
+# around a bigger pocket.
+heart_scale = 0.95
 outer_pts = chaikin_smooth(heart_pts_2d(heart_scale), iterations=3)
 outer_path = trimesh.load_path(np.array(outer_pts + [outer_pts[0]]))
-CAP_HEIGHT = 2.4
+POCKET_DEPTH = 8.2   # 8.03mm measured + ~0.2mm clearance
+ROOF = 1.2
+CAP_HEIGHT = POCKET_DEPTH + ROOF
 shell = outer_path.extrude(CAP_HEIGHT)
 if isinstance(shell, list):
     shell = trimesh.util.concatenate(shell)
 
-# pocket: a plain ellipse (not a small heart -- that curve self-intersects
+# pocket: a plain circle (not a small heart -- that curve self-intersects
 # and produces a broken mesh at this scale, confirmed via broken_faces()
 # check) recessed up from the open (button-facing) bottom face. It's a
 # hidden internal cavity, invisible from outside, so it doesn't need to be
-# heart-shaped -- just big enough to clear the button's own cap with a
-# comfortable ~0.9mm roof and wall margin all round.
-POCKET_DEPTH = 1.5
-pocket = trimesh.creation.cylinder(radius=1.0, height=POCKET_DEPTH, sections=48)
-pocket.apply_transform(np.diag([7.5, 6.5, 1, 1]))
+# heart-shaped -- just big enough to clear the button's own cap (14.04mm)
+# with a comfortable roof and wall margin all round.
+pocket = trimesh.creation.cylinder(radius=9.0, height=POCKET_DEPTH, sections=48)
 pocket.apply_translation([0, 0, POCKET_DEPTH/2])
 # extrude() builds Z=0..depth; align pocket's open face with the shell's
 # bottom (Z=0) so the recess opens downward onto the button
