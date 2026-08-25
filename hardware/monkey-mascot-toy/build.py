@@ -101,30 +101,17 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # Button: plain through-hole, upper belly. Diameter updated to your latest
 # measurement (14.04mm, was 10.80mm).
 #
-# You also asked for ~18mm of clear depth behind the button. Checked against
-# the actual mesh: the WHOLE body (outer front surface to outer back
-# surface) is only ~13.2mm thick at the button's exact height, and never
-# exceeds ~16.7mm anywhere on the torso -- 18mm doesn't physically fit in a
-# 50mm-tall body no matter where the button sits. Per your call to use the
-# real achievable max instead: a dedicated pocket goes as deep as safely
-# possible behind the button (~11mm), leaving ~1.5mm of wall margin front
-# and back rather than cutting all the way through.
+# NOTE: the dedicated back-clearance pocket (tried at 11mm, 9.5mm, then
+# 7.3mm deep to avoid breaching the back skin near the shoulder) has been
+# REMOVED per your feedback -- the previous shell (whole-torso hollow,
+# no separate button pocket) was closer to what you wanted. The general
+# torso cavity still gives room behind the button; there's just no extra
+# dedicated pocket stacked on top of it any more.
 # ---------------------------------------------------------------------------
 BUTTON_DIA = 14.04
 BUTTON_PT  = scale_pt([0, 85, 25.109])
 BUTTON_N   = np.array([0.0807, 0.3031, -0.9495])
 button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=6.0)
-
-# Straight along BUTTON_N drifts the pocket up into the already-tight
-# neck/shoulder transition (BUTTON_N has a real +Y tilt) and disconnects
-# the head from the torso -- confirmed by a first attempt at radius 9mm.
-# Damping the Y-component keeps the pocket going mostly straight back into
-# the belly instead of drifting upward.
-BUTTON_BACK_DEPTH = 7.3
-BUTTON_BACK_R = 5.5
-BUTTON_BACK_AXIS = np.array([BUTTON_N[0], BUTTON_N[1]*0.3, BUTTON_N[2]])
-BUTTON_BACK_AXIS /= np.linalg.norm(BUTTON_BACK_AXIS)
-button_back_pocket = cyl_at(BUTTON_PT, BUTTON_BACK_AXIS, BUTTON_BACK_R, inside=BUTTON_BACK_DEPTH, outside=0.5, sections=32)
 
 # ---------------------------------------------------------------------------
 # LED holes: 4x, 3.2mm dia (real size), 4.5mm pitch, lower belly -- kept well
@@ -141,7 +128,7 @@ bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, 
 
 print("all cutters built", time.time()-t0)
 
-all_cutters = trimesh.util.concatenate([cavity, button_cutter, button_back_pocket] + bulb_holes)
+all_cutters = trimesh.util.concatenate([cavity, button_cutter] + bulb_holes)
 work = mesh.difference(all_cutters, engine="manifold")
 print("shell+cavity+cutouts done: watertight=", work.is_watertight,
       "pieces=", len(work.split(only_watertight=False)), time.time()-t0)

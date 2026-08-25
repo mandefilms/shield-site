@@ -46,9 +46,9 @@ rounder/roomier than the torso at this scale.
   head's genuinely wide zone and letting the channel do the narrow
   crossing on its own.
 - **Button**: plain through-hole, **14.04mm diameter** (updated from
-  10.80mm per your caliper measurement), upper belly, no counterbore. A
-  dedicated pocket goes behind the hole for the button's own body/switch —
-  see "18mm clearance" below for the real number this landed on.
+  10.80mm per your caliper measurement), upper belly, no counterbore. Just
+  the hole — no separate dedicated pocket behind it any more (see below);
+  the general torso cavity gives it room to open into.
 - **LED holes**: 4× 3.2mm dia, 4.5mm pitch — real hardware size, doesn't
   scale with the model — lower belly, kept a healthy distance from the
   button (learned from the otter build, where a tight button/LED gap was
@@ -63,20 +63,19 @@ rounder/roomier than the torso at this scale.
   substantially to fit this (now 30×27×9.4mm, was 23×20.8×2.2mm). Still a
   separate piece — press it on after the button is mounted.
 
-### About "18mm clearance behind the button"
+### About the dedicated back-clearance pocket
 
-Checked this against the actual mesh before building anything: the whole
-monkey's body — outer front surface to outer back surface — is at most
-**~16.7mm thick at its single deepest point**, and only ~13.2mm thick at
-the button's actual height. 18mm of clearance physically cannot fit inside
-a 50mm-tall body anywhere, let alone behind one specific hole. Per your
-call to use the real achievable max instead: there's now a dedicated
-pocket behind the button reaching **7.3mm deep** — that's after three
-rounds of validating it against the real exterior surface (starting
-attempts at 11mm and 9.5mm both broke through the back skin in a small
-spot near the shoulder, confirmed by direct sampling, not assumed). 7.3mm
-is the deepest this specific spot can safely go; if you need more than
-that, the only way to get it is a taller model.
+You'd asked for ~18mm of clearance behind the button; I found that doesn't
+physically fit anywhere in this 50mm body (whole torso maxes out at
+~16.7mm front-to-back, ~13.2mm at the button's actual height) and built a
+dedicated pocket reaching as deep as safely possible instead (topped out
+at 7.3mm after a few rounds of validating it against the real exterior
+surface). **Per your feedback, that dedicated pocket has been removed
+again** — this version is back to just the plain button hole opening into
+the general torso cavity, which was closer to what you wanted. If you
+still want more depth specifically behind the button, say so and I'll
+re-add a (smaller, safer) version rather than the one that kept nearly
+breaching the back skin.
 - **No eye/nose/mouth colour patches** — the sculpt already has the face
   as printed-in geometry (not a separate colour region), so there's
   nothing extra to add there; this is a 2-colour print like the small
@@ -120,8 +119,8 @@ couple of points near the belly's front face down to a similarly thin
 ## Assembly
 
 1. Mount your tactile button through the belly hole (14.04mm straight
-   through-hole, 7.3mm of clearance pocket behind it) from outside before
-   closing the shell.
+   through-hole, opening into the general torso cavity behind it) from
+   outside before closing the shell.
 2. Fit the XIAO nRF52840 into the head cavity (vertical orientation — long
    edge up/down) and the CR2032 behind/below it. Route wires down through
    the neck channel, through the newly-hollowed torso, to the button and
@@ -133,8 +132,8 @@ couple of points near the belly's front face down to a similarly thin
    torso itself is hollow); glue or tape the seam (no snap clip, same as
    the otter builds).
 5. Press `heart_cap.stl` down over the button's own cap — its underside
-   pocket (15×13mm oval) is sized to clear it; glue if you want it
-   permanent.
+   pocket (18mm dia × 8.2mm deep) is sized to clear it; glue if you want
+   it permanent.
 
 ## Regenerating
 
