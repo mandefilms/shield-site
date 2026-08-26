@@ -1,7 +1,7 @@
 import trimesh, numpy as np, time
 t0=time.time()
 
-SCALE = 50.0/199.0
+SCALE = 100.0/199.0
 print("SCALE=", SCALE)
 
 mesh = trimesh.load("monkey_raw.stl")
@@ -57,7 +57,7 @@ def ellipsoid(rx,ry,rz,center,sub=3):
 # X-Z diagonal room is almost exactly eaten up by the board's footprint if
 # laid flat (essentially zero margin). Standing it up trades into Y, which
 # has real spare room up toward the crown.
-HEAD_CAVITY_HALF   = np.array([10.5, 11.4, 7])   # scaled mm (X, Y, Z)
+HEAD_CAVITY_HALF   = np.array([21.0, 22.8, 14.0])   # scaled mm (X, Y, Z) -- doubled with the shell
 HEAD_CAVITY_CENTER = np.array([0, 145, 52]) * SCALE
 
 # Whole torso hollowed out (not just a small pocket behind the belly) for
@@ -89,7 +89,7 @@ def head_cavity_box():
     # far enough to poke through the head's rounded surface even when each
     # axis alone measured safe (confirmed: caused small breach caps on the
     # first attempt without this clip).
-    clip = ellipsoid(13.5, 15.0, 10.6, HEAD_CAVITY_CENTER, sub=3)
+    clip = ellipsoid(27.0, 30.0, 21.2, HEAD_CAVITY_CENTER, sub=3)
     return b.intersection(clip, engine="manifold")
 
 cavity = head_cavity_box().union(
@@ -150,7 +150,17 @@ print("shell+cavity+cutouts done: watertight=", work.is_watertight,
 # the same result), but kept smaller anyway as a low-cost precaution.
 # ---------------------------------------------------------------------------
 SPLIT_Z = 55.0 * SCALE
-def half_space(sign, big=100):
+# CAUGHT BY VALIDATION: `big` here only bounds the box; it must exceed the
+# model's full extents on every axis, or the split silently chops off
+# whatever sticks out (it did -- at big=100 (half-extent 50) the box's Y
+# range was only [-50,50], clipping off the ENTIRE HEAD once the shell was
+# doubled to 100mm tall). `big` was previously shrunk from 400 to 100 as a
+# low-cost precaution during the earlier front/back mixup investigation,
+# back when the model was only 50mm tall -- it was never revisited when
+# the model doubled in size. Set well above the model's own extents
+# (~100mm tall, ~84mm wide) rather than a number carried over from a
+# different scale.
+def half_space(sign, big=300):
     b = trimesh.creation.box(extents=[big,big,big])
     b.apply_translation([0, 0, SPLIT_Z + sign*(big/2+0.05)])
     return b
@@ -165,15 +175,29 @@ def dowel_cyl(pt, axis, r, h):
     T = np.eye(4); T[:3,:3]=R[:3,:3]; T[:3,3]=pt
     c.apply_transform(T); return c
 
-# repositioned out of the now-hollowed torso (Y 34-90 raw): lower dowel
-# sits in the solid leg/hip area, upper dowel in the solid gap between the
-# torso cavity's top (90) and the head cavity's bottom (~134), clear of
-# the thin neck channel too (checked: different Z-centre by ~3mm, bigger
-# than the channel's ~1.1mm radius).
-DOWEL_Y = [20*SCALE, 110*SCALE]
-pins = trimesh.util.concatenate([dowel_cyl((0,dy,SPLIT_Z+0.6), [0,0,1], 1.1, 2.6) for dy in DOWEL_Y])
+# Re-verified at the 100mm scale by sampling actual solid-vs-cavity points
+# (not assumed from the old raw*SCALE positions, which turned out to be
+# wrong at this scale -- see below). Two dowels, spread in both X and Y
+# for a stable anti-rotation lock:
+#  - one in a leg (X=8, well clear of the mid-line gap between the legs
+#    and clear of the torso cavity)
+#  - one in the solid gap between the torso cavity's top and the head
+#    cavity's bottom (a much narrower gap than at 50mm since the head
+#    cavity box was doubled in absolute size -- confirmed by direct
+#    point-sampling, not proportional carry-over)
+# CAUGHT BY VALIDATION: the old DOWEL_Y = [20*SCALE, 110*SCALE] positions
+# (both at X=0) were WRONG at this scale -- the lower one landed in the
+# empty gap between the legs (outside the mesh entirely, not solid), and
+# the upper one landed inside the doubled head cavity box. Both produced
+# floating, unwelded dowel pins (confirmed via split(only_watertight=False)
+# showing 2 extra disconnected pieces on the back shell) -- a real defect
+# that would NOT have printed as functional alignment pins. Repositioned
+# and each candidate individually verified solid + clear of every cavity
+# with a small ring of sample points, not just a single point.
+DOWEL_XY = [(8.0, 10.0), (0.0, 47.5)]
+pins = trimesh.util.concatenate([dowel_cyl((dx,dy,SPLIT_Z+0.6), [0,0,1], 1.1, 2.6) for dx,dy in DOWEL_XY])
 back = back.union(pins, engine="manifold")
-holes = trimesh.util.concatenate([dowel_cyl((0,dy,SPLIT_Z-0.4), [0,0,1], 1.25, 3.6) for dy in DOWEL_Y])
+holes = trimesh.util.concatenate([dowel_cyl((dx,dy,SPLIT_Z-0.4), [0,0,1], 1.25, 3.6) for dx,dy in DOWEL_XY])
 front = front.difference(holes, engine="manifold")
 print("clip done: front pieces=", len(front.split(only_watertight=False)),
       "back pieces=", len(back.split(only_watertight=False)), time.time()-t0)

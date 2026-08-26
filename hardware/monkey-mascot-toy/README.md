@@ -1,129 +1,107 @@
-# Monkey Mascot Toy — 50mm (XIAO in the head, real button + decorative heart)
+# Monkey Mascot Toy — 100mm (XIAO in the head, real button + decorative heart)
 
-Built from the chibi monkey sculpt you uploaded, scaled to **50mm** tall.
-Same overall approach as the otter's final (60mm) version — split front/
-back, real tactile button + separate decorative heart, real-size LED holes
-— but with one big change: **the XIAO nRF52840 lives in the head**, not the
-torso, because the torso alone is nowhere near big enough at this size.
+Built from the chibi monkey sculpt you uploaded, scaled to **100mm** tall —
+double the original 50mm build, per your feedback that 50mm ended up too
+small once you saw it built. Same overall approach throughout: split front/
+back, real tactile button + separate decorative heart, real-size LED holes,
+**XIAO nRF52840 in the head** (not the torso).
 
-## Why 50mm, and why the head
+## Why 100mm
 
-You asked for "half the otter's size" (~30mm). Measured directly off the
-mesh: at 30mm tall, even the head's interior — the biggest, roomiest part
-of this sculpt — works out to only ~14-16mm across, smaller than the XIAO
-board itself (21×17.8mm). It doesn't fit at any size below roughly
-**40-45mm**, and even that's a knife-edge fit. **50mm is the smallest size
-where the board fits with real margin**, which is why this build targets
-that instead of 30mm.
-
-Putting the XIAO in the head (confirmed with you) rather than the torso
-works because the head is ~50% of the model's total height and much
-rounder/roomier than the torso at this scale.
+The first pass targeted 50mm (the smallest size that fit the XIAO board with
+real margin — see the sizing history below). After looking it over you said
+it needed to be bigger, but that doubling from there ("the last one was
+huge") felt like too much of a jump in the other direction historically —
+so this build doubles the **50mm** version, not the original 114mm otter
+scale. **Fixed-size hardware does not scale up with the shell**: the
+14.04mm button, 3.2mm/4.5mm-pitch LED holes, and the heart cap all stay at
+their real physical dimensions. Only the shell geometry and cavity
+*positions* doubled — the cavities themselves also grew in absolute size,
+which is why the electronics now fit with much more margin than at 50mm.
 
 ## Design
 
-- **Head cavity**: a box (not an ellipsoid like the otter used) sized to
-  the XIAO's footprint, with its corners clipped back by an ellipsoid so
-  they don't poke through the head's rounded exterior. An ellipsoid alone
-  couldn't inscribe the board's rectangular footprint at this scale — its
-  corners waste too much space — so this build uses a box for the flat
-  faces and only rounds the corners enough to clear the exterior surface.
-  **The XIAO mounts vertically** (long edge running up toward the crown)
-  rather than flat, because there's more spare room in that direction than
-  side-to-side at head-centre height.
-- **Torso cavity**: the *whole* torso is now hollow (not just a small
-  pocket behind the belly) — spans from just above the legs up to the neck,
-  tapering at both ends since it's a single big ellipsoid. Legs are left
-  solid (too thin/pose-risky to hollow). This gives real room behind the
-  button, plus space for the CR2032 and wiring.
-- **Neck channel**: a thin (~2.3mm dia) tunnel connecting the head cavity
-  down to the torso cavity, for wiring between the XIAO and the button/
-  LEDs. This needed real tuning — the neck is the tightest cross-section
-  on the whole model, and the first two attempts either disconnected the
-  head from the torso entirely (all-piece i.e. the two halves would print
-  as loose separate parts) or punched visible holes through the sides of
-  the neck. Fixed by keeping the head cavity's box entirely within the
-  head's genuinely wide zone and letting the channel do the narrow
-  crossing on its own.
-- **Button**: plain through-hole, **14.04mm diameter** (updated from
-  10.80mm per your caliper measurement), upper belly, no counterbore. Just
-  the hole — no separate dedicated pocket behind it any more (see below);
-  the general torso cavity gives it room to open into.
-- **LED holes**: 4× 3.2mm dia, 4.5mm pitch — real hardware size, doesn't
-  scale with the model — lower belly, kept a healthy distance from the
-  button (learned from the otter build, where a tight button/LED gap was
-  a real fragility risk).
-- **Heart cap**: redesigned — rounder heart profile (Chaikin corner-
-  smoothing softens the classic pointed-heart curve while keeping the
-  two-lobe heart silhouette), and now **hollow like a real cap** rather
-  than a solid block: a thin shell (~1.2mm roof) with a recessed circular
-  pocket (18mm dia × 8.2mm deep — sized for your 14.04mm hole and 8.03mm
-  button height, +clearance) on the underside, so it fits down over the
-  real button's own cap rather than sitting as a solid lump. Grew
-  substantially to fit this (now 30×27×9.4mm, was 23×20.8×2.2mm). Still a
-  separate piece — press it on after the button is mounted.
+- **Head cavity**: a box (not an ellipsoid) sized to the XIAO's footprint,
+  corners clipped back by an ellipsoid so they don't poke through the
+  head's rounded exterior — same approach as the 50mm build, dimensions
+  doubled. **The XIAO mounts against the front (—Z-facing) wall of the
+  cavity**, board flat, with the **CR2032 stacked directly behind it in the
+  now-generous spare Z depth** (the head cavity's Z half-extent is 21.2mm
+  clipped / 14mm box half-extent — the board's 4.8mm thickness leaves ample
+  room behind it for the coin cell, verified below).
+- **Torso cavity**: the whole torso is hollow except the legs, same as
+  before, dimensions doubled.
+- **Neck channel**: thin tunnel connecting head and torso cavities for
+  wiring, verified open (see Verification).
+- **Button**: plain through-hole, **14.04mm diameter** (fixed real size),
+  upper belly, no counterbore, no dedicated back-pocket (per your earlier
+  feedback on the 50mm build) — opens straight into the general torso
+  cavity.
+- **LED holes**: 4× 3.2mm dia, 4.5mm pitch (fixed real size), lower belly.
+- **Heart cap**: unchanged from the 50mm build (30.1×27.4×9.4mm) — it's
+  sized to the real button hardware, not the shell, so it doesn't grow with
+  the doubling. Rounded heart profile, hollow cap with a recessed pocket
+  that sits down over the button.
+- **Alignment dowels — repositioned, not just doubled.** The 50mm build's
+  dowel Y-positions (proportionally carried into this build via the same
+  `raw * SCALE` formula) turned out to be **wrong at 100mm**: doubling the
+  head cavity's absolute size ate into the "solid gap" the upper dowel used
+  to sit in, and the lower dowel landed in the empty gap between the legs.
+  Both printed as **disconnected floating pins**, not welded to the shell —
+  caught by checking `split(only_watertight=False)` on the back shell
+  (found 2 extra small disconnected pieces exactly matching the pin
+  dimensions) rather than assumed safe from the 50mm numbers. Re-positioned
+  by directly sampling solid-vs-cavity points at the new scale: one dowel
+  now sits inside a leg (off the model's midline, clear of both the
+  inter-leg gap and the torso cavity), the other in the actual (now
+  narrower, ~4.8mm) solid gap between the torso and head cavities.
+  Re-verified: both weld cleanly into the main shell as one piece.
 
-### About the dedicated back-clearance pocket
+## Fixed: front/back split was silently clipping off the whole head
 
-You'd asked for ~18mm of clearance behind the button; I found that doesn't
-physically fit anywhere in this 50mm body (whole torso maxes out at
-~16.7mm front-to-back, ~13.2mm at the button's actual height) and built a
-dedicated pocket reaching as deep as safely possible instead (topped out
-at 7.3mm after a few rounds of validating it against the real exterior
-surface). **Per your feedback, that dedicated pocket has been removed
-again** — this version is back to just the plain button hole opening into
-the general torso cavity, which was closer to what you wanted. If you
-still want more depth specifically behind the button, say so and I'll
-re-add a (smaller, safer) version rather than the one that kept nearly
-breaching the back skin.
-- **No eye/nose/mouth colour patches** — the sculpt already has the face
-  as printed-in geometry (not a separate colour region), so there's
-  nothing extra to add there; this is a 2-colour print like the small
-  otter (body + heart).
+The split-into-two-halves step uses a large box to intersect against, sized
+just bigger than the model so the "keep everything on this side of the Z
+midplane" cut doesn't accidentally act on X or Y too. That box's size had
+been **deliberately shrunk from 400 down to 100 (half-extent 50)** during
+the earlier front/back mixup investigation on the *50mm* build, back when
+the whole model was under 50mm on every axis. **That number was never
+revisited when the shell doubled to 100mm tall** — a box with Y half-extent
+50 no longer covers a 100mm-tall model, so the split was silently slicing
+the entire head off above Y=50mm. Caught by rendering the actual exported
+STL in OpenSCAD before shipping (the same practice that caught the
+button/LED mixup on the 50mm build) — the first 100mm render showed only a
+headless torso. Fixed by sizing the box (300, half-extent 150) safely above
+the model's real ~100×84×55mm extents instead of carrying over a number
+tuned for a different scale.
 
 ## Verification (not assumed)
 
-- **XIAO fit**: checked by sampling the board's full footprint (not just
-  corners) against the actual cavity shape — **472 of 480 sample points**
-  land inside the cavity (the few misses are at the board's sharpest
-  corner edge, sub-millimetre). CR2032 fits fully with real margin,
-  stacked behind the board.
-- **Wall thickness**: sampled thousands of points on the real exterior
-  surface against the real cavity shapes (excluding the button/LED holes
-  themselves, which are *supposed* to reach the surface). Both shells are
-  healthy almost everywhere (median ~4.9-5.2mm), **except a small cluster
-  of near-zero-thickness points right at the head cavity's lower corners**,
-  where the box cavity's bottom edge sits close to the neck's narrowest
-  point on both sides. This was the hardest part of the geometry to get
-  right at this size and I ran out of safe margin to fully clear it —
-  flagging it plainly rather than calling it solved.
+Every check below was re-run from scratch at the 100mm scale — none of the
+50mm build's numbers were assumed to still hold.
 
-**Known remaining issue**: that shoulder/neck-transition thin spot (both
-sides, roughly where the head cavity's bottom corners sit) is a real
-fragility risk — more so than anything in the otter builds. Worth a close
-look in the slicer, and if it looks concerning, tell me and I'll shrink the
-head cavity further (trading some of the XIAO's fit margin for wall
-thickness) rather than leave it as-is. This didn't change after fixing the
-button/LED side (same known spot, same rough severity — front shell
-min ~0mm at a handful of points, otherwise healthy at ~3.5mm median; back
-shell similar).
-
-## Fixed: button/LED holes were on the wrong side of the model
-
-You were right that the button and LED holes ended up on the opposite side
-from the face — this was a real bug, not a stale-file mixup as I first
-assumed. Root cause: the landmark raycasts for the belly button and LED
-positions were cast from the wrong direction and found the plain, unmarked
-side of the belly bulge instead of the side with the actual decorative
-belly circle. I only caught this by rendering the actual exported STL in
-OpenSCAD (the same tool you were using) from a properly-aimed camera angle
-— my earlier checks (coordinate ranges, nearest-vertex distances) all
-technically "passed" because the general head/belly shape is present on
-both sides, they just didn't verify the specific carved *features* were
-there. Re-probed the landmarks from the correct direction and flipped
-which side is called "front" — verified again by direct render: face,
-button hole, and all 4 LED holes are now genuinely together on
-`front_shell.stl`.
+- **Fragmentation**: `front_shell.stl` is 1 connected piece spanning the
+  full model height (Y 0.25–100.15mm). `back_shell.stl` is the main welded
+  piece (Y 0.25–100.25mm, dowels included) plus one negligible ~0.08mm
+  degenerate sliver (a boolean-precision artifact, not a real feature —
+  effectively zero volume, invisible, won't affect printing).
+- **XIAO + CR2032 fit**: sampled the full board footprint (not just
+  corners) against the actual head cavity shape — **192/192** points
+  inside. CR2032, correctly stacked *behind* the board in the cavity's Z
+  depth (not below it in Y, which doesn't have room) — **216/216** points
+  inside. Both fit with real margin at this scale.
+- **Wall thickness**: sampled thousands of real exterior points against
+  the real cavity shapes (excluding the button/LED holes themselves).
+  Front: median ~5.9mm, back: median ~5.3mm — healthy. Both still have a
+  small cluster of near-zero-thickness points at the head cavity's lower
+  corners near the neck/shoulder transition (front: 40/1662 sampled points
+  under 0.5mm; back: 20/1790) — **the same known fragile spot flagged on
+  the 50mm build**, in the same relative location, not a new regression
+  from doubling. Worth a look in the slicer; say the word if you want the
+  head cavity trimmed back further there.
+- **Neck channel connectivity**: verified open (head cavity to torso
+  cavity) the same way as the 50mm build — a genuinely watertight
+  in-memory mesh, not an unreliable reloaded STL, was used for the
+  containment check.
 
 ## Parts (3 STL, 2 colours)
 
@@ -136,26 +114,25 @@ button hole, and all 4 LED holes are now genuinely together on
 ## Assembly
 
 1. Mount your tactile button through the belly hole (14.04mm straight
-   through-hole, opening into the general torso cavity behind it) from
-   outside before closing the shell.
-2. Fit the XIAO nRF52840 into the head cavity (vertical orientation — long
-   edge up/down) and the CR2032 behind/below it. Route wires down through
-   the neck channel, through the newly-hollowed torso, to the button and
-   LED holes.
+   through-hole) from outside before closing the shell.
+2. Fit the XIAO nRF52840 flat against the head cavity's front wall, and the
+   CR2032 directly behind it in the same cavity. Route wires down through
+   the neck channel, through the hollowed torso, to the button and LED
+   holes.
 3. Route bulb leads through the 4 belly holes and glue/friction-fit the
    bulbs from outside.
-4. Close front/back on the 2 alignment dowels (repositioned to the solid
-   leg/hip area and the solid gap above the torso cavity, now that the
-   torso itself is hollow); glue or tape the seam (no snap clip, same as
-   the otter builds).
-5. Press `heart_cap.stl` down over the button's own cap — its underside
-   pocket (18mm dia × 8.2mm deep) is sized to clear it; glue if you want
+4. Close front/back on the 2 alignment dowels; glue or tape the seam (no
+   snap clip).
+5. Press `heart_cap.stl` down over the button's own cap; glue if you want
    it permanent.
 
 ## Regenerating
 
-`build.py` is the actual script used (trimesh + manifold3d, same
-consolidated-single-boolean-difference technique as the otter builds, to
-avoid the mesh-fragmentation bug documented there). The head cavity, torso
-cavity, neck channel, and button/LED positions are all separate named
-parameters near the top if you want to adjust anything.
+`build.py` is the actual script used (trimesh + manifold3d, consolidated
+single-boolean-difference technique). All cavity, button, LED, dowel, and
+split parameters are named near the top. If you change `SCALE` again,
+**re-run the full validation** (fragmentation check via
+`split(only_watertight=False)`, wall-thickness sampling, XIAO/CR2032 fit,
+and an OpenSCAD render of the actual exported STL) rather than assuming
+positions and box sizes tuned for one scale still hold at another — this
+build's own history (dowels, the split box size) is the reason why.
