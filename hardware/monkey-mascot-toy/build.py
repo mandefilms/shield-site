@@ -113,25 +113,31 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # actual face-forward side (confirmed via direct OpenSCAD render: the face
 # and the belly's decorative circle are BOTH on the +Z side) is opposite.
 # Re-probed from +Z looking toward -Z to get the real belly landmark.
-# Nudged down a fraction per your feedback (raw Y 85 -> 82, ~1.5mm scaled)
-# -- re-probed the actual surface at the new Y rather than just offsetting
-# the old point, so the cutter still sits flush against the real belly
-# surface with the correct local normal.
+# Moved down further than a small nudge -- you asked to check the heart
+# cap wouldn't hit the chin, and at the previous position (raw Y=80) it
+# genuinely did: placing the actual heart_cap mesh at that spot (in its
+# natural cusp-down orientation) and boolean-intersecting it with the raw
+# body found a real 422 mm^3 overlap with the chin/jaw overhang, not just
+# a close call. Walked the button position down and re-checked the same
+# way at each step: still ~0 mm^3 touching at raw Y=75, fully clear (0
+# overlap, real margin) at raw Y=70 -- used that. Re-probed the actual
+# belly surface at Y=70 rather than assuming the old normal still applies.
 BUTTON_DIA = 14.04
-BUTTON_PT  = scale_pt([0, 82, 79.27])
-BUTTON_N   = np.array([-0.014, 0.407, 0.913])
+BUTTON_PT  = scale_pt([0, 70, 83.62])
+BUTTON_N   = np.array([-0.053, 0.316, 0.947])
 button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=6.0)
 
 # ---------------------------------------------------------------------------
-# LED holes: 4x, 3.2mm dia (real size), 4.5mm pitch, lower belly -- kept well
-# clear of the button (raw Y=38 vs button raw Y=85, ~11.8mm scaled centre
-# distance, ~4.8mm real clearance after hole radii, learned from the otter
-# build where a tighter gap there was a fragility risk).
+# LED holes: 4x, 3.2mm dia (real size), 4.5mm pitch, lower belly. Nudged up
+# per your feedback (raw Y 40 -> 46, re-probed the actual surface there) --
+# still kept well clear of the button (raw Y=46 vs button raw Y=80, ~17mm
+# scaled centre distance, well over the button+bulb hole radii, learned
+# from the otter build where a tighter gap there was a fragility risk).
 # ---------------------------------------------------------------------------
 BULB_DIA = 3.2
 PITCH = 4.5
-BULB_CENTER = scale_pt([0, 40, 81.17])
-BULB_N = np.array([0.143, -0.499, 0.855])
+BULB_CENTER = scale_pt([0, 46, 83.71])
+BULB_N = np.array([0.056, -0.282, 0.958])
 offsets = (np.arange(4) - 1.5) * PITCH
 bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, inside=2.0, outside=6.0) for off in offsets]
 

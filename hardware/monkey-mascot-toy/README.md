@@ -6,6 +6,16 @@ small once you saw it built. Same overall approach throughout: split front/
 back, real tactile button + separate decorative heart, real-size LED holes,
 **XIAO nRF52840 in the head** (not the torso).
 
+## Open question: overall size
+
+You mentioned 100mm might be a bit big now. Nothing's changed size-wise in
+this build yet — still 100mm — pending you settling on a target (75mm was
+on the table). Say the word and I'll rebuild at whatever size you land on;
+the button/LED position fixes below are expressed as fractions of the raw
+mesh so they'll carry over correctly to a rescaled build, but I'll still
+re-run the full validation (chin clearance included) rather than assume
+it holds at a different scale.
+
 ## Status: front shell only, pending your size check
 
 Per your request, only `stl/front_shell.stl` reflects the latest changes
@@ -17,20 +27,36 @@ features of its own, so it isn't expected to change) and rebuild the heart
 cap at a larger size to match the bigger monkey.
 
 **Latest front-shell changes:**
-- **Button hole moved down a fraction** (re-probed the actual belly
-  surface at the new position, not just offset the old coordinates, so it
-  still sits flush with the correct local normal). Re-verified: no new
-  fragility introduced (wall thickness and fragmentation checks unchanged
-  from before the nudge).
-- **All 4 LED holes are present and correctly spaced** — in the straight-on
-  render the 4th one was barely visible because the belly surface curves
-  away from the camera right at that angle (confirmed by re-rendering
-  looking straight down the belly's own surface normal — all 4 show up as
-  full circles).
+- **Button hole moved down — further than a small nudge, once the chin
+  clearance check below made that necessary.** You asked to move it down
+  a fraction and separately asked me to check it wouldn't hit the chin
+  with the heart cap on. Those turned out to be the same issue: at the
+  first "fraction" position (raw Y=82→80 on the mesh) I placed the actual
+  `heart_cap` mesh over the button (cusp pointing down, its natural
+  orientation) and boolean-intersected it with the body — **real 422 mm³
+  of overlap with the chin/jaw overhang, not a close call.** Walked the
+  button position down and re-ran the same check at each step: still
+  touching (~0.02 mm³) one step up from where it landed, fully clear (0
+  mm³, real margin) at raw Y=70. That's about 6mm further down (scaled)
+  than the previous version, more than "a fraction" — but the alternative
+  was a heart cap that physically couldn't sit flush. Re-verified against
+  the actual exported `front_shell.stl` + `heart_cap.stl` together (not
+  just the pre-export in-memory shapes): **zero overlap.**
+- **LED holes moved up a fraction** to match, re-probed at the new belly
+  position — still ~12mm scaled centre-to-centre from the button, well
+  clear of the ~8.6mm minimum (button + bulb hole radii combined).
+- **All 4 LED holes are present and correctly spaced** — in an earlier
+  straight-on render the 4th one was barely visible because the belly
+  surface curves away from the camera right at that angle (confirmed by
+  re-rendering looking straight down the belly's own surface normal — all
+  4 show up as full circles).
 - **Head-to-tummy channel confirmed still open** at 100mm, verified along
   the actual head→neck→torso path (not a naive straight line between the
   two cavity centers, which cuts across solid material and gives a
   false "blocked" result since the neck channel doesn't sit on that line).
+- Re-ran the full fragmentation and wall-thickness checks after these
+  moves — unchanged from the previous pass (same known head/neck-transition
+  thin spot, nothing new introduced).
 - **Heart cap still needs resizing** — you asked for it to match the
   bigger monkey's proportions. So far it's intentionally stayed at its
   fixed 50mm-build size (30.1×27.4×9.4mm) because it's sized to the real
