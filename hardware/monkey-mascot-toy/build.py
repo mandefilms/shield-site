@@ -166,12 +166,11 @@ front = front.difference(holes, engine="manifold")
 print("clip done: front pieces=", len(front.split(only_watertight=False)),
       "back pieces=", len(back.split(only_watertight=False)), time.time()-t0)
 
-# NOTE: exported names are swapped relative to the `front`/`back` variables
-# above -- per user feedback the piece with the face/button/LED holes reads
-# as "back" in their viewer, so the file names now match that, even though
-# internally `front` (low-Z half) is still the one with those features.
-front.export("back_shell_monkey.stl")
-back.export("front_shell_monkey.stl")
+# `front` (the low-Z half, containing the face/button/LED holes) exports
+# as front_shell.stl -- reverted back to this straightforward mapping per
+# final feedback, after a brief detour swapping the names the other way.
+front.export("front_shell_monkey.stl")
+back.export("back_shell_monkey.stl")
 print("exported shells", time.time()-t0)
 
 # ---------------------------------------------------------------------------
