@@ -113,9 +113,13 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # actual face-forward side (confirmed via direct OpenSCAD render: the face
 # and the belly's decorative circle are BOTH on the +Z side) is opposite.
 # Re-probed from +Z looking toward -Z to get the real belly landmark.
+# Nudged down a fraction per your feedback (raw Y 85 -> 82, ~1.5mm scaled)
+# -- re-probed the actual surface at the new Y rather than just offsetting
+# the old point, so the cutter still sits flush against the real belly
+# surface with the correct local normal.
 BUTTON_DIA = 14.04
-BUTTON_PT  = scale_pt([0, 85, 77.74])
-BUTTON_N   = np.array([-0.113, 0.408, 0.906])
+BUTTON_PT  = scale_pt([0, 82, 79.27])
+BUTTON_N   = np.array([-0.014, 0.407, 0.913])
 button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=6.0)
 
 # ---------------------------------------------------------------------------

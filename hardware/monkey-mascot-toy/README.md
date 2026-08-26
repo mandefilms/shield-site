@@ -6,6 +6,39 @@ small once you saw it built. Same overall approach throughout: split front/
 back, real tactile button + separate decorative heart, real-size LED holes,
 **XIAO nRF52840 in the head** (not the torso).
 
+## Status: front shell only, pending your size check
+
+Per your request, only `stl/front_shell.stl` reflects the latest changes
+below — **`back_shell.stl` and `heart_cap.stl` in this repo are still the
+previous pass** (correct 100mm size, but the heart cap not yet resized to
+match — see below). Once you've confirmed the front's size/proportions,
+say so and I'll regenerate the back shell (which has no button/LED
+features of its own, so it isn't expected to change) and rebuild the heart
+cap at a larger size to match the bigger monkey.
+
+**Latest front-shell changes:**
+- **Button hole moved down a fraction** (re-probed the actual belly
+  surface at the new position, not just offset the old coordinates, so it
+  still sits flush with the correct local normal). Re-verified: no new
+  fragility introduced (wall thickness and fragmentation checks unchanged
+  from before the nudge).
+- **All 4 LED holes are present and correctly spaced** — in the straight-on
+  render the 4th one was barely visible because the belly surface curves
+  away from the camera right at that angle (confirmed by re-rendering
+  looking straight down the belly's own surface normal — all 4 show up as
+  full circles).
+- **Head-to-tummy channel confirmed still open** at 100mm, verified along
+  the actual head→neck→torso path (not a naive straight line between the
+  two cavity centers, which cuts across solid material and gives a
+  false "blocked" result since the neck channel doesn't sit on that line).
+- **Heart cap still needs resizing** — you asked for it to match the
+  bigger monkey's proportions. So far it's intentionally stayed at its
+  fixed 50mm-build size (30.1×27.4×9.4mm) because it's sized to the real
+  button hardware, not the shell — that hasn't changed, but the *visible*
+  heart shape around that fixed-size pocket can grow to look
+  proportionate on the bigger body. Held off on this until the shell size
+  itself is confirmed, per your ask.
+
 ## Why 100mm
 
 The first pass targeted 50mm (the smallest size that fit the XIAO board with
