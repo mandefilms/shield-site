@@ -108,9 +108,14 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # torso cavity still gives room behind the button; there's just no extra
 # dedicated pocket stacked on top of it any more.
 # ---------------------------------------------------------------------------
+# CORRECTED: the original landmark raycast probed from the wrong (-Z)
+# direction and found the plain, unmarked side of the belly bulge -- the
+# actual face-forward side (confirmed via direct OpenSCAD render: the face
+# and the belly's decorative circle are BOTH on the +Z side) is opposite.
+# Re-probed from +Z looking toward -Z to get the real belly landmark.
 BUTTON_DIA = 14.04
-BUTTON_PT  = scale_pt([0, 85, 25.109])
-BUTTON_N   = np.array([0.0807, 0.3031, -0.9495])
+BUTTON_PT  = scale_pt([0, 85, 77.74])
+BUTTON_N   = np.array([-0.113, 0.408, 0.906])
 button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=6.0)
 
 # ---------------------------------------------------------------------------
@@ -121,8 +126,8 @@ button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=
 # ---------------------------------------------------------------------------
 BULB_DIA = 3.2
 PITCH = 4.5
-BULB_CENTER = scale_pt([0, 38, 24.3])
-BULB_N = np.array([-0.0433, -0.65, -0.7587])
+BULB_CENTER = scale_pt([0, 40, 81.17])
+BULB_N = np.array([0.143, -0.499, 0.855])
 offsets = (np.arange(4) - 1.5) * PITCH
 bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, inside=2.0, outside=6.0) for off in offsets]
 
@@ -135,15 +140,22 @@ print("shell+cavity+cutouts done: watertight=", work.is_watertight,
 
 # ---------------------------------------------------------------------------
 # Split front/back at the mesh's natural mid-depth (Z), + alignment dowels.
-# Front = -Z side (face), Back = +Z side.
+# CORRECTED: front (face + button + LEDs) = +Z side, back (plain) = -Z side
+# -- flipped from the original assumption, per the same landmark correction
+# above. Also using a smaller box (100, not 400) here: confirmed via direct
+# testing that boolean/slice operations against a box wildly oversized
+# relative to the model can silently erode fine surface relief on this
+# mesh -- ruled out as the actual cause of the front/back mixup (a plain
+# manual per-triangle Z-filter, no boolean library involved at all, showed
+# the same result), but kept smaller anyway as a low-cost precaution.
 # ---------------------------------------------------------------------------
 SPLIT_Z = 55.0 * SCALE
-def half_space(sign, big=400):
+def half_space(sign, big=100):
     b = trimesh.creation.box(extents=[big,big,big])
     b.apply_translation([0, 0, SPLIT_Z + sign*(big/2+0.05)])
     return b
-front = work.intersection(half_space(-1), engine="manifold")
-back  = work.intersection(half_space(1), engine="manifold")
+front = work.intersection(half_space(1), engine="manifold")
+back  = work.intersection(half_space(-1), engine="manifold")
 print("split: front pieces=", len(front.split(only_watertight=False)),
       "back pieces=", len(back.split(only_watertight=False)), time.time()-t0)
 

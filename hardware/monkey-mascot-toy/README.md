@@ -103,10 +103,27 @@ sides, roughly where the head cavity's bottom corners sit) is a real
 fragility risk — more so than anything in the otter builds. Worth a close
 look in the slicer, and if it looks concerning, tell me and I'll shrink the
 head cavity further (trading some of the XIAO's fit margin for wall
-thickness) rather than leave it as-is. Enlarging the torso cavity didn't
-make this worse — same known spot, not a new one — though it did nudge a
-couple of points near the belly's front face down to a similarly thin
-(~0.1-0.6mm) range, worth the same slicer check.
+thickness) rather than leave it as-is. This didn't change after fixing the
+button/LED side (same known spot, same rough severity — front shell
+min ~0mm at a handful of points, otherwise healthy at ~3.5mm median; back
+shell similar).
+
+## Fixed: button/LED holes were on the wrong side of the model
+
+You were right that the button and LED holes ended up on the opposite side
+from the face — this was a real bug, not a stale-file mixup as I first
+assumed. Root cause: the landmark raycasts for the belly button and LED
+positions were cast from the wrong direction and found the plain, unmarked
+side of the belly bulge instead of the side with the actual decorative
+belly circle. I only caught this by rendering the actual exported STL in
+OpenSCAD (the same tool you were using) from a properly-aimed camera angle
+— my earlier checks (coordinate ranges, nearest-vertex distances) all
+technically "passed" because the general head/belly shape is present on
+both sides, they just didn't verify the specific carved *features* were
+there. Re-probed the landmarks from the correct direction and flipped
+which side is called "front" — verified again by direct render: face,
+button hole, and all 4 LED holes are now genuinely together on
+`front_shell.stl`.
 
 ## Parts (3 STL, 2 colours)
 
