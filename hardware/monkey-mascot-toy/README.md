@@ -57,6 +57,22 @@ cap at a larger size to match the bigger monkey.
 - Re-ran the full fragmentation and wall-thickness checks after these
   moves — unchanged from the previous pass (same known head/neck-transition
   thin spot, nothing new introduced).
+- **Fixed: button and LED holes weren't actually open.** You said the
+  button "looks like there is no actual hole" — you were right. The
+  cutters' `inside` reach (3.0mm for the button, 2.0mm for the LEDs) was
+  measured from the wrong assumption that the hollow cavity sits right
+  behind the surface; it doesn't everywhere. Marching inward from several
+  points across each hole's own footprint (not just its centre — the
+  surface and the cavity boundary aren't parallel, so the real material
+  depth varies across a single hole) found up to **5.75mm** of solid
+  material still standing behind the button and up to **6.75mm** behind
+  the LED holes, both well past the old cut depth. Every hole was a blind
+  dimple, not a through-hole. Deepened both to `inside=8.0` and verified
+  properly this time: cast a ray straight down each hole's own axis on the
+  actual exported shell and confirmed it crosses exactly 2 surfaces (into
+  the skin, then out the far side into the open cavity) for the button and
+  all 4 LEDs — not just "does the cutter reach some point," but "is there
+  a real opening a wire could pass through."
 - **Heart cap still needs resizing** — you asked for it to match the
   bigger monkey's proportions. So far it's intentionally stayed at its
   fixed 50mm-build size (30.1×27.4×9.4mm) because it's sized to the real

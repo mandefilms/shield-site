@@ -122,10 +122,20 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # way at each step: still ~0 mm^3 touching at raw Y=75, fully clear (0
 # overlap, real margin) at raw Y=70 -- used that. Re-probed the actual
 # belly surface at Y=70 rather than assuming the old normal still applies.
+# FIXED: this hole wasn't actually open all the way through. `inside=3.0`
+# only cuts 3mm into the material from the surface, but the actual
+# distance from the button's surface point to the hollow torso cavity
+# behind it is up to 5.75mm across the button's own footprint (checked by
+# marching inward from several points across the disc, not just the
+# centre -- the surface/cavity aren't parallel so the depth varies across
+# the hole). The remaining ~2.75mm was an uncut membrane, so the "hole"
+# was a blind dimple with no opening into the interior -- exactly what you
+# were seeing. Deepened to inside=8.0, comfortable margin beyond the 5.75mm
+# actually needed.
 BUTTON_DIA = 14.04
 BUTTON_PT  = scale_pt([0, 70, 83.62])
 BUTTON_N   = np.array([-0.053, 0.316, 0.947])
-button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=6.0)
+button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=8.0, outside=6.0)
 
 # ---------------------------------------------------------------------------
 # LED holes: 4x, 3.2mm dia (real size), 4.5mm pitch, lower belly. Nudged up
@@ -134,12 +144,18 @@ button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=3.0, outside=
 # scaled centre distance, well over the button+bulb hole radii, learned
 # from the otter build where a tighter gap there was a fragility risk).
 # ---------------------------------------------------------------------------
+# FIXED: same blind-hole bug as the button. The bulb holes are actually
+# further from the cavity than the button now (moving both closer to
+# reduce the button/LED gap put the LEDs nearer the cavity's edge instead
+# of its centre) -- up to 6.75mm of real material to clear across the four
+# holes' footprints, well past the old inside=2.0 reach. Deepened to
+# inside=8.0 to match.
 BULB_DIA = 3.2
 PITCH = 4.5
 BULB_CENTER = scale_pt([0, 46, 83.71])
 BULB_N = np.array([0.056, -0.282, 0.958])
 offsets = (np.arange(4) - 1.5) * PITCH
-bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, inside=2.0, outside=6.0) for off in offsets]
+bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, inside=8.0, outside=6.0) for off in offsets]
 
 print("all cutters built", time.time()-t0)
 
