@@ -16,15 +16,14 @@ mesh so they'll carry over correctly to a rescaled build, but I'll still
 re-run the full validation (chin clearance included) rather than assume
 it holds at a different scale.
 
-## Status: front shell only, pending your size check
+## Status: front + back updated, heart cap still pending your size check
 
-Per your request, only `stl/front_shell.stl` reflects the latest changes
-below — **`back_shell.stl` and `heart_cap.stl` in this repo are still the
-previous pass** (correct 100mm size, but the heart cap not yet resized to
-match — see below). Once you've confirmed the front's size/proportions,
-say so and I'll regenerate the back shell (which has no button/LED
-features of its own, so it isn't expected to change) and rebuild the heart
-cap at a larger size to match the bigger monkey.
+`stl/front_shell.stl` and `stl/back_shell.stl` both now reflect everything
+below, including the new front/back interlocking lip (which needed both
+halves rebuilt together). **`heart_cap.stl` is still the previous pass** —
+it wasn't touched since it's sized to the real button hardware, not the
+shell, and you asked to hold off resizing its visible shape until the
+overall body size is settled.
 
 **Latest front-shell changes:**
 - **Button hole moved down — further than a small nudge, once the chin
@@ -80,6 +79,84 @@ cap at a larger size to match the bigger monkey.
   heart shape around that fixed-size pocket can grow to look
   proportionate on the bigger body. Held off on this until the shell size
   itself is confirmed, per your ask.
+
+## Button/LED recesses deepened further — for real access, not just looks
+
+After the fix above, the button/LED holes were genuinely open, but only
+just — `inside=8.0` breaches the general torso cavity's own near wall by
+a couple of mm, so what's actually reachable right behind the opening was
+still only ~2-4mm of clearance before hitting that cavity's own curved
+surface. You clarified the real goal was being able to **physically
+access** the button and LEDs (not just a cosmetic "does it look open"
+question), so deepened both to `inside=20.0` — checked first that the
+torso cavity's far wall sits at 27.75mm+ depth across the button's own
+footprint (29mm+ for the LEDs), so 20mm leaves 7-10mm of margin before
+that far wall everywhere. Re-verified on the actual exported shell: the
+open corridor behind the button before hitting anything else is now
+**11.8mm** (was ~2-4mm).
+
+Worth knowing: the CAD preview (OpenSCAD) looks almost identical before
+and after this change. That's expected, not a sign nothing happened —
+OpenSCAD's preview lighting doesn't simulate real depth-based shadow
+falloff, so a shallow and a deep recess can shade the same way in a
+simple render even though the actual geometry is very different. The real
+print will show the difference; the CAD preview just isn't the right tool
+to see it.
+
+## Front/back interlocking lip
+
+Added a registration lip in addition to the 2 alignment dowels, per your
+ask: a thin tongue on the back piece nests into a matching pocket on the
+front piece, running around the main torso+head silhouette at the split
+seam. Specs: 2mm wide, 1mm deep, with a 0.15mm clearance gap on the pocket
+so the tongue actually fits without needing to be forced.
+
+- Computed from the **real cross-section** of the hollowed body at the
+  split plane (not a guessed shape), so it follows the actual silhouette
+  at that exact depth, including correctly stepping around the general
+  torso cavity's own boundary where it comes close to the skin.
+- **Only applied to the main torso+head region**, not the arms — tried it
+  on the arm cross-sections too (area ~337mm² each, vs. ~1398mm² for the
+  main body) but their thinner, more complex shape produced small
+  disconnected fragments after the ring cut, confirmed via the same
+  `split(only_watertight=False)` check used throughout this project (not
+  a reload artifact — checked the in-memory result directly). The main
+  body is both the biggest, most visible seam and the one that benefits
+  most from a registration lip; arms/legs keep relying on the dowels
+  alone, same as before.
+- **Ordering mattered**: originally added the lip after the alignment
+  dowels (matching the order those were already in the script) and got
+  real fragmentation (12 front pieces, 3 back pieces) — the upper dowel
+  sits close to where the lip ring runs, and cutting the dowel hole first
+  then the lip pocket on top of it produced badly-behaved overlapping
+  cuts. Moved the lip to run right after the front/back split and the
+  dowels afterward — clean result (2 pieces each, both just the same
+  known negligible boolean-precision specks documented below).
+
+## Regenerating
+
+`build.py` is the actual script used (trimesh + manifold3d + shapely for
+the lip's 2D ring geometry, consolidated single-boolean-difference
+technique). All cavity, button, LED, dowel, split, and lip parameters are
+named near the top. If you change `SCALE` again, **re-run the full
+validation** (fragmentation check via `split(only_watertight=False)`,
+wall-thickness sampling, XIAO/CR2032 fit, chin clearance against the
+actual heart cap mesh, hole-openness ray-casts, and an OpenSCAD render of
+the actual exported STL) rather than assuming positions and box sizes
+tuned for one scale still hold at another — this build's own history
+(dowels, the split box size, the lip ordering) is the reason why.
+
+## Known negligible artifacts
+
+Both shells have one tiny disconnected fleck left over from the boolean
+operations — confirmed harmless, not real material:
+- Front: 256 faces, 3.6×1.8×0.045mm, near-zero/negative volume (a
+  numerical sliver right at the split seam).
+- Back: 4 faces, 0×0.08×0.08mm, same kind of artifact (present since the
+  first 100mm build).
+
+Neither is a printable chunk — both are flat, paper-thin degenerate
+triangle soup from floating-point boolean precision, not real geometry.
 
 ## Why 100mm
 

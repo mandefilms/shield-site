@@ -1,4 +1,5 @@
 import trimesh, numpy as np, time
+from shapely.geometry import Polygon
 t0=time.time()
 
 SCALE = 100.0/199.0
@@ -122,20 +123,26 @@ print("cavity union: watertight=", cavity.is_watertight, "pieces=", len(cavity.s
 # way at each step: still ~0 mm^3 touching at raw Y=75, fully clear (0
 # overlap, real margin) at raw Y=70 -- used that. Re-probed the actual
 # belly surface at Y=70 rather than assuming the old normal still applies.
-# FIXED: this hole wasn't actually open all the way through. `inside=3.0`
-# only cuts 3mm into the material from the surface, but the actual
-# distance from the button's surface point to the hollow torso cavity
-# behind it is up to 5.75mm across the button's own footprint (checked by
-# marching inward from several points across the disc, not just the
-# centre -- the surface/cavity aren't parallel so the depth varies across
-# the hole). The remaining ~2.75mm was an uncut membrane, so the "hole"
-# was a blind dimple with no opening into the interior -- exactly what you
-# were seeing. Deepened to inside=8.0, comfortable margin beyond the 5.75mm
-# actually needed.
+# FIXED (round 1): this hole wasn't actually open all the way through.
+# `inside=3.0` only cuts 3mm into the material, but the real distance to
+# the hollow torso cavity is up to 5.75mm across the button's own
+# footprint -- fixed by deepening to inside=8.0.
+#
+# DEEPENED FURTHER (round 2, for real access): 8mm only just breaches into
+# the torso cavity's own near wall, so what's actually visible/reachable
+# right behind the opening is that cavity wall itself, only ~2mm past the
+# breach point -- fine for "is it open" but not for physically reaching in
+# to work on the button/LEDs, which is what you actually wanted this for.
+# Checked the real room available first: the torso cavity's FAR wall sits
+# at 27.75mm+ depth everywhere across the button's footprint (29mm+ for
+# the LEDs) -- so deepened both to inside=20.0, giving a real ~20mm
+# straight corridor before opening into the general cavity, with 7-10mm
+# of margin still before that cavity's own far side. Also applied to the
+# LED holes below, not just the button.
 BUTTON_DIA = 14.04
 BUTTON_PT  = scale_pt([0, 70, 83.62])
 BUTTON_N   = np.array([-0.053, 0.316, 0.947])
-button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=8.0, outside=6.0)
+button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=20.0, outside=6.0)
 
 # ---------------------------------------------------------------------------
 # LED holes: 4x, 3.2mm dia (real size), 4.5mm pitch, lower belly. Nudged up
@@ -144,18 +151,19 @@ button_cutter = cyl_at(BUTTON_PT, BUTTON_N, BUTTON_DIA/2.0, inside=8.0, outside=
 # scaled centre distance, well over the button+bulb hole radii, learned
 # from the otter build where a tighter gap there was a fragility risk).
 # ---------------------------------------------------------------------------
-# FIXED: same blind-hole bug as the button. The bulb holes are actually
-# further from the cavity than the button now (moving both closer to
-# reduce the button/LED gap put the LEDs nearer the cavity's edge instead
-# of its centre) -- up to 6.75mm of real material to clear across the four
-# holes' footprints, well past the old inside=2.0 reach. Deepened to
-# inside=8.0 to match.
+# FIXED (round 1): same blind-hole bug as the button -- up to 6.75mm of
+# real material across the four holes' footprints, past the old
+# inside=2.0 reach. Deepened to inside=8.0.
+# DEEPENED FURTHER (round 2, for real access): same reasoning as the
+# button -- deepened to inside=20.0 for a real corridor, not just barely
+# breaching the cavity's near wall. Cavity's far wall confirmed at 28mm+
+# depth across all 4 holes' footprints, so 20mm keeps 8mm+ margin.
 BULB_DIA = 3.2
 PITCH = 4.5
 BULB_CENTER = scale_pt([0, 46, 83.71])
 BULB_N = np.array([0.056, -0.282, 0.958])
 offsets = (np.arange(4) - 1.5) * PITCH
-bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, inside=8.0, outside=6.0) for off in offsets]
+bulb_holes = [cyl_at(BULB_CENTER + np.array([1,0,0])*off, BULB_N, BULB_DIA/2.0, inside=20.0, outside=6.0) for off in offsets]
 
 print("all cutters built", time.time()-t0)
 
@@ -195,6 +203,80 @@ back  = work.intersection(half_space(-1), engine="manifold")
 print("split: front pieces=", len(front.split(only_watertight=False)),
       "back pieces=", len(back.split(only_watertight=False)), time.time()-t0)
 
+# ---------------------------------------------------------------------------
+# Front/back interlocking lip -- per your request, an actual registration
+# lip in addition to the 2 alignment dowels: a thin tongue on the back
+# piece nests into a matching (slightly oversized, for a real fit gap)
+# pocket on the front piece. Computed from the ACTUAL cross-section of the
+# hollowed body at the split plane (not a guessed shape), so it follows
+# the real silhouette at that exact depth.
+#
+# Only applied to the main torso+head region, not the arm cross-sections:
+# tried it there too (arm cross-section area ~337 each) but their
+# thinner/more complex shape produced small disconnected fragments after
+# the ring cut (confirmed via split() on the in-memory mesh, not a reload
+# artifact) -- the main body is the biggest, most visible seam and the one
+# that benefits most from a registration lip; arms/legs keep relying on
+# the dowels alone.
+# ---------------------------------------------------------------------------
+LIP_WIDTH = 2.0        # how wide the lip ring is, following the silhouette inward
+LIP_DEPTH = 1.0        # how far the tongue protrudes from back into front
+LIP_CLEARANCE = 0.15   # pocket is this much larger all round, for a real fit gap
+MIN_AREA = 500.0       # only the main torso+head region (area ~1398) qualifies
+MIN_SUBPOLY_AREA = 2.0 # drop tiny sliver sub-polygons the buffer op can spit out
+OVERLAP = 0.3          # extra reach INTO existing material so booleans weld/cut cleanly
+
+section = work.section(plane_origin=[0,0,SPLIT_Z], plane_normal=[0,0,1])
+planar, T2d = section.to_planar()
+
+tongue_solids, pocket_solids = [], []
+for poly in planar.polygons_full:
+    ext = Polygon(poly.exterior.coords)
+    if ext.area < MIN_AREA:
+        continue
+    # Use the real solid shape (exterior minus interior holes -- e.g. the
+    # general torso cavity poking into this same cross-section), not just
+    # the exterior outline, so the ring naturally narrows/avoids any spot
+    # where the cavity already comes close to the skin.
+    solid_poly = Polygon(poly.exterior.coords, [ring.coords for ring in poly.interiors]).buffer(0)
+    inner = solid_poly.buffer(-LIP_WIDTH, join_style=2)
+    if inner.is_empty or inner.area < 5.0:
+        continue
+    tongue_ring = solid_poly.difference(inner)
+    pocket_outer = solid_poly.buffer(LIP_CLEARANCE, join_style=2)
+    pocket_inner = solid_poly.buffer(-LIP_WIDTH - LIP_CLEARANCE, join_style=2)
+    if pocket_inner.is_empty:
+        continue
+    pocket_ring = pocket_outer.difference(pocket_inner)
+
+    # tongue extrudes from -OVERLAP (into the back's existing material) to
+    # +LIP_DEPTH (into the front's territory); pocket from -OVERLAP to
+    # +LIP_DEPTH+LIP_CLEARANCE -- both need real overlap with existing
+    # material, not a 0-thickness seam, or they don't weld/cut cleanly
+    # (same lesson as the alignment dowels above).
+    for geom, target, z0, z1 in [(tongue_ring, tongue_solids, -OVERLAP, LIP_DEPTH),
+                                  (pocket_ring, pocket_solids, -OVERLAP, LIP_DEPTH+LIP_CLEARANCE)]:
+        polys = geom.geoms if hasattr(geom, "geoms") else [geom]
+        for p in polys:
+            if p.is_empty or p.area < MIN_SUBPOLY_AREA:
+                continue
+            path2d = trimesh.load_path(np.array(p.exterior.coords))
+            solid = path2d.extrude(z1 - z0)
+            if isinstance(solid, list):
+                solid = trimesh.util.concatenate(solid)
+            solid.apply_translation([0, 0, z0])
+            target.append(solid)
+
+tongue_world = trimesh.util.concatenate(tongue_solids)
+tongue_world.apply_transform(T2d)
+pocket_world = trimesh.util.concatenate(pocket_solids)
+pocket_world.apply_transform(T2d)
+
+back = back.union(tongue_world, engine="manifold")
+front = front.difference(pocket_world, engine="manifold")
+print("lip done: front pieces=", len(front.split(only_watertight=False)),
+      "back pieces=", len(back.split(only_watertight=False)), time.time()-t0)
+
 def dowel_cyl(pt, axis, r, h):
     c = trimesh.creation.cylinder(radius=r, height=h, sections=24)
     R = trimesh.geometry.align_vectors([0,0,1], axis)
@@ -220,6 +302,13 @@ def dowel_cyl(pt, axis, r, h):
 # that would NOT have printed as functional alignment pins. Repositioned
 # and each candidate individually verified solid + clear of every cavity
 # with a small ring of sample points, not just a single point.
+#
+# MOVED to run AFTER the lip (not before, as originally written): doing
+# the dowel hole/pin cuts before the lip caused extra fragmentation --
+# the upper dowel sits close to where the lip ring runs, and cutting the
+# dowel hole first then the lip pocket on top of it produced more complex,
+# badly-behaved overlapping cuts than doing the lip first and the (much
+# smaller, simpler) dowel features afterward.
 DOWEL_XY = [(8.0, 10.0), (0.0, 47.5)]
 pins = trimesh.util.concatenate([dowel_cyl((dx,dy,SPLIT_Z+0.6), [0,0,1], 1.1, 2.6) for dx,dy in DOWEL_XY])
 back = back.union(pins, engine="manifold")
