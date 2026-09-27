@@ -500,14 +500,11 @@
     }
     .magnet-tray[hidden] { display: none; }
     @media (max-width: 420px) { .magnet-tray { grid-template-columns: repeat(5, 1fr); } }
-    @media (max-width: 420px) { #letter-tray { grid-template-columns: repeat(6, 1fr); } }
     .tray-slot {
       aspect-ratio: 1 / 1; border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
     }
     .tray-slot:empty { box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.08); }
-    .letters-divider { grid-column: 1 / -1; font-size: 0.75rem; color: rgba(255,255,255,0.5); margin: 6px 0 2px; }
-    .magnet.letter.spawner .glyph { font-size: 24px; }
     @media (max-width: 420px) {
       .drawer-tab, .dock-clear { padding: 6px 10px; font-size: 0.78rem; }
       .drawer-bar { gap: 6px; }
@@ -972,7 +969,6 @@
               <label for="dock-name">Name</label>
               <input id="dock-name" type="text" value="Mya" maxlength="8" autocomplete="off" spellcheck="false" />
             </div>
-            <div class="letters-divider">A to Z (use as many as you like)</div>
           </div>
           <p class="visually-hidden" id="dock-status" aria-live="polite"></p>
         </div>
@@ -1243,7 +1239,6 @@
       status.textContent = el.dataset.label + ' added to the dock.';
     };
     const toTray = (el) => {
-      if (el.dataset.spawned) { el.remove(); return; }
       el.classList.remove('placed', 'snap');
       el.style.left = el.style.top = '';
       el.slot_.appendChild(el);
@@ -1286,8 +1281,7 @@
       return el;
     };
 
-    // Name letters sit above the A to Z; changing the name only replaces these
-    const divider = letterTray.querySelector('.letters-divider');
+    // Letters that spell the name; changing the name replaces them
     function buildLetters() {
       document.querySelectorAll('.magnet.name-letter').forEach(m => m.remove());
       letterTray.querySelectorAll('.tray-slot.name-slot').forEach(s => s.remove());
@@ -1297,34 +1291,12 @@
         const el = letterMagnet(ch, i);
         el.classList.add('name-letter');
         // each letter has its own spot, so tapping them in any order still spells the name
-        addMagnet(letterTray, el, () => [spots[i], ...spots, ...pictureSpots], divider);
+        addMagnet(letterTray, el, () => [spots[i], ...spots, ...pictureSpots]);
         el.slot_.classList.add('name-slot');
       });
     }
     nameInput.addEventListener('input', buildLetters);
     buildLetters();
-
-    // A to Z: each tile hands out a fresh copy, so a letter can be used more than once
-    const extraLetterSpots = [...[18, 28, 38, 48, 58, 68, 78].map(x => [x, 67]), ...frontCols.map(x => [x, 84])];
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach((ch, i) => {
-      const tile = letterMagnet(ch, i);
-      tile.classList.add('spawner');
-      tile.setAttribute('aria-label', 'Letter ' + ch + '. Tap to add one to the dock.');
-      const slot = document.createElement('span');
-      slot.className = 'tray-slot'; slot.appendChild(tile); letterTray.appendChild(slot);
-      const spawn = (x, y) => {
-        const el = letterMagnet(ch, i);
-        el.dataset.spawned = '1';
-        base.appendChild(el);
-        draggable(el,
-          (p) => { if (p && onDock(p[0], p[1])) place(el, p[0], p[1]); else toTray(el); },
-          () => { toTray(el); status.textContent = 'Letter ' + ch + ' taken off the dock.'; });
-        place(el, x, y);
-      };
-      draggable(tile,
-        (p) => { if (p && onDock(p[0], p[1])) spawn(p[0], p[1]); },
-        () => { const [x, y] = freeSpot([...extraLetterSpots, ...pictureSpots]); spawn(x, y); });
-    });
 
     // Tabs
     const tabs = [[document.getElementById('tab-magic'), pictureTray], [document.getElementById('tab-adventure'), adventureTray], [document.getElementById('tab-letters'), letterTray]];
