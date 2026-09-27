@@ -83,7 +83,7 @@
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-decoration: none; color: var(--white); }
     .nav-logo-icon { width: 44px; height: 44px; overflow: hidden; border-radius: 8px; flex-shrink: 0; display: block; }
-    .nav-logo-icon img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transform: scale(1.25); display: block; }
+    .nav-logo-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
     .nav-cta {
       background: var(--coral);
       color: var(--white);
@@ -232,7 +232,7 @@
     /* ── PERSONALIZE ──────────────────────────────── */
     #personalize { position: relative; overflow: hidden; }
     .personalize-demo { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
-    .personalize-mascot { width: clamp(80px, 14vw, 120px); height: auto; transition: opacity 0.45s ease; }
+    .personalize-mascot { width: clamp(110px, 18vw, 160px); height: auto; transition: opacity 0.45s ease; filter: drop-shadow(0 0 16px rgba(255,255,255,0.18)); }
     .personalize-name { font-family: 'Fraunces', serif; font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; }
     .personalize-name .child {
       font-style: italic;
@@ -333,7 +333,7 @@
     .step-body { padding-top: 10px; }
     .step-body h3 { font-size: 1.2rem; margin-bottom: 8px; }
     .step-body p  { font-size: 0.95rem; opacity: 0.72; line-height: 1.65; }
-    .step-mascot { width: 130px; height: 130px; object-fit: contain; margin-bottom: 12px; display: block; }
+    .step-mascot { width: 130px; height: 130px; object-fit: contain; margin-bottom: 12px; display: block; filter: drop-shadow(0 0 14px rgba(255,255,255,0.18)); }
 
     /* ── DEVICE ───────────────────────────────────── */
     .device-inner {
@@ -638,7 +638,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo"><span class="nav-logo-icon"><img src="shield-prototype.png" alt="Shield" /></span><span>Shield</span></a>
+  <a href="#hero" class="nav-logo"><span class="nav-logo-icon"><img src="shield-mya-otter-logo.webp" alt="Shield" /></span><span>Shield</span></a>
   <a href="#cta" class="nav-cta">Get Early Access</a>
 </nav>
 
@@ -667,7 +667,7 @@
         </div>
       </div>
       <div class="hero-visual">
-        <img src="shield-hand-hold.png" alt="A hand holding the Shield device, showing its size" class="hero-device-photo" id="hero-device-img" />
+        <img src="shield-hand-hold-mya.webp" alt="A hand holding Mya's otter Shield, showing its size" class="hero-device-photo" id="hero-device-img" />
       </div>
   </div>
 </section>
@@ -681,7 +681,7 @@
       <p style="margin:14px auto 0; max-width:560px;">Named after them, made just for them.</p>
     </div>
     <div class="personalize-demo reveal">
-      <img src="Main logo.png" alt="" class="personalize-mascot" id="personalize-mascot-img" />
+      <img src="shield-mya-otter.webp" alt="" class="personalize-mascot" id="personalize-mascot-img" />
       <span class="personalize-name"><span class="child visible" id="personalize-child-name">Mya's</span> Shield</span>
     </div>
   </div>
@@ -711,7 +711,7 @@
   <div class="container">
     <div class="security-inner reveal">
       <div class="security-visual">
-        <img src="shield-prototype.png" alt="The Shield device" class="security-photo" />
+        <img src="shield-mariessa-toucan-gold.webp" alt="Mariessa's toucan Shield" class="security-photo" />
       </div>
       <div class="security-text">
         <div class="tag tag--blue">Private &amp; Secure</div>
@@ -747,7 +747,7 @@
       <div class="step">
         <div class="step-num coral">1</div>
         <div class="step-body">
-          <img src="mascot-cat.png" alt="" class="step-mascot">
+          <img src="shield-sophie-otter.webp" alt="" class="step-mascot">
           <h3>Attach it</h3>
           <p>Shield is designed to be attached to your child's clothing or worn discreetly.</p>
         </div>
@@ -755,7 +755,7 @@
       <div class="step">
         <div class="step-num yellow">2</div>
         <div class="step-body">
-          <img src="mascot-dog.png" alt="" class="step-mascot">
+          <img src="shield-william-dog.webp" alt="" class="step-mascot">
           <h3>Set your safe zones and preferences</h3>
           <p>Draw zones around school, home, or anywhere your child should be. Safe zones are just one part of how Shield works. You can also set how often you receive location updates with the "out and about" feature, giving you the right amount of information without being overwhelmed. Shield will also learn your family's daily patterns over time and alert you only when something genuinely seems off.</p>
         </div>
@@ -763,7 +763,7 @@
       <div class="step">
         <div class="step-num mint">3</div>
         <div class="step-body">
-          <img src="mascot-dolphin.png" alt="" class="step-mascot">
+          <img src="shield-tom-dolphin.webp" alt="" class="step-mascot">
           <h3>Live your life</h3>
           <p>You don't need to stare at a map. Shield runs quietly, checks in silently, and stays out of your way. Check in when you want to, or just let it watch.</p>
         </div>
@@ -771,7 +771,7 @@
       <div class="step">
         <div class="step-num blue">4</div>
         <div class="step-body">
-          <img src="mascot-butterfly.png" alt="" class="step-mascot">
+          <img src="shield-sarah-butterfly.webp" alt="" class="step-mascot">
           <h3>Get alerted only when it matters</h3>
           <p>If something's off, whether your child left a zone, didn't arrive at school, or pressed the SOS button, you'll know instantly. With location, time and device battery life.</p>
         </div>
@@ -859,15 +859,15 @@
       <div class="routines-card">
         <div class="routines-inner">
           <div class="routines-visual">
-            <img src="shield-dog-3d.webp" alt="Dog shield design" class="routines-photo">
+            <img src="shield-sophie-flamingo.webp" alt="Sophie's flamingo Shield" class="routines-photo">
           </div>
           <div class="routines-content">
             <div class="coming-soon-badge">✦ Coming Soon</div>
             <h2>Shield will learn your family's routine.</h2>
             <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal: and alert you only when something genuinely isn't.</p>
             <div class="routines-features">
-              <span><img src="mascot-butterfly.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
-              <span><img src="mascot-dog.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
+              <span><img src="shield-sarah-butterfly.webp" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
+              <span><img src="shield-william-dog.webp" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
             </div>
           </div>
         </div>
@@ -898,7 +898,10 @@
     </div>
     <div class="story-card reveal">
       <div class="story-authors">
-        <img src="shield-flamingo-3d.webp" alt="" style="width:72px;height:72px;object-fit:contain;">
+        <div style="display:flex;flex-shrink:0;">
+          <img src="shield-mariessa-toucan-terracotta.webp" alt="" style="width:64px;height:64px;object-fit:contain;">
+          <img src="shield-evan-monkey.webp" alt="" style="width:64px;height:64px;object-fit:contain;margin-left:6px;">
+        </div>
         <div>
           <div class="authors-name">Mariessa and Evan</div>
           <div class="authors-title">Auntie Reesa and Uncle Evan, Founders of Shield</div>
@@ -918,7 +921,7 @@
   <div class="blob blob-10"></div>
   <div class="container" style="position:relative;z-index:2;">
     <div class="reveal" style="text-align:center;">
-      <img src="Main logo.png" alt="Shield" class="cta-owl" style="width:80px;height:auto;" />
+      <img src="shield-mya-otter-logo.webp" alt="Shield" class="cta-owl" style="width:80px;height:auto;" />
       <div class="tag tag--coral">Early Access</div>
       <h2>Be the first to know when Shield is ready.</h2>
       <p>We're in the final stages of development. Leave your email and we'll reach out when we're ready to launch. Just one email when it matters.</p>
@@ -934,7 +937,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><img src="Main logo.png" alt="Shield" style="width:24px;height:auto;vertical-align:middle;margin-right:6px;" /> Shield <span>by MxE</span></div>
+  <div class="footer-logo"><img src="shield-mya-otter-logo.webp" alt="Shield" style="width:24px;height:auto;vertical-align:middle;margin-right:6px;" /> Shield <span>by MxE</span></div>
   <div class="footer-meta">
     Charlotte, NC &amp; London, UK<br>
     <a href="mailto:contact.myashield@gmail.com">contact.myashield@gmail.com</a>
@@ -964,8 +967,9 @@
 
   // Simple waitlist form handler
   // Rotating child name + matching mascot swap, shown in the "Made Theirs" section
-  const childNames = ["Mya's","Evan's","Mariessa's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Maya's","Allyssa's","Gurinder's","Sue's","Bernie's","Stella's","Krystal's","Rob's","Stan's"];
-  const mascotImgs = ["Main logo.png","mascot-butterfly.png","mascot-cat.png","mascot-dog.png","mascot-flamingo.png","mascot-zebra.png","mascot-dolphin.png","mascot-frog.png","mascot-monkey.png"];
+  // Each name is paired with the Shield that has that name printed on it
+  const childNames = ["Mya's","Evan's","Sophie's","Tom's","Mariessa's","William's","Sarah's","Sophie's","Mariessa's"];
+  const mascotImgs = ["shield-mya-otter.webp","shield-evan-monkey.webp","shield-sophie-otter.webp","shield-tom-dolphin.webp","shield-mariessa-toucan-terracotta.webp","shield-william-dog.webp","shield-sarah-butterfly.webp","shield-sophie-flamingo.webp","shield-mariessa-toucan-gold.webp"];
   // Preload all mascot images so swaps are instant
   mascotImgs.forEach(src => { const i = new Image(); i.src = src; });
   let nameIndex = 0;
