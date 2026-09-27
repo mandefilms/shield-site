@@ -152,7 +152,7 @@
       .hero-copy .hero-note   { order: 7; }
       .hero-copy .hero-badges { order: 8; }
       .hero-visual { order: -1; flex: none; width: 100%; height: auto; overflow: visible; }
-      .hero-device-photo { position: static; width: 70%; max-width: 320px; height: auto; margin: 0 auto; }
+      .hero-device-photo { position: static; width: 88%; max-width: 460px; height: auto; margin: 0 0 0 auto; }
       .hero-form { justify-content: center; }
       .hero-badges { justify-content: center; }
     }
@@ -619,6 +619,13 @@
       display: flex; align-items: center; gap: 14px;
       margin-bottom: 28px;
     }
+    .story-photo {
+      width: 150px; height: auto; aspect-ratio: 4 / 3; flex-shrink: 0;
+      object-fit: cover; border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(30,58,95,0.15);
+    }
+    .story-shields { display: flex; gap: 4px; margin-top: 8px; }
+    .story-shields img { width: 36px; height: 36px; object-fit: contain; }
     .authors-emoji { font-size: 2rem; }
     .authors-name { font-weight: 700; font-size: 1rem; color: var(--text-dark); }
     .authors-title { font-size: 0.82rem; color: var(--text-mid); }
@@ -696,6 +703,7 @@
       section { padding: 70px 0; }
       .routines-card { padding: 32px 24px; }
       .story-card { padding: 32px 24px; }
+      .story-photo { width: 112px; }
       .diff-grid { grid-template-columns: 1fr; }
       .nav-cta { font-size: 0.72rem; padding: 7px 13px; }
       .hero-form input, .cta-form input { flex: 1 1 160px; padding: 11px 16px; font-size: 0.92rem; }
@@ -736,7 +744,7 @@
         </div>
       </div>
       <div class="hero-visual">
-        <img src="shield-hand-hold-mya.webp" alt="A hand holding Mya's otter Shield, showing its size" class="hero-device-photo" id="hero-device-img" />
+        <img src="shield-hand-hold-main.webp" alt="A hand holding Mya's otter Shield, showing its size" class="hero-device-photo" id="hero-device-img" />
       </div>
   </div>
 </section>
@@ -973,13 +981,14 @@
     </div>
     <div class="story-card reveal">
       <div class="story-authors">
-        <div style="display:flex;flex-shrink:0;">
-          <img src="shield-mariessa-toucan-terracotta.webp" alt="" style="width:64px;height:64px;object-fit:contain;">
-          <img src="shield-evan-monkey.webp" alt="" style="width:64px;height:64px;object-fit:contain;margin-left:6px;">
-        </div>
+        <img src="mariessa-evan.webp" alt="Mariessa and Evan" class="story-photo" loading="lazy" width="480" height="360" />
         <div>
           <div class="authors-name">Mariessa and Evan</div>
           <div class="authors-title">Auntie Reesa and Uncle Evan, Founders of Shield</div>
+          <div class="story-shields">
+            <img src="shield-mariessa-toucan-terracotta.webp" alt="">
+            <img src="shield-evan-monkey.webp" alt="">
+          </div>
         </div>
       </div>
       <p>Mariessa and Evan are a husband and wife filmmaking team who've spent years working in remote locations across the world. Through that work, they've seen how quickly things can go wrong. Silently, suddenly, and in ways designed to go unnoticed.</p>
@@ -1122,7 +1131,7 @@
     const setDocked = (on) => {
       shield.classList.toggle('docked', on);
       stage.classList.toggle('is-charging', on);
-      dockState.textContent = on ? 'Tucked in \u00b7 charging' : 'Tap the Shield to tuck it in';
+      dockState.textContent = on ? 'Charging' : 'Tap the Shield to tuck it in';
       shield.setAttribute('aria-label', on ? "Mya's Shield, charging in the dock. Tap to take it out." : "Mya's Shield. Tap to tuck it into the dock.");
       status.textContent = on ? 'Shield tucked in and charging.' : 'Shield taken out of the dock.';
     };
