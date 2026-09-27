@@ -771,7 +771,7 @@
   <div class="container">
     <div class="device-inner reveal">
       <div class="device-visual">
-        <img src="shield-parent-child.jpg" alt="A parent attaching the Shield device to their child's shirt collar" class="device-photo" />
+        <img src="shield-parent-child-small.webp" alt="A parent attaching the Shield device to their child's shirt collar" class="device-photo" />
       </div>
       <div class="device-text">
         <div class="tag tag--mint">The Device</div>
@@ -921,7 +921,7 @@
           <p class="visually-hidden" id="dock-status" aria-live="polite"></p>
         </div>
         <div class="battery-popup reveal-pop">
-          <span class="battery-text" id="dock-state">Tap the Shield to tuck it in</span>
+          <span class="battery-text" id="dock-state">Tap the Shield to start charging</span>
         </div>
       </div>
       <div class="dock-text">
@@ -1131,7 +1131,7 @@
     const setDocked = (on) => {
       shield.classList.toggle('docked', on);
       stage.classList.toggle('is-charging', on);
-      dockState.textContent = on ? 'Charging' : 'Tap the Shield to tuck it in';
+      dockState.textContent = on ? 'Charging' : 'Tap the Shield to start charging';
       shield.setAttribute('aria-label', on ? "Mya's Shield, charging in the dock. Tap to take it out." : "Mya's Shield. Tap to tuck it into the dock.");
       status.textContent = on ? 'Shield tucked in and charging.' : 'Shield taken out of the dock.';
     };
