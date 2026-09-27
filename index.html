@@ -619,6 +619,12 @@
       display: flex; align-items: center; gap: 14px;
       margin-bottom: 28px;
     }
+    .story-photo {
+      display: block; width: calc(100% + 88px); max-width: none; height: auto;
+      margin: -48px -44px 32px;
+      aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 0%;
+      border-radius: calc(var(--radius) + 4px) calc(var(--radius) + 4px) 0 0;
+    }
     .authors-emoji { font-size: 2rem; }
     .authors-name { font-weight: 700; font-size: 1rem; color: var(--text-dark); }
     .authors-title { font-size: 0.82rem; color: var(--text-mid); }
@@ -696,6 +702,7 @@
       section { padding: 70px 0; }
       .routines-card { padding: 32px 24px; }
       .story-card { padding: 32px 24px; }
+      .story-photo { width: calc(100% + 48px); margin: -32px -24px 24px; aspect-ratio: 4 / 3; }
       .diff-grid { grid-template-columns: 1fr; }
       .nav-cta { font-size: 0.72rem; padding: 7px 13px; }
       .hero-form input, .cta-form input { flex: 1 1 160px; padding: 11px 16px; font-size: 0.92rem; }
@@ -972,6 +979,7 @@
       <h2>Built by a family, for families.</h2>
     </div>
     <div class="story-card reveal">
+      <img src="mariessa-evan.webp" alt="Mariessa and Evan on a waterfront boardwalk with a city skyline behind them" class="story-photo" loading="lazy" width="1100" height="810" />
       <div class="story-authors">
         <div style="display:flex;flex-shrink:0;">
           <img src="shield-mariessa-toucan-terracotta.webp" alt="" style="width:64px;height:64px;object-fit:contain;">
