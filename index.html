@@ -509,14 +509,12 @@
       .drawer-tab, .dock-clear { padding: 6px 10px; font-size: 0.78rem; }
       .drawer-bar { gap: 6px; }
     }
-    .name-row { display: flex; gap: 8px; align-items: center; grid-column: 1 / -1; margin-bottom: 4px; }
-    .name-row label { font-size: 0.8rem; color: rgba(255,255,255,0.65); }
-    .name-row input {
-      flex: 1; min-width: 0; background: rgba(255,255,255,0.08); color: var(--white);
-      border: 1px solid rgba(255,255,255,0.15); border-radius: 100px; padding: 6px 12px;
-      font: inherit; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em;
+    /* A few letter magnets lying on the floor in front of the dock */
+    .floor-letters { position: relative; height: clamp(46px, 13vw, 64px); margin-top: 6px; }
+    .floor-slot {
+      position: absolute; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scaleY(0.62);
     }
-    .name-row input:focus { outline: none; border-color: var(--yellow); }
+    .floor-slot .glyph { font-size: clamp(32px, 9vw, 40px) !important; }
 
     .magnet {
       background: none; border: 0; padding: 4px; margin: 0;
@@ -954,22 +952,16 @@
               <img src="shield-mya-otter.webp" alt="" draggable="false" />
             </button>
           </div>
+          <div class="floor-letters" id="floor-letters" aria-label="Letter magnets"></div>
           <div class="drawer-bar">
             <div class="drawer-tabs" role="tablist" aria-label="Magnet sets">
               <button type="button" class="drawer-tab" role="tab" aria-selected="true" aria-controls="magnet-tray" id="tab-magic">Magic</button>
               <button type="button" class="drawer-tab" role="tab" aria-selected="false" aria-controls="adventure-tray" id="tab-adventure">Adventure</button>
-              <button type="button" class="drawer-tab" role="tab" aria-selected="false" aria-controls="letter-tray" id="tab-letters">Letters</button>
             </div>
             <button type="button" class="dock-clear" id="dock-clear">Clear dock</button>
           </div>
           <div class="magnet-tray" id="magnet-tray" role="tabpanel" aria-labelledby="tab-magic"></div>
           <div class="magnet-tray" id="adventure-tray" role="tabpanel" aria-labelledby="tab-adventure" hidden></div>
-          <div class="magnet-tray" id="letter-tray" role="tabpanel" aria-labelledby="tab-letters" hidden>
-            <div class="name-row">
-              <label for="dock-name">Name</label>
-              <input id="dock-name" type="text" value="Mya" maxlength="8" autocomplete="off" spellcheck="false" />
-            </div>
-          </div>
           <p class="visually-hidden" id="dock-status" aria-live="polite"></p>
         </div>
         <div class="battery-popup reveal-pop">
@@ -1196,8 +1188,7 @@
     // The magnets
     const pictureTray = tray;
     const adventureTray = document.getElementById('adventure-tray');
-    const letterTray = document.getElementById('letter-tray');
-    const nameInput = document.getElementById('dock-name');
+    const floor = document.getElementById('floor-letters');
     // [file, label, set]; .svg magnets are drawn upright, the .webp ones are photographed lying flat
     const magnets = [
       ['unicorn-pink.webp', 'Pink unicorn', 'magic'], ['heart-magenta.webp', 'Pink heart', 'magic'],
@@ -1216,11 +1207,11 @@
     // Neat grid of spots: two rows on the front face, four on the top either side of the cradle
     const frontRows = [64, 82], frontCols = [15, 29, 43, 57, 71, 85];
     const topSpots = [[19, 42], [81, 42], [28, 37], [72, 37]];
-    const pictureSpots = [...frontCols.map(x => [x, 82]), ...topSpots, ...frontCols.map(x => [x, 64])];
+    const pictureSpots = [...frontCols.map(x => [x, 84]), ...topSpots, ...frontCols.map(x => [x, 64])];
     // Letters line up across the middle of the front, centred on the dock
     const letterSpots = (n) => {
       const gap = n > 5 ? 9 : 11, start = 50 - (n - 1) * gap / 2;
-      return Array.from({ length: n }, (_, i) => [start + i * gap, 67]);
+      return Array.from({ length: n }, (_, i) => [start + i * gap, 63]);
     };
     // Area of the dock a magnet can stick to, leaving the Shield cradle clear
     const onDock = (x, y) => x > 3 && x < 97 && y > 30 && y < 95 && !(x > 36 && x < 64 && y < 45);
@@ -1271,7 +1262,7 @@
       addMagnet(set === 'magic' ? pictureTray : adventureTray, el, () => pictureSpots);
     });
 
-    // Letter magnets spell the child's name
+    // Letter magnets: chunky coloured letters
     const letterMagnet = (ch, i) => {
       const [c, d] = letterColours[i % letterColours.length];
       const el = document.createElement('button');
@@ -1281,25 +1272,19 @@
       return el;
     };
 
-    // Letters that spell the name; changing the name replaces them
-    function buildLetters() {
-      document.querySelectorAll('.magnet.name-letter').forEach(m => m.remove());
-      letterTray.querySelectorAll('.tray-slot.name-slot').forEach(s => s.remove());
-      const letters = (nameInput.value.toUpperCase().match(/[A-Z]/g) || []).slice(0, 8);
-      const spots = letterSpots(letters.length);
-      letters.forEach((ch, i) => {
-        const el = letterMagnet(ch, i);
-        el.classList.add('name-letter');
-        // each letter has its own spot, so tapping them in any order still spells the name
-        addMagnet(letterTray, el, () => [spots[i], ...spots, ...pictureSpots]);
-        el.slot_.classList.add('name-slot');
-      });
-    }
-    nameInput.addEventListener('input', buildLetters);
-    buildLetters();
+    // Letters lying on the floor; tapped ones line up in order across the front of the dock
+    const floorLetters = [['M', 11, 42, -14], ['Y', 25, 62, 9], ['A', 39, 40, -6], ['E', 65, 58, 12], ['S', 83, 42, -10]];
+    const floorSpots = letterSpots(floorLetters.length);
+    floorLetters.forEach(([ch, x, y, rot], i) => {
+      const el = letterMagnet(ch, i);
+      addMagnet(floor, el, () => [floorSpots[i], ...floorSpots, ...pictureSpots]);
+      el.slot_.className = 'floor-slot';
+      el.slot_.style.left = x + '%'; el.slot_.style.top = y + '%';
+      el.slot_.style.setProperty('--rot', rot + 'deg');
+    });
 
     // Tabs
-    const tabs = [[document.getElementById('tab-magic'), pictureTray], [document.getElementById('tab-adventure'), adventureTray], [document.getElementById('tab-letters'), letterTray]];
+    const tabs = [[document.getElementById('tab-magic'), pictureTray], [document.getElementById('tab-adventure'), adventureTray]];
     tabs.forEach(([tab, panel]) => tab.addEventListener('click', () => {
       tabs.forEach(([t, p]) => { const on = t === tab; t.setAttribute('aria-selected', on); p.hidden = !on; });
     }));
