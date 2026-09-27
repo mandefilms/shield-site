@@ -152,7 +152,7 @@
       .hero-copy .hero-note   { order: 7; }
       .hero-copy .hero-badges { order: 8; }
       .hero-visual { order: -1; flex: none; width: 100%; height: auto; overflow: visible; }
-      .hero-device-photo { position: static; width: 70%; max-width: 320px; height: auto; margin: 0 auto; }
+      .hero-device-photo { position: static; width: 88%; max-width: 460px; height: auto; margin: 0 0 0 auto; }
       .hero-form { justify-content: center; }
       .hero-badges { justify-content: center; }
     }
@@ -736,7 +736,7 @@
         </div>
       </div>
       <div class="hero-visual">
-        <img src="shield-hand-hold-mya.webp" alt="A hand holding Mya's otter Shield, showing its size" class="hero-device-photo" id="hero-device-img" />
+        <img src="shield-hand-hold-main.webp" alt="A hand holding Mya's otter Shield, showing its size" class="hero-device-photo" id="hero-device-img" />
       </div>
   </div>
 </section>
@@ -1122,7 +1122,7 @@
     const setDocked = (on) => {
       shield.classList.toggle('docked', on);
       stage.classList.toggle('is-charging', on);
-      dockState.textContent = on ? 'Tucked in \u00b7 charging' : 'Tap the Shield to tuck it in';
+      dockState.textContent = on ? 'Charging' : 'Tap the Shield to tuck it in';
       shield.setAttribute('aria-label', on ? "Mya's Shield, charging in the dock. Tap to take it out." : "Mya's Shield. Tap to tuck it into the dock.");
       status.textContent = on ? 'Shield tucked in and charging.' : 'Shield taken out of the dock.';
     };
