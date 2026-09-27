@@ -425,39 +425,67 @@
       display: flex; flex-direction: column; align-items: center;
       gap: 20px; position: relative;
     }
-    .dock-demo {
-      position: relative;
-      width: clamp(180px, 32vw, 300px);
+    .dock-stage {
+      width: 100%; max-width: 520px;
+      background: radial-gradient(ellipse 60% 45% at 50% 22%, rgba(255,196,110,0.32), rgba(255,196,110,0) 70%), #2A2A2D;
+      border-radius: var(--radius);
+      padding: 28px 18px 18px;
+      box-shadow: 0 14px 44px rgba(30,58,95,0.22);
     }
-    .dock-shield {
-      position: relative; width: 100%; aspect-ratio: 3 / 3.4;
-      background: linear-gradient(160deg, var(--blue-light) 0%, var(--navy) 72%);
-      clip-path: polygon(50% 0%, 100% 18%, 100% 72%, 50% 100%, 0% 72%, 0% 18%);
+    .dock-base { position: relative; width: 100%; user-select: none; -webkit-user-select: none; }
+    .dock-base > img { width: 100%; height: auto; display: block; pointer-events: none; }
+    .magnet-tray {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+      margin-top: 18px; padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    @media (max-width: 420px) { .magnet-tray { grid-template-columns: repeat(5, 1fr); } }
+    .tray-slot {
+      aspect-ratio: 1 / 1; border-radius: 12px;
+      background: rgba(255,255,255,0.04);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 10px 40px rgba(30,58,95,0.25);
     }
-    .dock-device {
-      width: 44%; aspect-ratio: 5 / 7;
-      background: var(--white); border-radius: 16px;
+    .magnet {
+      background: none; border: 0; padding: 4px; margin: 0;
+      cursor: grab; touch-action: none;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.6rem; color: var(--navy);
-      box-shadow: inset 0 0 0 3px rgba(30,58,95,0.08);
+      width: 100%; height: 100%;
+      -webkit-tap-highlight-color: transparent;
     }
-    .dock-magnet { position: absolute; width: 16%; aspect-ratio: 1 / 1; border-radius: 50%; border: 3px solid rgba(255,255,255,0.65); }
-    .dock-magnet.coral  { background: var(--coral);  top: 16%; left: 22%; }
-    .dock-magnet.yellow { background: var(--yellow); top: 24%; right: 20%; }
-    .dock-magnet.mint   { background: var(--mint);   bottom: 18%; left: 26%; }
-    .dock-light {
-      position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%);
-      width: 14px; height: 14px; border-radius: 50%;
-      background: var(--mint); box-shadow: 0 0 18px 6px rgba(107,203,119,0.55);
-      animation: dockpulse 2.4s ease-in-out infinite;
+    .magnet img {
+      width: 100%; height: auto; display: block; pointer-events: none;
+      filter: drop-shadow(0 3px 3px rgba(0,0,0,0.35));
     }
-    @keyframes dockpulse {
-      0%, 100% { opacity: 0.5; }
-      50%       { opacity: 1; }
+    .magnet:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; border-radius: 8px; }
+    .magnet.placed {
+      position: absolute; width: 13%; height: auto; padding: 0;
+      transform: translate(-50%, -50%) scaleY(var(--sy, 1));
+      z-index: 2;
     }
-    .dock-demo img.dock-photo { width: 100%; height: auto; display: block; border-radius: var(--radius); }
+    .magnet.placed img { filter: drop-shadow(0 2px 2px rgba(0,0,0,0.22)); }
+    .magnet.snap img { animation: magnetsnap 0.35s ease-out; }
+    @keyframes magnetsnap {
+      0%   { transform: scale(1.3); }
+      60%  { transform: scale(0.94); }
+      100% { transform: scale(1); }
+    }
+    .magnet.dragging {
+      position: fixed; z-index: 1000; cursor: grabbing;
+      transform: translate(-50%, -50%) scale(1.12);
+      pointer-events: none;
+    }
+    .dock-controls {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-top: 12px; font-size: 0.82rem; color: rgba(255,255,255,0.6);
+    }
+    .dock-clear {
+      background: rgba(255,255,255,0.1); color: var(--white);
+      border: 0; border-radius: 100px; padding: 6px 14px;
+      font: inherit; font-weight: 600; cursor: pointer; flex-shrink: 0;
+    }
+    .dock-clear:hover { background: rgba(255,255,255,0.18); }
+    @media (prefers-reduced-motion: reduce) { .magnet.snap img { animation: none; } }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .battery-popup {
       display: flex; align-items: center; gap: 8px;
       background: var(--navy);
@@ -827,21 +855,23 @@
   <div class="container">
     <div class="dock-inner reveal">
       <div class="dock-visual">
-        <div class="dock-demo">
-          <div class="dock-shield">
-            <div class="dock-device">S</div>
-            <span class="dock-magnet coral"></span>
-            <span class="dock-magnet yellow"></span>
-            <span class="dock-magnet mint"></span>
-            <div class="dock-light"></div>
+        <div class="dock-stage">
+          <div class="dock-base" id="dock-base">
+            <img src="shield-dock.webp" alt="The Shield charging dock with a Shield standing in its cradle" />
           </div>
+          <div class="magnet-tray" id="magnet-tray" aria-label="Magnets"></div>
+          <div class="dock-controls">
+            <span>Drag or tap a magnet to stick it on.</span>
+            <button type="button" class="dock-clear" id="dock-clear">Clear dock</button>
+          </div>
+          <p class="visually-hidden" id="dock-status" aria-live="polite"></p>
         </div>
         <div class="battery-popup reveal-pop">
           <span class="battery-text">Tucked in &middot; charging</span>
         </div>
       </div>
       <div class="dock-text">
-        <div class="tag tag--coral">Meet the Companion</div>
+        <div class="tag tag--coral">Design Your Dock</div>
         <h2>Its home base keeps it charged - and the kids do it happily.</h2>
         <p>Every Shield comes with its home base: a charging dock shaped like a shield, with the Shield tucked safely inside. At bedtime it is a night light - a soft glow that says Shield is charged and ready for tomorrow.</p>
         <p>Kids love it because it is theirs. Decorate it with magnetic character pieces - ears, crowns, wings, outfits - that snap on and off in seconds.</p>
@@ -988,6 +1018,97 @@
   }
   personalizeNameEl.classList.add('visible');
   setInterval(rotateName, 3000);
+
+  // Design Your Dock: drag or tap magnets onto the charging dock
+  (function () {
+    const base = document.getElementById('dock-base');
+    const tray = document.getElementById('magnet-tray');
+    const status = document.getElementById('dock-status');
+    if (!base || !tray) return;
+    const magnets = [
+      ['unicorn-pink', 'Pink unicorn'], ['heart-magenta', 'Pink heart'], ['star-yellow', 'Yellow star'],
+      ['unicorn-purple', 'Purple unicorn'], ['heart-pink', 'Light pink heart'], ['star-purple', 'Purple star'],
+      ['unicorn-white', 'White unicorn'], ['rocket', 'Rocket'], ['car-red', 'Red car'],
+      ['dino-orange', 'Orange dinosaur'], ['planet', 'Planet'], ['car-blue', 'Blue car'],
+      ['dino-green', 'Green dinosaur'], ['moon', 'Moon']
+    ];
+    // Spots used when a magnet is tapped rather than dragged (percent of the dock image)
+    const spots = [[14,66],[32,69],[50,71],[68,69],[86,66],[22,83],[41,86],[59,86],[78,83],[16,42],[84,42],[27,38],[73,38],[50,52]];
+    // Area of the dock a magnet can stick to, leaving the Shield cradle clear
+    const onDock = (x, y) => x > 3 && x < 97 && y > 30 && y < 95 && !(x > 36 && x < 64 && y < 45);
+    // Magnets on the front face stand upright; on the top they lie flat
+    const place = (el, x, y) => {
+      el.style.left = x + '%'; el.style.top = y + '%';
+      el.style.setProperty('--sy', y > 52 ? '1.45' : '1');
+      el.classList.add('placed');
+      if (el.parentNode !== base) base.appendChild(el);
+      el.classList.remove('snap'); void el.offsetWidth; el.classList.add('snap');
+      el.setAttribute('aria-label', el.dataset.label + ', on the dock. Tap to remove.');
+    };
+    const toTray = (el) => {
+      el.classList.remove('placed', 'snap');
+      el.style.left = el.style.top = '';
+      el.slot_.appendChild(el);
+      el.setAttribute('aria-label', el.dataset.label + '. Tap to stick it on the dock.');
+    };
+    const freeSpot = () => {
+      const used = [...base.querySelectorAll('.magnet.placed')].map(m => [parseFloat(m.style.left), parseFloat(m.style.top)]);
+      return spots.find(([x, y]) => !used.some(([ux, uy]) => Math.abs(ux - x) < 6 && Math.abs(uy - y) < 6)) || spots[0];
+    };
+    magnets.forEach(([file, label]) => {
+      const slot = document.createElement('span');
+      slot.className = 'tray-slot';
+      const el = document.createElement('button');
+      el.type = 'button'; el.className = 'magnet'; el.dataset.label = label;
+      el.innerHTML = '<img src="magnet-' + file + '.webp" alt="" draggable="false">';
+      el.slot_ = slot;
+      slot.appendChild(el); tray.appendChild(slot);
+      toTray(el);
+
+      let startX, startY, ghost = null, suppressClick = false;
+      el.addEventListener('pointerdown', (e) => {
+        startX = e.clientX; startY = e.clientY;
+        el.setPointerCapture(e.pointerId);
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (startX === undefined) return;
+        if (!ghost && Math.hypot(e.clientX - startX, e.clientY - startY) > 6) {
+          // Drag a copy so the real magnet keeps the pointer capture
+          ghost = el.cloneNode(true);
+          ghost.classList.remove('placed', 'snap');
+          ghost.classList.add('dragging');
+          ghost.style.width = el.getBoundingClientRect().width + 'px';
+          document.body.appendChild(ghost);
+          el.style.visibility = 'hidden';
+        }
+        if (ghost) { ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px'; }
+      });
+      const end = (e) => {
+        if (startX === undefined) return;
+        startX = undefined;
+        if (!ghost) return;
+        ghost.remove(); ghost = null;
+        el.style.visibility = '';
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 60);
+        const r = base.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width * 100, y = (e.clientY - r.top) / r.height * 100;
+        if (onDock(x, y)) { place(el, x, y); status.textContent = label + ' added to the dock.'; }
+        else { toTray(el); }
+      };
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+      el.addEventListener('click', () => {
+        if (suppressClick) { suppressClick = false; return; }
+        if (el.classList.contains('placed')) { toTray(el); status.textContent = label + ' taken off the dock.'; }
+        else { const [x, y] = freeSpot(); place(el, x, y); status.textContent = label + ' added to the dock.'; }
+      });
+    });
+    document.getElementById('dock-clear').addEventListener('click', () => {
+      base.querySelectorAll('.magnet.placed').forEach(toTray);
+      status.textContent = 'Dock cleared.';
+    });
+  })();
 
   function handleSignup(e, successId) {
     e.preventDefault();
