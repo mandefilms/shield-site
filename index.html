@@ -83,7 +83,7 @@
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-decoration: none; color: var(--white); }
     .nav-logo-icon { width: 44px; height: 44px; overflow: hidden; border-radius: 8px; flex-shrink: 0; display: block; }
-    .nav-logo-icon img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transform: scale(1.25); display: block; }
+    .nav-logo-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
     .nav-cta {
       background: var(--coral);
       color: var(--white);
@@ -232,7 +232,7 @@
     /* ── PERSONALIZE ──────────────────────────────── */
     #personalize { position: relative; overflow: hidden; }
     .personalize-demo { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
-    .personalize-mascot { width: clamp(80px, 14vw, 120px); height: auto; transition: opacity 0.45s ease; }
+    .personalize-mascot { width: clamp(110px, 18vw, 160px); height: auto; transition: opacity 0.45s ease; filter: drop-shadow(0 0 16px rgba(255,255,255,0.18)); }
     .personalize-name { font-family: 'Fraunces', serif; font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; }
     .personalize-name .child {
       font-style: italic;
@@ -333,7 +333,7 @@
     .step-body { padding-top: 10px; }
     .step-body h3 { font-size: 1.2rem; margin-bottom: 8px; }
     .step-body p  { font-size: 0.95rem; opacity: 0.72; line-height: 1.65; }
-    .step-mascot { width: 130px; height: 130px; object-fit: contain; margin-bottom: 12px; display: block; }
+    .step-mascot { width: 130px; height: 130px; object-fit: contain; margin-bottom: 12px; display: block; filter: drop-shadow(0 0 14px rgba(255,255,255,0.18)); }
 
     /* ── DEVICE ───────────────────────────────────── */
     .device-inner {
@@ -425,39 +425,108 @@
       display: flex; flex-direction: column; align-items: center;
       gap: 20px; position: relative;
     }
-    .dock-demo {
-      position: relative;
-      width: clamp(180px, 32vw, 300px);
+    .dock-stage {
+      width: 100%; max-width: 520px;
+      position: relative; overflow: hidden;
+      background: #2A2A2D;
+      border-radius: var(--radius);
+      padding: 28px 18px 18px;
+      box-shadow: 0 14px 44px rgba(30,58,95,0.22);
     }
-    .dock-shield {
-      position: relative; width: 100%; aspect-ratio: 3 / 3.4;
-      background: linear-gradient(160deg, var(--blue-light) 0%, var(--navy) 72%);
-      clip-path: polygon(50% 0%, 100% 18%, 100% 72%, 50% 100%, 0% 72%, 0% 18%);
+    .dock-stage::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 45% at 50% 24%, rgba(255,196,110,0.34), rgba(255,196,110,0) 70%);
+      opacity: 0; transition: opacity 0.9s ease;
+    }
+    .dock-stage.is-charging::before { opacity: 1; }
+    .dock-base { position: relative; width: 100%; user-select: none; -webkit-user-select: none; }
+    .dock-base > img { width: 100%; height: auto; display: block; pointer-events: none; }
+    .dock-base > img.dock-lit { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease; }
+    .is-charging .dock-base > img.dock-lit { opacity: 1; }
+    .dock-glow {
+      position: absolute; left: 50.6%; top: 20%; width: 72%; aspect-ratio: 1 / 1;
+      transform: translate(-50%, -50%); pointer-events: none;
+      background: radial-gradient(circle, rgba(255,222,150,0.55) 0%, rgba(255,196,110,0.2) 32%, rgba(255,196,110,0) 62%);
+      mix-blend-mode: screen; opacity: 0; transition: opacity 0.9s ease;
+    }
+    .is-charging .dock-glow { opacity: 1; animation: dockglow 3.2s ease-in-out 0.9s infinite; }
+    @keyframes dockglow {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.7; }
+    }
+    .shield-piece {
+      position: absolute; left: 13%; top: 17%; width: 16%;
+      background: none; border: 0; padding: 0; margin: 0;
+      cursor: grab; touch-action: none; z-index: 3;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      transition: left 0.45s ease, top 0.45s ease, width 0.45s ease, transform 0.45s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .shield-piece img { width: 100%; height: auto; display: block; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
+    .shield-piece:not(.docked) img { animation: shieldbob 2.6s ease-in-out infinite; }
+    @keyframes shieldbob {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6%); }
+    }
+    .shield-piece.docked { left: 50.6%; top: 18.6%; width: 20.6%; transform: translate(-50%, -50%); }
+    .shield-piece.docked img { filter: drop-shadow(0 0 10px rgba(255,214,140,0.55)); }
+    .shield-piece:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; border-radius: 10px; }
+    .magnet-tray {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+      margin-top: 18px; padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    @media (max-width: 420px) { .magnet-tray { grid-template-columns: repeat(5, 1fr); } }
+    .tray-slot {
+      aspect-ratio: 1 / 1; border-radius: 12px;
+      background: rgba(255,255,255,0.04);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 10px 40px rgba(30,58,95,0.25);
     }
-    .dock-device {
-      width: 44%; aspect-ratio: 5 / 7;
-      background: var(--white); border-radius: 16px;
+    .magnet {
+      background: none; border: 0; padding: 4px; margin: 0;
+      cursor: grab; touch-action: none;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.6rem; color: var(--navy);
-      box-shadow: inset 0 0 0 3px rgba(30,58,95,0.08);
+      width: 100%; height: 100%;
+      -webkit-tap-highlight-color: transparent;
     }
-    .dock-magnet { position: absolute; width: 16%; aspect-ratio: 1 / 1; border-radius: 50%; border: 3px solid rgba(255,255,255,0.65); }
-    .dock-magnet.coral  { background: var(--coral);  top: 16%; left: 22%; }
-    .dock-magnet.yellow { background: var(--yellow); top: 24%; right: 20%; }
-    .dock-magnet.mint   { background: var(--mint);   bottom: 18%; left: 26%; }
-    .dock-light {
-      position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%);
-      width: 14px; height: 14px; border-radius: 50%;
-      background: var(--mint); box-shadow: 0 0 18px 6px rgba(107,203,119,0.55);
-      animation: dockpulse 2.4s ease-in-out infinite;
+    .magnet img {
+      width: 100%; height: auto; display: block; pointer-events: none;
+      filter: drop-shadow(0 3px 3px rgba(0,0,0,0.35));
     }
-    @keyframes dockpulse {
-      0%, 100% { opacity: 0.5; }
-      50%       { opacity: 1; }
+    .magnet:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; border-radius: 8px; }
+    .magnet.placed {
+      position: absolute; width: 13%; height: auto; padding: 0;
+      transform: translate(-50%, -50%) scaleY(var(--sy, 1));
+      z-index: 2;
     }
-    .dock-demo img.dock-photo { width: 100%; height: auto; display: block; border-radius: var(--radius); }
+    .magnet.placed img { filter: drop-shadow(0 2px 2px rgba(0,0,0,0.22)); }
+    .magnet.snap img { animation: magnetsnap 0.35s ease-out; }
+    @keyframes magnetsnap {
+      0%   { transform: scale(1.3); }
+      60%  { transform: scale(0.94); }
+      100% { transform: scale(1); }
+    }
+    .magnet.dragging, .shield-piece.dragging {
+      position: fixed; z-index: 1000; cursor: grabbing;
+      transition: none;
+      transform: translate(-50%, -50%) scale(1.12);
+      pointer-events: none;
+    }
+    .dock-controls {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-top: 12px; font-size: 0.82rem; color: rgba(255,255,255,0.6);
+    }
+    .dock-clear {
+      background: rgba(255,255,255,0.1); color: var(--white);
+      border: 0; border-radius: 100px; padding: 6px 14px;
+      font: inherit; font-weight: 600; cursor: pointer; flex-shrink: 0;
+    }
+    .dock-clear:hover { background: rgba(255,255,255,0.18); }
+    @media (prefers-reduced-motion: reduce) {
+      .magnet.snap img, .shield-piece img, .is-charging .dock-glow { animation: none; }
+      .shield-piece { transition: none; }
+    }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .battery-popup {
       display: flex; align-items: center; gap: 8px;
       background: var(--navy);
@@ -638,7 +707,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo"><span class="nav-logo-icon"><img src="shield-prototype.png" alt="Shield" /></span><span>Shield</span></a>
+  <a href="#hero" class="nav-logo"><span class="nav-logo-icon"><img src="shield-mya-otter-logo.webp" alt="Shield" /></span><span>Shield</span></a>
   <a href="#cta" class="nav-cta">Get Early Access</a>
 </nav>
 
@@ -667,7 +736,7 @@
         </div>
       </div>
       <div class="hero-visual">
-        <img src="shield-hand-hold.png" alt="A hand holding the Shield device, showing its size" class="hero-device-photo" id="hero-device-img" />
+        <img src="shield-hand-hold-mya.webp" alt="A hand holding Mya's otter Shield, showing its size" class="hero-device-photo" id="hero-device-img" />
       </div>
   </div>
 </section>
@@ -681,7 +750,7 @@
       <p style="margin:14px auto 0; max-width:560px;">Named after them, made just for them.</p>
     </div>
     <div class="personalize-demo reveal">
-      <img src="Main logo.png" alt="" class="personalize-mascot" id="personalize-mascot-img" />
+      <img src="shield-mya-otter.webp" alt="" class="personalize-mascot" id="personalize-mascot-img" />
       <span class="personalize-name"><span class="child visible" id="personalize-child-name">Mya's</span> Shield</span>
     </div>
   </div>
@@ -711,7 +780,7 @@
   <div class="container">
     <div class="security-inner reveal">
       <div class="security-visual">
-        <img src="shield-prototype.png" alt="The Shield device" class="security-photo" />
+        <img src="shield-mariessa-toucan-gold.webp" alt="Mariessa's toucan Shield" class="security-photo" />
       </div>
       <div class="security-text">
         <div class="tag tag--blue">Private &amp; Secure</div>
@@ -747,7 +816,7 @@
       <div class="step">
         <div class="step-num coral">1</div>
         <div class="step-body">
-          <img src="mascot-cat.png" alt="" class="step-mascot">
+          <img src="shield-sophie-otter.webp" alt="" class="step-mascot">
           <h3>Attach it</h3>
           <p>Shield is designed to be attached to your child's clothing or worn discreetly.</p>
         </div>
@@ -755,7 +824,7 @@
       <div class="step">
         <div class="step-num yellow">2</div>
         <div class="step-body">
-          <img src="mascot-dog.png" alt="" class="step-mascot">
+          <img src="shield-william-dog.webp" alt="" class="step-mascot">
           <h3>Set your safe zones and preferences</h3>
           <p>Draw zones around school, home, or anywhere your child should be. Safe zones are just one part of how Shield works. You can also set how often you receive location updates with the "out and about" feature, giving you the right amount of information without being overwhelmed. Shield will also learn your family's daily patterns over time and alert you only when something genuinely seems off.</p>
         </div>
@@ -763,7 +832,7 @@
       <div class="step">
         <div class="step-num mint">3</div>
         <div class="step-body">
-          <img src="mascot-dolphin.png" alt="" class="step-mascot">
+          <img src="shield-tom-dolphin.webp" alt="" class="step-mascot">
           <h3>Live your life</h3>
           <p>You don't need to stare at a map. Shield runs quietly, checks in silently, and stays out of your way. Check in when you want to, or just let it watch.</p>
         </div>
@@ -771,7 +840,7 @@
       <div class="step">
         <div class="step-num blue">4</div>
         <div class="step-body">
-          <img src="mascot-butterfly.png" alt="" class="step-mascot">
+          <img src="shield-sarah-butterfly.webp" alt="" class="step-mascot">
           <h3>Get alerted only when it matters</h3>
           <p>If something's off, whether your child left a zone, didn't arrive at school, or pressed the SOS button, you'll know instantly. With location, time and device battery life.</p>
         </div>
@@ -827,25 +896,31 @@
   <div class="container">
     <div class="dock-inner reveal">
       <div class="dock-visual">
-        <div class="dock-demo">
-          <div class="dock-shield">
-            <div class="dock-device">S</div>
-            <span class="dock-magnet coral"></span>
-            <span class="dock-magnet yellow"></span>
-            <span class="dock-magnet mint"></span>
-            <div class="dock-light"></div>
+        <div class="dock-stage">
+          <div class="dock-base" id="dock-base">
+            <img src="shield-dock-empty-unlit.webp" alt="The Shield charging dock with an empty cradle" />
+            <img src="shield-dock-empty-lit.webp" alt="" class="dock-lit" />
+            <div class="dock-glow"></div>
+            <button type="button" class="shield-piece" id="shield-piece" aria-label="Mya's Shield. Tap to tuck it into the dock.">
+              <img src="shield-mya-otter.webp" alt="" draggable="false" />
+            </button>
           </div>
+          <div class="magnet-tray" id="magnet-tray" aria-label="Magnets"></div>
+          <div class="dock-controls">
+            <span>Tuck the Shield in, then drag or tap magnets to decorate.</span>
+            <button type="button" class="dock-clear" id="dock-clear">Clear dock</button>
+          </div>
+          <p class="visually-hidden" id="dock-status" aria-live="polite"></p>
         </div>
         <div class="battery-popup reveal-pop">
-          <span class="battery-text">Tucked in &middot; charging</span>
+          <span class="battery-text" id="dock-state">Tap the Shield to tuck it in</span>
         </div>
       </div>
       <div class="dock-text">
-        <div class="tag tag--coral">Meet the Companion</div>
-        <h2>Its home base keeps it charged - and the kids do it happily.</h2>
-        <p>Every Shield comes with its home base: a charging dock shaped like a shield, with the Shield tucked safely inside. At bedtime it is a night light - a soft glow that says Shield is charged and ready for tomorrow.</p>
-        <p>Kids love it because it is theirs. Decorate it with magnetic character pieces - ears, crowns, wings, outfits - that snap on and off in seconds.</p>
-        <p>Press the heart and the whole thing glows. What starts as a bedtime ritual becomes the habit that keeps Shield charged every single night - no nagging, no rules.</p>
+        <div class="tag tag--coral">Design Your Dock</div>
+        <h2>A dock they design themselves.</h2>
+        <p>The shield stands upright in a white magnetic cradle, glowing softly while it charges. Children decorate the dock with themed magnets and can rearrange them whenever they like.</p>
+        <p>What starts as a bedtime ritual becomes the habit that keeps Shield charged every single night. No nagging, no rules.</p>
       </div>
     </div>
   </div>
@@ -859,15 +934,15 @@
       <div class="routines-card">
         <div class="routines-inner">
           <div class="routines-visual">
-            <img src="shield-dog-3d.webp" alt="Dog shield design" class="routines-photo">
+            <img src="shield-sophie-flamingo.webp" alt="Sophie's flamingo Shield" class="routines-photo">
           </div>
           <div class="routines-content">
             <div class="coming-soon-badge">✦ Coming Soon</div>
             <h2>Shield will learn your family's routine.</h2>
             <p>Right now, you tell Shield where your child should be. Soon, Shield will figure that out itself. By learning the patterns of your family's daily life, it will know what's normal: and alert you only when something genuinely isn't.</p>
             <div class="routines-features">
-              <span><img src="mascot-butterfly.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
-              <span><img src="mascot-dog.png" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
+              <span><img src="shield-sarah-butterfly.webp" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">Daily routine learning</span>
+              <span><img src="shield-william-dog.webp" alt="" style="width:40px;height:40px;object-fit:contain;vertical-align:middle;margin-right:6px;">AI anomaly detection</span>
             </div>
           </div>
         </div>
@@ -898,7 +973,10 @@
     </div>
     <div class="story-card reveal">
       <div class="story-authors">
-        <img src="shield-flamingo-3d.webp" alt="" style="width:72px;height:72px;object-fit:contain;">
+        <div style="display:flex;flex-shrink:0;">
+          <img src="shield-mariessa-toucan-terracotta.webp" alt="" style="width:64px;height:64px;object-fit:contain;">
+          <img src="shield-evan-monkey.webp" alt="" style="width:64px;height:64px;object-fit:contain;margin-left:6px;">
+        </div>
         <div>
           <div class="authors-name">Mariessa and Evan</div>
           <div class="authors-title">Auntie Reesa and Uncle Evan, Founders of Shield</div>
@@ -918,7 +996,7 @@
   <div class="blob blob-10"></div>
   <div class="container" style="position:relative;z-index:2;">
     <div class="reveal" style="text-align:center;">
-      <img src="Main logo.png" alt="Shield" class="cta-owl" style="width:80px;height:auto;" />
+      <img src="shield-mya-otter-logo.webp" alt="Shield" class="cta-owl" style="width:80px;height:auto;" />
       <div class="tag tag--coral">Early Access</div>
       <h2>Be the first to know when Shield is ready.</h2>
       <p>We're in the final stages of development. Leave your email and we'll reach out when we're ready to launch. Just one email when it matters.</p>
@@ -934,7 +1012,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><img src="Main logo.png" alt="Shield" style="width:24px;height:auto;vertical-align:middle;margin-right:6px;" /> Shield <span>by MxE</span></div>
+  <div class="footer-logo"><img src="shield-mya-otter-logo.webp" alt="Shield" style="width:24px;height:auto;vertical-align:middle;margin-right:6px;" /> Shield <span>by MxE</span></div>
   <div class="footer-meta">
     Charlotte, NC &amp; London, UK<br>
     <a href="mailto:contact.myashield@gmail.com">contact.myashield@gmail.com</a>
@@ -964,8 +1042,9 @@
 
   // Simple waitlist form handler
   // Rotating child name + matching mascot swap, shown in the "Made Theirs" section
-  const childNames = ["Mya's","Evan's","Mariessa's","Margo's","Jay's","Rachel's","Bella's","Aalia's","Aarya's","Leo's","Sofia's","Noah's","Isla's","Maya's","Allyssa's","Gurinder's","Sue's","Bernie's","Stella's","Krystal's","Rob's","Stan's"];
-  const mascotImgs = ["Main logo.png","mascot-butterfly.png","mascot-cat.png","mascot-dog.png","mascot-flamingo.png","mascot-zebra.png","mascot-dolphin.png","mascot-frog.png","mascot-monkey.png"];
+  // Each name is paired with the Shield that has that name printed on it
+  const childNames = ["Mya's","Evan's","Sophie's","Tom's","Mariessa's","William's","Sarah's","Sophie's","Mariessa's"];
+  const mascotImgs = ["shield-mya-otter.webp","shield-evan-monkey.webp","shield-sophie-otter.webp","shield-tom-dolphin.webp","shield-mariessa-toucan-terracotta.webp","shield-william-dog.webp","shield-sarah-butterfly.webp","shield-sophie-flamingo.webp","shield-mariessa-toucan-gold.webp"];
   // Preload all mascot images so swaps are instant
   mascotImgs.forEach(src => { const i = new Image(); i.src = src; });
   let nameIndex = 0;
@@ -984,6 +1063,126 @@
   }
   personalizeNameEl.classList.add('visible');
   setInterval(rotateName, 3000);
+
+  // Design Your Dock: tuck the Shield in to charge it, then decorate with magnets
+  (function () {
+    const stage = document.querySelector('.dock-stage');
+    const base = document.getElementById('dock-base');
+    const tray = document.getElementById('magnet-tray');
+    const status = document.getElementById('dock-status');
+    const shield = document.getElementById('shield-piece');
+    const dockState = document.getElementById('dock-state');
+    if (!stage || !base || !tray || !shield) return;
+
+    // Positions as a percentage of the dock image
+    const pct = (e) => {
+      const r = base.getBoundingClientRect();
+      return [(e.clientX - r.left) / r.width * 100, (e.clientY - r.top) / r.height * 100];
+    };
+
+    // Shared drag-or-tap handling; a copy follows the pointer so the real piece keeps the pointer capture
+    function draggable(el, onDrop, onTap) {
+      let startX, startY, ghost = null, suppressClick = false;
+      el.addEventListener('pointerdown', (e) => {
+        startX = e.clientX; startY = e.clientY;
+        el.setPointerCapture(e.pointerId);
+      });
+      el.addEventListener('pointermove', (e) => {
+        if (startX === undefined) return;
+        if (!ghost && Math.hypot(e.clientX - startX, e.clientY - startY) > 6) {
+          ghost = el.cloneNode(true);
+          ghost.removeAttribute('id');
+          ghost.classList.remove('placed', 'snap', 'docked');
+          ghost.classList.add('dragging');
+          ghost.style.width = el.getBoundingClientRect().width + 'px';
+          document.body.appendChild(ghost);
+          el.style.visibility = 'hidden';
+        }
+        if (ghost) { ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px'; }
+      });
+      const end = (e) => {
+        if (startX === undefined) return;
+        startX = undefined;
+        if (!ghost) return;
+        ghost.remove(); ghost = null;
+        el.style.visibility = '';
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 60);
+        onDrop(e.type === 'pointercancel' ? null : pct(e));
+      };
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+      el.addEventListener('click', () => {
+        if (suppressClick) { suppressClick = false; return; }
+        onTap();
+      });
+    }
+
+    // The Shield: glows once it is in the cradle
+    const setDocked = (on) => {
+      shield.classList.toggle('docked', on);
+      stage.classList.toggle('is-charging', on);
+      dockState.textContent = on ? 'Tucked in \u00b7 charging' : 'Tap the Shield to tuck it in';
+      shield.setAttribute('aria-label', on ? "Mya's Shield, charging in the dock. Tap to take it out." : "Mya's Shield. Tap to tuck it into the dock.");
+      status.textContent = on ? 'Shield tucked in and charging.' : 'Shield taken out of the dock.';
+    };
+    draggable(shield,
+      (p) => setDocked(!!p && Math.abs(p[0] - 50.6) < 16 && p[1] > -12 && p[1] < 48),
+      () => setDocked(!shield.classList.contains('docked')));
+
+    // The magnets
+    const magnets = [
+      ['unicorn-pink', 'Pink unicorn'], ['heart-magenta', 'Pink heart'], ['star-yellow', 'Yellow star'],
+      ['unicorn-purple', 'Purple unicorn'], ['heart-pink', 'Light pink heart'], ['star-purple', 'Purple star'],
+      ['unicorn-white', 'White unicorn'], ['rocket', 'Rocket'], ['car-red', 'Red car'],
+      ['dino-orange', 'Orange dinosaur'], ['planet', 'Planet'], ['car-blue', 'Blue car'],
+      ['dino-green', 'Green dinosaur'], ['moon', 'Moon']
+    ];
+    // Spots used when a magnet is tapped rather than dragged
+    const spots = [[14,66],[32,69],[50,71],[68,69],[86,66],[22,83],[41,86],[59,86],[78,83],[16,42],[84,42],[27,38],[73,38],[50,52]];
+    // Area of the dock a magnet can stick to, leaving the Shield cradle clear
+    const onDock = (x, y) => x > 3 && x < 97 && y > 30 && y < 95 && !(x > 36 && x < 64 && y < 45);
+    // Magnets on the front face stand upright; on the top they lie flat
+    const place = (el, x, y) => {
+      el.style.left = x + '%'; el.style.top = y + '%';
+      el.style.setProperty('--sy', y > 52 ? '1.45' : '1');
+      el.classList.add('placed');
+      if (el.parentNode !== base) base.appendChild(el);
+      el.classList.remove('snap'); void el.offsetWidth; el.classList.add('snap');
+      el.setAttribute('aria-label', el.dataset.label + ', on the dock. Tap to remove.');
+      status.textContent = el.dataset.label + ' added to the dock.';
+    };
+    const toTray = (el) => {
+      el.classList.remove('placed', 'snap');
+      el.style.left = el.style.top = '';
+      el.slot_.appendChild(el);
+      el.setAttribute('aria-label', el.dataset.label + '. Tap to stick it on the dock.');
+    };
+    const freeSpot = () => {
+      const used = [...base.querySelectorAll('.magnet.placed')].map(m => [parseFloat(m.style.left), parseFloat(m.style.top)]);
+      return spots.find(([x, y]) => !used.some(([ux, uy]) => Math.abs(ux - x) < 6 && Math.abs(uy - y) < 6)) || spots[0];
+    };
+    magnets.forEach(([file, label]) => {
+      const slot = document.createElement('span');
+      slot.className = 'tray-slot';
+      const el = document.createElement('button');
+      el.type = 'button'; el.className = 'magnet'; el.dataset.label = label;
+      el.innerHTML = '<img src="magnet-' + file + '.webp" alt="" draggable="false">';
+      el.slot_ = slot;
+      slot.appendChild(el); tray.appendChild(slot);
+      toTray(el);
+      draggable(el,
+        (p) => { if (p && onDock(p[0], p[1])) place(el, p[0], p[1]); else toTray(el); },
+        () => {
+          if (el.classList.contains('placed')) { toTray(el); status.textContent = label + ' taken off the dock.'; }
+          else { const [x, y] = freeSpot(); place(el, x, y); }
+        });
+    });
+    document.getElementById('dock-clear').addEventListener('click', () => {
+      base.querySelectorAll('.magnet.placed').forEach(toTray);
+      status.textContent = 'Dock cleared.';
+    });
+  })();
 
   function handleSignup(e, successId) {
     e.preventDefault();
