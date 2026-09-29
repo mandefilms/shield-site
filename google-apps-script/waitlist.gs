@@ -21,6 +21,10 @@ const INSTAGRAM_HANDLE = '@mya.shield';
 const SUBJECT = 'Thanks for joining the Shield family! 🛡️';
 const SHEET_NAME = 'Waitlist';
 const PRIVACY_URL = 'https://myashield.netlify.app/privacy.html';
+// Sign-up alerts for you: 'instant' (an email for each new sign-up), 'daily' (one summary a day,
+// run setupDailySummary once to switch it on) or 'off'. Alerts share Gmail's ~100 emails/day limit.
+const NOTIFY_MODE = 'instant';
+const NOTIFY_EMAIL = 'contact.myashield@gmail.com';
 // ---------------------------------------------------------------------------
 
 const HEADERS = ['Signed up', 'Email', 'From form', 'Reply sent'];
@@ -50,12 +54,21 @@ function doPost(e) {
     const row = sheet.getLastRow();
     let status;
     if (MailApp.getRemainingDailyQuota() > 0) {
-      sendWelcome(email);
-      status = 'Yes';
+      try {
+        sendWelcome(email);
+        status = 'Yes';
+      } catch (err) {
+        // The sign-up is still saved; this can be retried with sendPendingReplies
+        status = 'No (email failed: ' + err.message + ')';
+      }
     } else {
       status = 'No (daily limit reached, run sendPendingReplies tomorrow)';
     }
     sheet.getRange(row, 4).setValue(status);
+    // Welcome emails come first: alerts pause when fewer than 20 emails are left for the day
+    if (NOTIFY_MODE === 'instant' && MailApp.getRemainingDailyQuota() > 20) {
+      try { notifyNewSignup(email, source, row - 1); } catch (err) { /* an alert failing never blocks a sign-up */ }
+    }
     return json({ ok: true });
   } finally {
     lock.releaseLock();
@@ -73,6 +86,41 @@ function sendPendingReplies() {
     sendWelcome(r[1]);
     sheet.getRange(i + 2, 4).setValue('Yes');
   });
+}
+
+function notifyNewSignup(email, source, total) {
+  MailApp.sendEmail({
+    to: NOTIFY_EMAIL,
+    subject: 'New Shield sign-up: ' + email,
+    body: email + ' just joined the Shield waitlist (from the ' + source + ' form).\n\n' +
+      'People on the list: ' + total + '\n' + getSpreadsheet().getUrl(),
+    name: 'Shield waitlist'
+  });
+}
+
+// Daily summary: run setupDailySummary once from the editor (with NOTIFY_MODE = 'daily')
+function setupDailySummary() {
+  ScriptApp.getProjectTriggers()
+    .filter(t => t.getHandlerFunction() === 'sendDailySummary')
+    .forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('sendDailySummary').timeBased().everyDays(1).atHour(8).create();
+  PropertiesService.getScriptProperties().setProperty('SUMMARY_FROM_ROW', String(getSheet().getLastRow() + 1));
+}
+
+function sendDailySummary() {
+  const sheet = getSheet();
+  const props = PropertiesService.getScriptProperties();
+  const from = Number(props.getProperty('SUMMARY_FROM_ROW') || 2);
+  const last = sheet.getLastRow();
+  if (last < from || MailApp.getRemainingDailyQuota() < 1) return;
+  const emails = sheet.getRange(from, 2, last - from + 1, 1).getValues().map(r => r[0]);
+  MailApp.sendEmail({
+    to: NOTIFY_EMAIL,
+    subject: emails.length + ' new Shield sign-up' + (emails.length === 1 ? '' : 's'),
+    body: 'New since the last summary:\n\n' + emails.join('\n') + '\n\nPeople on the list: ' + (last - 1) + '\n' + getSpreadsheet().getUrl(),
+    name: 'Shield waitlist'
+  });
+  props.setProperty('SUMMARY_FROM_ROW', String(last + 1));
 }
 
 function sendWelcome(email) {
