@@ -1329,8 +1329,9 @@
     try {
       const res = await fetch(WAITLIST_URL, { method: 'POST', body });
       if (!res.ok) throw new Error('Sign-up failed: ' + res.status);
-      const result = await res.json().catch(() => ({ ok: true }));
-      if (!result.ok) throw new Error('Sign-up rejected: ' + result.error);
+      // Only count it as saved when the script confirms it; an error page means it wasn't
+      const result = await res.json().catch(() => ({ ok: false, error: 'unexpected-response' }));
+      if (result.ok !== true) throw new Error('Sign-up not saved: ' + result.error);
       form.style.display = 'none';
       success.style.display = 'block';
     } catch (err) {
