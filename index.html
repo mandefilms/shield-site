@@ -148,7 +148,7 @@
       .hero-copy .hero-sub    { order: 3; }
       .hero-copy .hero-tagline { order: 4; justify-content: center; margin-top: 2px; }
       .hero-copy .hero-form   { order: 5; margin-top: 20px; }
-      .hero-copy .form-success { order: 6; }
+      .hero-copy .form-success, .hero-copy .form-error { order: 6; }
       .hero-copy .hero-note   { order: 7; }
       .hero-copy .hero-badges { order: 8; }
       .hero-visual { order: -1; flex: none; width: 100%; height: auto; overflow: visible; }
@@ -736,6 +736,16 @@
       color: var(--mint);
     }
 
+    .form-error {
+      display: none;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: var(--coral);
+    }
+    .form-error a { color: inherit; }
+    .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    button[type="submit"][disabled] { opacity: 0.6; cursor: wait; }
+
     /* ── MOBILE TWEAKS ────────────────────────────── */
     @media (max-width: 600px) {
       section { padding: 70px 0; }
@@ -750,6 +760,13 @@
   </style>
 </head>
 <body>
+
+<!-- Netlify reads this hidden form when the site is deployed, so it knows to store "waitlist" sign-ups -->
+<form name="waitlist" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="email" name="email" />
+  <input type="text" name="source" />
+  <input type="text" name="bot-field" />
+</form>
 
 <!-- NAV -->
 <nav>
@@ -766,11 +783,13 @@
         <p class="hero-label">Early-alert child safety device.</p>
         <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
         <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
-        <form class="hero-form" onsubmit="handleSignup(event, 'hero-success')">
-          <input type="email" placeholder="Your email address" required autocomplete="email" />
+        <form class="hero-form" data-source="hero" onsubmit="handleSignup(event, 'hero-success', 'hero-error')">
+          <input type="email" name="email" placeholder="Your email address" required autocomplete="email" aria-label="Your email address" />
+          <label class="hp-field" aria-hidden="true">Leave this empty <input type="text" name="bot-field" tabindex="-1" autocomplete="off" /></label>
           <button type="submit" class="btn-primary">Join the Waitlist</button>
         </form>
         <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
+        <p class="form-error" id="hero-error" role="alert">Sorry, that didn't go through. Please try again, or email us at <a href="mailto:contact.myashield@gmail.com">contact.myashield@gmail.com</a>.</p>
         <p class="hero-tagline">Safety at heart.</p>
         <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
         <div class="hero-badges">
@@ -1053,11 +1072,13 @@
       <div class="tag tag--coral">Early Access</div>
       <h2>Be the first to know when Shield is ready.</h2>
       <p>We're in the final stages of development. Leave your email and we'll reach out when we're ready to launch. Just one email when it matters.</p>
-      <form class="cta-form" onsubmit="handleSignup(event, 'cta-success')">
-        <input type="email" placeholder="Your email address" required autocomplete="email" />
+      <form class="cta-form" data-source="early-access" onsubmit="handleSignup(event, 'cta-success', 'cta-error')">
+        <input type="email" name="email" placeholder="Your email address" required autocomplete="email" aria-label="Your email address" />
+        <label class="hp-field" aria-hidden="true">Leave this empty <input type="text" name="bot-field" tabindex="-1" autocomplete="off" /></label>
         <button type="submit" class="btn-primary">Get Early Access</button>
       </form>
       <p class="form-success" id="cta-success">You're on the list. We'll be in touch soon.</p>
+      <p class="form-error" id="cta-error" role="alert">Sorry, that didn't go through. Please try again, or email us at <a href="mailto:contact.myashield@gmail.com">contact.myashield@gmail.com</a>.</p>
       <p class="cta-note">Trust us, we hate spam too. We'll only ever send important updates.</p>
     </div>
   </div>
@@ -1295,14 +1316,34 @@
     });
   })();
 
-  function handleSignup(e, successId) {
+  // Waitlist sign-ups are stored by Netlify Forms under the form name "waitlist"
+  async function handleSignup(e, successId, errorId) {
     e.preventDefault();
     const form = e.target;
-    const email = form.querySelector('input[type="email"]').value;
+    const button = form.querySelector('button[type="submit"]');
     const success = document.getElementById(successId);
-
-    form.style.display = 'none';
-    success.style.display = 'block';
+    const error = document.getElementById(errorId);
+    const body = new URLSearchParams({
+      'form-name': 'waitlist',
+      email: form.querySelector('input[name="email"]').value.trim(),
+      source: form.dataset.source,
+      'bot-field': form.querySelector('input[name="bot-field"]').value
+    });
+    error.style.display = 'none';
+    button.disabled = true;
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString()
+      });
+      if (!res.ok) throw new Error('Sign-up failed: ' + res.status);
+      form.style.display = 'none';
+      success.style.display = 'block';
+    } catch (err) {
+      error.style.display = 'block';
+      button.disabled = false;
+    }
   }
 </script>
 </body>
