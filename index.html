@@ -761,13 +761,6 @@
 </head>
 <body>
 
-<!-- Netlify reads this hidden form when the site is deployed, so it knows to store "waitlist" sign-ups -->
-<form name="waitlist" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="email" name="email" />
-  <input type="text" name="source" />
-  <input type="text" name="bot-field" />
-</form>
-
 <!-- NAV -->
 <nav>
   <a href="#hero" class="nav-logo"><span class="nav-logo-icon"><img src="shield-mya-otter-logo.webp" alt="Shield" /></span><span>Shield</span></a>
@@ -1316,7 +1309,9 @@
     });
   })();
 
-  // Waitlist sign-ups are stored by Netlify Forms under the form name "waitlist"
+  // Waitlist sign-ups go to a Google Apps Script (google-apps-script/waitlist.gs), which saves
+  // them to the Shield waitlist Google Sheet and sends the thank-you email from our Gmail
+  const WAITLIST_URL = 'PASTE_WEB_APP_URL_HERE';
   async function handleSignup(e, successId, errorId) {
     e.preventDefault();
     const form = e.target;
@@ -1324,7 +1319,6 @@
     const success = document.getElementById(successId);
     const error = document.getElementById(errorId);
     const body = new URLSearchParams({
-      'form-name': 'waitlist',
       email: form.querySelector('input[name="email"]').value.trim(),
       source: form.dataset.source,
       'bot-field': form.querySelector('input[name="bot-field"]').value
@@ -1332,12 +1326,10 @@
     error.style.display = 'none';
     button.disabled = true;
     try {
-      const res = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body.toString()
-      });
+      const res = await fetch(WAITLIST_URL, { method: 'POST', body });
       if (!res.ok) throw new Error('Sign-up failed: ' + res.status);
+      const result = await res.json().catch(() => ({ ok: true }));
+      if (!result.ok) throw new Error('Sign-up rejected: ' + result.error);
       form.style.display = 'none';
       success.style.display = 'block';
     } catch (err) {
@@ -1345,6 +1337,7 @@
       button.disabled = false;
     }
   }
+
 </script>
 </body>
 </html>
