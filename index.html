@@ -1312,7 +1312,7 @@
 
   // Waitlist sign-ups go to a Google Apps Script (google-apps-script/waitlist.gs), which saves
   // them to the Shield waitlist Google Sheet and sends the thank-you email from our Gmail
-  const WAITLIST_URL = 'PASTE_WEB_APP_URL_HERE';
+  const WAITLIST_URL = 'https://script.google.com/macros/s/AKfycbzh26IrNPxn2JoJzF6OcF7ummIIV-sObfQJWKTC-v-O0tjBoVqR42_QDVSd6LoaPmDThw/exec';
   async function handleSignup(e, successId, errorId) {
     e.preventDefault();
     const form = e.target;
