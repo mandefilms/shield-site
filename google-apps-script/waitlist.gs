@@ -4,7 +4,7 @@
  *
  * Setup (logged in as the Gmail account the emails should come from):
  *   1. Create a Google Sheet, then Extensions > Apps Script, and paste this file in.
- *   2. Edit the settings below (Instagram link, email wording).
+ *   2. Check the settings below (Instagram link, email wording).
  *   3. Deploy > New deployment > type "Web app":
  *        Execute as: Me       Who has access: Anyone
  *   4. Approve the permissions, then copy the Web app URL into the website.
@@ -14,8 +14,8 @@
 
 // ---- Settings -------------------------------------------------------------
 const SENDER_NAME = 'Mariessa and Evan at Shield';
-const INSTAGRAM_URL = 'https://www.instagram.com/YOUR_HANDLE/';
-const INSTAGRAM_HANDLE = '@YOUR_HANDLE';
+const INSTAGRAM_URL = 'https://www.instagram.com/mya.shield/';
+const INSTAGRAM_HANDLE = '@mya.shield';
 const SUBJECT = 'Thanks for joining the Shield family! 🛡️';
 const SHEET_NAME = 'Waitlist';
 // ---------------------------------------------------------------------------
@@ -78,9 +78,9 @@ function sendWelcome(email) {
     '',
     "Thanks for joining the Shield family! You'll be among the first to hear about Shield.",
     '',
-    "We're a small family team building Shield because we wanted a quiet, reliable way to know our kids are safe, without anyone glued to a phone. We're in the final stages of development, and we'll let you know as soon as it's ready.",
+    "We're in the final stages of development, and we'll let you know as soon as it's ready.",
     '',
-    'In the meantime, come and follow along on Instagram, where we share behind-the-scenes looks at the design, sneak peeks of the Shields and docks, and updates as we get closer to launch.',
+    'In the meantime, follow our Instagram to learn more about Shield, child safety and who we are!',
     '',
     'Follow us on Instagram: ' + INSTAGRAM_HANDLE + ' ' + INSTAGRAM_URL,
     '',
@@ -96,8 +96,8 @@ function sendWelcome(email) {
     '<div style="font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#1A2B40;max-width:520px">' +
     '<p>Hi there,</p>' +
     "<p>Thanks for joining the <strong>Shield family</strong>! You'll be among the first to hear about Shield.</p>" +
-    "<p>We're a small family team building Shield because we wanted a quiet, reliable way to know our kids are safe, without anyone glued to a phone. We're in the final stages of development, and we'll let you know as soon as it's ready.</p>" +
-    '<p>In the meantime, come and follow along on Instagram, where we share behind-the-scenes looks at the design, sneak peeks of the Shields and docks, and updates as we get closer to launch.</p>' +
+    "<p>We're in the final stages of development, and we'll let you know as soon as it's ready.</p>" +
+    '<p>In the meantime, follow our Instagram to learn more about Shield, child safety and who we are!</p>' +
     '<p><a href="' + INSTAGRAM_URL + '" style="display:inline-block;background:#FF6B6B;color:#ffffff;text-decoration:none;padding:10px 20px;border-radius:100px;font-weight:bold">Follow ' + INSTAGRAM_HANDLE + ' on Instagram</a></p>' +
     "<p>We promise we hate spam too. We'll only email when it matters.</p>" +
     '<p>Mariessa and Evan<br><span style="color:#3A5472">Auntie Reesa and Uncle Evan, Founders of Shield</span></p>' +
