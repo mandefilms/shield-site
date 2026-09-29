@@ -3,7 +3,9 @@
  * and sends each new person a thank-you email from this Gmail account.
  *
  * Setup (logged in as the Gmail account the emails should come from):
- *   1. Create a Google Sheet, then Extensions > Apps Script, and paste this file in.
+ *   1. Either create a Google Sheet and open Extensions > Apps Script, or go straight to
+ *      script.google.com and click "New project". Paste this file in.
+ *      (If started on its own, the script creates a "Shield waitlist" sheet in your Drive.)
  *   2. Check the settings below (Instagram link, email wording).
  *   3. Deploy > New deployment > type "Web app":
  *        Execute as: Me       Who has access: Anyone
@@ -109,8 +111,25 @@ function sendWelcome(email) {
   MailApp.sendEmail({ to: email, subject: SUBJECT, body: text, htmlBody: html, name: SENDER_NAME });
 }
 
+// Works whether the script lives inside a sheet or on its own at script.google.com
+function getSpreadsheet() {
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  const props = PropertiesService.getScriptProperties();
+  const id = props.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  const created = SpreadsheetApp.create('Shield waitlist');
+  props.setProperty('SHEET_ID', created.getId());
+  return created;
+}
+
+// Run this once from the editor to create the sheet (if needed) and get its link in the log
+function showSheetLink() {
+  Logger.log(getSpreadsheet().getUrl());
+}
+
 function getSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet();
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
   if (sheet.getLastRow() === 0) {
