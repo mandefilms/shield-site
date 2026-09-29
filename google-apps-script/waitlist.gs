@@ -18,6 +18,7 @@ const INSTAGRAM_URL = 'https://www.instagram.com/mya.shield/';
 const INSTAGRAM_HANDLE = '@mya.shield';
 const SUBJECT = 'Thanks for joining the Shield family! 🛡️';
 const SHEET_NAME = 'Waitlist';
+const PRIVACY_URL = 'https://myashield.netlify.app/privacy.html';
 // ---------------------------------------------------------------------------
 
 const HEADERS = ['Signed up', 'Email', 'From form', 'Reply sent'];
@@ -89,7 +90,8 @@ function sendWelcome(email) {
     'Mariessa and Evan',
     'Auntie Reesa and Uncle Evan, Founders of Shield',
     '',
-    "Don't want these emails? Just reply with \"unsubscribe\" and we'll remove you."
+    "Don't want these emails? Just reply with \"unsubscribe\" and we'll remove you.",
+    'How we use your email: ' + PRIVACY_URL
   ].join('\n');
 
   const html =
@@ -101,7 +103,7 @@ function sendWelcome(email) {
     '<p><a href="' + INSTAGRAM_URL + '" style="display:inline-block;background:#FF6B6B;color:#ffffff;text-decoration:none;padding:10px 20px;border-radius:100px;font-weight:bold">Follow ' + INSTAGRAM_HANDLE + ' on Instagram</a></p>' +
     "<p>We promise we hate spam too. We'll only email when it matters.</p>" +
     '<p>Mariessa and Evan<br><span style="color:#3A5472">Auntie Reesa and Uncle Evan, Founders of Shield</span></p>' +
-    '<p style="font-size:12px;color:#8A97A8">Don\'t want these emails? Just reply with "unsubscribe" and we\'ll remove you.</p>' +
+    '<p style="font-size:12px;color:#8A97A8">Don\'t want these emails? Just reply with "unsubscribe" and we\'ll remove you.<br><a href="' + PRIVACY_URL + '" style="color:#8A97A8">How we use your email</a></p>' +
     '</div>';
 
   MailApp.sendEmail({ to: email, subject: SUBJECT, body: text, htmlBody: html, name: SENDER_NAME });
