@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Email Signature · Shield</title>
+  <style>
+    body { margin: 0; background: #F4F8FF; font-family: Helvetica, Arial, sans-serif; color: #1A2B40; }
+    main { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
+    h1 { font-size: 1.4rem; margin: 0 0 6px; }
+    .how { font-size: 0.95rem; line-height: 1.6; color: #3A5472; }
+    .how ol { padding-left: 20px; }
+    .box { background: #fff; border-radius: 14px; padding: 24px; margin: 20px 0; box-shadow: 0 6px 24px rgba(30,58,95,0.08); }
+    button { background: #FF6B6B; color: #fff; border: 0; border-radius: 100px; padding: 10px 20px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
+    .done { margin-left: 10px; color: #3F9A4B; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Shield email signature</h1>
+    <div class="box" id="signature">
+      <!-- Email-safe signature: tables and inline styles only, so it looks right in Gmail, Apple Mail and Outlook -->
+      <table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;">
+        <tr>
+          <td style="padding:0 14px 0 0;vertical-align:middle;">
+            <a href="https://myashield.netlify.app/" style="text-decoration:none;"><img src="https://myashield.netlify.app/email-signature-logo.png" width="64" height="64" alt="Shield" style="display:block;width:64px;height:64px;border:0;" /></a>
+          </td>
+          <td style="padding:0 0 0 14px;border-left:2px solid #127365;vertical-align:middle;">
+            <div style="font-size:15px;font-weight:bold;color:#1A2B40;line-height:20px;">Mariessa and Evan</div>
+            <div style="font-size:13px;color:#3A5472;line-height:18px;">Founders, Shield</div>
+            <div style="font-size:13px;line-height:20px;padding-top:4px;">
+              <a href="mailto:contact.myashield@gmail.com" style="color:#127365;text-decoration:none;">contact.myashield@gmail.com</a>
+            </div>
+            <div style="font-size:13px;line-height:20px;">
+              <a href="https://myashield.netlify.app/" style="color:#127365;text-decoration:none;">myashield.netlify.app</a>
+              <span style="color:#B0BAC6;">&nbsp;|&nbsp;</span>
+              <a href="https://www.instagram.com/mya.shield/" style="color:#127365;text-decoration:none;">Instagram @mya.shield</a>
+            </div>
+            <div style="font-size:12px;font-style:italic;color:#FF6B6B;line-height:18px;padding-top:4px;">Always there. When it matters most.</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <button type="button" id="copy">Copy signature</button><span class="done" id="done" hidden>Copied</span>
+    <div class="how">
+      <p>To add it to Gmail (on a computer):</p>
+      <ol>
+        <li>Click "Copy signature" above (or select the signature with your mouse and copy it).</li>
+        <li>In Gmail, click the gear icon, then "See all settings".</li>
+        <li>Scroll to "Signature", click "Create new", name it "Shield", and paste into the box.</li>
+        <li>Under "Signature defaults", choose it for new emails and replies.</li>
+        <li>Scroll to the bottom and click "Save Changes".</li>
+      </ol>
+    </div>
+  </main>
+  <script>
+    document.getElementById('copy').addEventListener('click', async () => {
+      const el = document.getElementById('signature');
+      try {
+        const html = el.innerHTML;
+        await navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([html], { type: 'text/html' }),
+          'text/plain': new Blob([el.innerText], { type: 'text/plain' })
+        })]);
+      } catch (e) {
+        // Fallback: select it so the person can press Ctrl+C / Cmd+C
+        const range = document.createRange(); range.selectNodeContents(el);
+        const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        document.execCommand('copy');
+      }
+      document.getElementById('done').hidden = false;
+    });
+  </script>
+</body>
+</html>
