@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://myashield.netlify.app/sitemap.xml
