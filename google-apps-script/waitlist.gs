@@ -20,7 +20,7 @@ const INSTAGRAM_URL = 'https://www.instagram.com/mya.shield/';
 const INSTAGRAM_HANDLE = '@mya.shield';
 const SUBJECT = 'Thanks for joining the Shield family! 🛡️';
 const SHEET_NAME = 'Waitlist';
-const PRIVACY_URL = 'https://myashield.netlify.app/privacy.html';
+const PRIVACY_URL = 'https://myashield.netlify.app/privacy';
 // Sign-up alerts for you: 'instant' (an email for each new sign-up), 'daily' (one summary a day,
 // run setupDailySummary once to switch it on) or 'off'. Alerts share Gmail's ~100 emails/day limit.
 const NOTIFY_MODE = 'instant';

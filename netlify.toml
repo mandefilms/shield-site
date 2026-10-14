@@ -1,4 +1,4 @@
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/privacy"
+  to = "/privacy.html"
   status = 200
