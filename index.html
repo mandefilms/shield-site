@@ -692,10 +692,10 @@
     }
     .coverage-stat {
       font-family: 'Fraunces', serif;
-      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-size: clamp(1.9rem, 5vw, 2.8rem);
       font-weight: 700;
       color: var(--yellow);
-      line-height: 1;
+      line-height: 1.15;
       display: block;
     }
     .coverage-label { font-size: 1rem; opacity: 0.75; margin-top: 6px; }
@@ -740,6 +740,10 @@
     .footer-logo { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.05em; margin-bottom: 8px; }
     .footer-logo span { opacity: 0.45; font-weight: 400; }
     .footer-meta { font-size: 0.82rem; opacity: 0.4; line-height: 1.8; }
+    /* Own line so the flags keep full colour; text matches .footer-meta */
+    .footer-place { font-size: 0.82rem; line-height: 1.8; color: rgba(255,255,255,0.4); }
+    .footer-place .flag { vertical-align: -1px; margin-left: 2px; border-radius: 1px; }
+    .footer-place .flag-heart { vertical-align: -3px; border-radius: 0; }
     .footer-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
     /* ── SUCCESS STATE ────────────────────────────── */
@@ -1037,8 +1041,8 @@
   <div class="container">
     <div class="reveal" style="text-align:center;">
       <div class="tag tag--yellow">Global Coverage</div>
-      <span class="coverage-stat">135+</span>
-      <p class="coverage-label">countries with active cellular coverage. Included, always.</p>
+      <span class="coverage-stat">Works in over 100 countries</span>
+      <p class="coverage-label">Active cellular coverage. Included, always.</p>
     </div>
   </div>
 </section>
@@ -1095,8 +1099,8 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo"><img src="shield-logo-light-160.png" alt="" style="width:24px;height:auto;vertical-align:middle;margin-right:6px;" /> Shield <span>by MxE</span></div>
+  <div class="footer-place">Based in Charlotte, NC <svg class="flag" width="19" height="10" viewBox="0 0 19 10" role="img" aria-label="USA"><rect width="19" height="10" fill="#fff"/><g fill="#B31942"><rect y="0.000" width="19" height="0.769"/><rect y="1.538" width="19" height="0.769"/><rect y="3.077" width="19" height="0.769"/><rect y="4.615" width="19" height="0.769"/><rect y="6.154" width="19" height="0.769"/><rect y="7.692" width="19" height="0.769"/><rect y="9.231" width="19" height="0.769"/></g><rect width="7.6" height="5.385" fill="#0A3161"/><g fill="#fff"><circle cx="0.76" cy="0.54" r="0.28"/><circle cx="2.28" cy="0.54" r="0.28"/><circle cx="3.80" cy="0.54" r="0.28"/><circle cx="5.32" cy="0.54" r="0.28"/><circle cx="6.84" cy="0.54" r="0.28"/><circle cx="1.52" cy="1.62" r="0.28"/><circle cx="3.04" cy="1.62" r="0.28"/><circle cx="4.56" cy="1.62" r="0.28"/><circle cx="6.08" cy="1.62" r="0.28"/><circle cx="0.76" cy="2.70" r="0.28"/><circle cx="2.28" cy="2.70" r="0.28"/><circle cx="3.80" cy="2.70" r="0.28"/><circle cx="5.32" cy="2.70" r="0.28"/><circle cx="6.84" cy="2.70" r="0.28"/><circle cx="1.52" cy="3.78" r="0.28"/><circle cx="3.04" cy="3.78" r="0.28"/><circle cx="4.56" cy="3.78" r="0.28"/><circle cx="6.08" cy="3.78" r="0.28"/><circle cx="0.76" cy="4.86" r="0.28"/><circle cx="2.28" cy="4.86" r="0.28"/><circle cx="3.80" cy="4.86" r="0.28"/><circle cx="5.32" cy="4.86" r="0.28"/><circle cx="6.84" cy="4.86" r="0.28"/></g></svg> <span aria-hidden="true">&middot;</span> British at heart <svg class="flag flag-heart" width="16" height="16" viewBox="2 3.5 20 18.5" aria-hidden="true"><defs><clipPath id="uk-heart"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.1 0 3.6 1.1 5.4 3 1.8-1.9 3.3-3 5.4-3 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z"/></clipPath><clipPath id="uk-t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath></defs><g clip-path="url(#uk-heart)"><g transform="translate(-8 2) scale(0.6667)"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-t)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></g><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.9 4.5 6.6 4.5c2.1 0 3.6 1.1 5.4 3 1.8-1.9 3.3-3 5.4-3 3.7 0 5.7 3.9 4.2 7.3C19.5 16.4 12 21 12 21z" fill="none" stroke="#fff" stroke-opacity="0.85" stroke-width="0.9"/></svg></div>
   <div class="footer-meta">
-    Charlotte, NC, USA &middot; British at heart<br>
     <a href="mailto:contact.myashield@gmail.com">contact.myashield@gmail.com</a><br>
     <a href="/privacy">Privacy policy</a>
   </div>
