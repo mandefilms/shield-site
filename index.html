@@ -1359,6 +1359,17 @@
     }
   }
 
+  // In-page links scroll to their section without adding #hero / #cta to the address bar
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      if (target.id === 'hero') window.scrollTo({ top: 0, behavior: 'smooth' });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
 </script>
 </body>
 </html>
