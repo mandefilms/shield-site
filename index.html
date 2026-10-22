@@ -22,7 +22,7 @@
   <meta name="twitter:image:alt" content="The Mya'Shield logo with the words Early alert child safety" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,700;1,400&family=Bangers&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -120,11 +120,17 @@
       display: flex; align-items: center;
       padding: 120px 0 80px;
       overflow: hidden;
-      background: #F5F5F3;
+      background: #FBEEE0;
       color: var(--text-dark);
     }
-    #hero .blob-1 { width: 420px; height: 420px; background: var(--coral); top: -140px; right: -180px; opacity: 0.07; }
-    #hero .blob-2 { width: 340px; height: 340px; background: var(--mint);  bottom: -100px; left: -140px; opacity: 0.07; }
+    /* Looping mascot, folded arms, looking left at the text. Its cream sunburst is the hero background on wide screens */
+    .hero-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: 85% 50%;
+      pointer-events: none;
+    }
 
     .hero-inner {
       position: relative; z-index: 2;
@@ -135,40 +141,26 @@
       align-items: center;
       gap: 40px;
     }
-    .hero-copy { flex: 1 1 480px; max-width: 560px; padding-left: clamp(24px, 5vw, 96px); }
-    .hero-visual {
-      flex: 1 1 50%;
-      position: relative;
-      height: 620px;
-      overflow: hidden;
+    .hero-copy { flex: 1 1 480px; max-width: min(560px, 42vw); padding-left: clamp(24px, 5vw, 96px); }
+    /* Wide screens: text on the left, the mascot in the video on the right.
+       Kept to wide shapes so the mascot never sits behind the text. */
+    @media (min-width: 1000px) and (min-aspect-ratio: 10/7) {
+      #hero { min-height: max(640px, min(100svh, 56.25vw)); padding: 110px 0 60px; }
     }
-    .hero-device-photo {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: 50% 50%;
-      display: block;
-    }
-    @media (max-width: 860px) {
-      .hero-inner { flex-direction: column; text-align: center; }
-      .hero-copy {
-        padding-left: 0 !important;
-        max-width: none !important;
-        display: flex;
-        flex-direction: column;
+    /* Narrow or tall screens: the mascot sits above the text, cropped to a square */
+    @media (max-width: 999px), (max-aspect-ratio: 10/7) {
+      #hero { flex-direction: column; justify-content: center; padding: 92px 0 64px; min-height: 0; }
+      .hero-video {
+        position: static;
+        width: min(78vw, 400px); height: auto;
+        aspect-ratio: 1 / 1;
+        object-position: 100% 50%;
+        margin: 0 auto 8px;
+        -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+        mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
       }
-      .hero-copy .hero-label  { order: 1; }
-      .hero-copy .hero-title  { order: 2; }
-      .hero-copy .hero-sub    { order: 3; }
-      .hero-copy .hero-tagline { order: 4; justify-content: center; margin-top: 2px; }
-      .hero-copy .hero-form   { order: 5; margin-top: 20px; }
-      .hero-copy .form-success, .hero-copy .form-error { order: 6; }
-      .hero-copy .hero-note   { order: 7; }
-      .hero-copy .hero-badges { order: 8; }
-      .hero-visual { order: -1; flex: none; width: 100%; height: auto; overflow: visible; }
-      .hero-device-photo { position: static; width: 88%; max-width: 460px; height: auto; margin: 0 0 0 auto; }
+      .hero-inner { flex-direction: column; text-align: center; padding: 0 24px; }
+      .hero-copy { padding-left: 0; max-width: 620px; flex: none; }
       .hero-form { justify-content: center; }
       .hero-badges { justify-content: center; }
     }
@@ -178,27 +170,26 @@
     .mascot-grid-item img { width: 100%; max-width: 480px; height: auto; transition: transform 0.3s ease; }
     .mascot-grid-item img:hover { transform: scale(1.04); }
     .hero-label { font-family: 'Fraunces', serif; font-size: clamp(1.05rem, 2.4vw, 1.3rem); font-weight: 600; color: var(--text-mid); margin-bottom: 10px; }
-    .hero-title { margin-bottom: 14px; font-size: clamp(2rem, 5vw, 3.2rem); }
-    .hero-title em { font-style: italic; color: var(--blue-light); }
-    .hero-tagline {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'Fraunces', serif;
-      font-size: clamp(1.05rem, 2.6vw, 1.35rem);
-      font-weight: 700;
-      font-style: italic;
-      color: var(--coral);
-      margin-bottom: 14px;
-      opacity: 0.92;
-    }
-    .hero-tagline img { width: clamp(32px, 6vw, 44px); height: auto; flex-shrink: 0; }
-    .hero-sub {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      opacity: 0.85;
-      max-width: 500px;
-      margin-bottom: 28px;
+    .hero-title { margin-bottom: 26px; }
+    /* Same comic lettering as the superhero artwork */
+    .hero-title-kid {
+      display: block;
+      font-family: 'Bangers', 'Outfit', sans-serif;
       font-weight: 400;
+      font-size: clamp(2.5rem, 5.6vw, 4.4rem);
+      line-height: 1.02;
+      letter-spacing: 0.02em;
+      color: #2B3556;
+      text-shadow: 3px 3px 0 var(--coral);
+    }
+    .hero-title-parent {
+      display: block;
+      margin-top: 14px;
+      font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+      line-height: 1.25;
+      font-style: italic;
+      color: var(--blue-light);
+      text-wrap: balance;
     }
     .hero-form { display: flex; gap: 10px; flex-wrap: wrap; }
     .hero-form input {
@@ -206,7 +197,7 @@
       padding: 14px 20px;
       border-radius: 100px;
       border: 2px solid rgba(30,58,95,0.18);
-      background: rgba(30,58,95,0.04);
+      background: rgba(255,255,255,0.8);
       color: var(--text-dark);
       font-family: 'Outfit', sans-serif;
       font-size: 1rem;
@@ -237,7 +228,7 @@
     .hero-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
     .badge {
       display: flex; align-items: center; gap: 8px;
-      background: rgba(30,58,95,0.05);
+      background: rgba(255,255,255,0.7);
       border: 1px solid rgba(30,58,95,0.12);
       border-radius: 100px;
       padding: 7px 16px;
@@ -245,6 +236,9 @@
       font-weight: 500;
     }
     .badge .icon { font-size: 1rem; }
+
+    /* ── ALWAYS THERE ─────────────────────────────── */
+    #always h2 em { font-style: italic; color: var(--blue-light); }
 
     /* ── PERSONALIZE ──────────────────────────────── */
     #personalize { position: relative; overflow: hidden; }
@@ -670,6 +664,14 @@
     }
     .story-card p { color: var(--text-mid); line-height: 1.8; margin-bottom: 16px; font-size: 0.97rem; }
     .story-card p:last-child { margin-bottom: 0; }
+    .story-card .story-signoff {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--coral);
+      margin-top: 24px;
+    }
     .story-authors {
       display: flex; align-items: center; gap: 14px;
       margin-bottom: 28px;
@@ -790,13 +792,14 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
+  <video class="hero-video" id="hero-video" poster="shield-hero-loop-poster.webp" muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="shield-hero-loop.mp4" type="video/mp4" />
+    <source src="shield-hero-loop.webm" type="video/webm" />
+  </video>
   <div class="hero-inner reveal">
       <div class="hero-copy">
         <p class="hero-label">Early-alert child safety device.</p>
-        <h1 class="hero-title">Always there.<br><em>When it matters most.</em></h1>
-        <p class="hero-sub">No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
+        <h1 class="hero-title"><span class="hero-title-kid">Every kid needs their superhero sidekick.</span> <span class="hero-title-parent">Every parent needs that peace of mind.</span></h1>
         <form class="hero-form" data-source="hero" onsubmit="handleSignup(event, 'hero-success', 'hero-error')">
           <input type="email" name="email" placeholder="Your email address" required autocomplete="email" aria-label="Your email address" />
           <label class="hp-field" aria-hidden="true">Leave this empty <input type="text" name="bot-field" tabindex="-1" autocomplete="off" /></label>
@@ -804,7 +807,6 @@
         </form>
         <p class="form-success" id="hero-success">You're on the list. We'll be in touch soon.</p>
         <p class="form-error" id="hero-error" role="alert">Sorry, that didn't go through. Please try again, or email us at <a href="mailto:contact.myashield@gmail.com">contact.myashield@gmail.com</a>.</p>
-        <p class="hero-tagline">Safety at heart.</p>
         <p class="hero-note">Trust us, we hate spam too. We'll only ever send important updates, and you can unsubscribe anytime. <a href="/privacy">Privacy policy</a></p>
         <div class="hero-badges">
           <div class="badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.9-4M4 13a8 8 0 0 0 14.9 4"/><path d="M4 4v5h5M20 20v-5h-5"/><line x1="3" y1="3" x2="21" y2="21"/></svg> No subscription</div>
@@ -813,9 +815,21 @@
           <div class="badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15" r="1.3" fill="currentColor" stroke="none"/></svg> Parent-only removal</div>
         </div>
       </div>
-      <div class="hero-visual">
-        <img src="shield-hand-hold-main.webp" alt="A hand holding Mya's otter Shield, showing its size" class="hero-device-photo" id="hero-device-img" />
+  </div>
+</section>
+
+<!-- ALWAYS THERE -->
+<section id="always" class="section-light">
+  <div class="container">
+    <div class="device-inner reveal">
+      <div class="device-text">
+        <h2>Always there.<br><em>When it matters most.</em></h2>
+        <p>No parent wants that alert. But if something's wrong, Shield is already there, so you can be too.</p>
       </div>
+      <div class="device-visual">
+        <img src="shield-hand-hold-main.webp" alt="A hand holding Mya's otter Shield, showing its size" class="device-photo" loading="lazy" width="845" height="708" />
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1071,6 +1085,7 @@
       <blockquote>"We wanted to give our family an extra layer of protection. To alert someone the moment something seemed out of the ordinary."</blockquote>
       <p>Nothing on the market did that. The trackers they found were either too visible, too unreliable, or too dependent on a parent glued to a phone. So they built Shield themselves.</p>
       <p>Shield isn't a tech company chasing a market. It's a family that solved their own problem and decided to share the solution.</p>
+      <p class="story-signoff">Safety at heart.</p>
     </div>
   </div>
 </section>
@@ -1118,6 +1133,17 @@
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Hero loop plays only for visitors who have not asked for reduced motion; the rest see the poster
+  const heroVideo = document.getElementById('hero-video');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function syncHeroVideo() {
+    if (reduceMotion.matches) { heroVideo.pause(); return; }
+    heroVideo.muted = true;
+    heroVideo.play().catch(() => {});
+  }
+  syncHeroVideo();
+  reduceMotion.addEventListener('change', syncHeroVideo);
 
   // Stagger children in grids
   document.querySelectorAll('.diff-grid, .steps').forEach(parent => {
