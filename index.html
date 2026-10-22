@@ -245,33 +245,45 @@
     .always-inner h2 { color: var(--text-dark); margin-bottom: 18px; }
     .always-inner p { color: var(--text-mid); }
     /* Flyers either side of the centred text */
-    #always .flyer--left { width: 84px; }
+    /* Narrower screens: the two flyers sit side by side above the text */
+    @media (max-width: 1239px) {
+      #always { text-align: center; padding-top: 56px; }
+      #always .flyer {
+        position: static; display: inline-block; vertical-align: middle;
+        width: min(40vw, 200px); margin: 0 2vw 8px;
+      }
+      #always .flyer--left { width: min(46vw, 230px); }
+    }
     @media (min-width: 1240px) {
-      #always .flyer { top: 50%; margin-top: -80px; width: clamp(140px, 11vw, 190px); }
-      #always .flyer--left { left: calc(50% - 610px); right: auto; width: clamp(200px, 16vw, 260px); margin-top: -115px; }
-      #always .flyer--right { right: calc(50% - 540px); }
+      #always .flyer { top: 50%; margin-top: -105px; width: clamp(190px, 15vw, 250px); }
+      #always .flyer--left { left: calc(50% - 630px); right: auto; width: clamp(240px, 19vw, 320px); margin-top: -140px; }
+      #always .flyer--right { right: calc(50% - 590px); }
     }
 
     /* ── SIDEKICKS ────────────────────────────────── */
     /* Superhero sidekicks dotted down the page, standing at the bottom right of a section and looking left at it */
     #dock, #coverage { position: relative; }
-    .sidekick { display: block; width: 104px; height: auto; margin: 24px 0 0 auto; }
+    .sidekick { display: block; width: min(42vw, 170px); height: auto; margin: 24px 0 0 auto; }
     @media (min-width: 1400px) {
-      .sidekick { position: absolute; right: 3vw; bottom: 0; width: clamp(140px, 11vw, 180px); margin: 0; }
+      .sidekick { position: absolute; right: 1vw; bottom: 0; width: clamp(190px, 14vw, 250px); margin: 0; }
     }
 
     /* Comic flyers swooping through a few sections, with a gentle float */
     #always, #checkin { position: relative; overflow: hidden; }
+    /* Room above the content for the bigger flyers on smaller screens */
+    @media (max-width: 1399px) { #checkin { padding-top: 156px; } section#cta { padding-top: 156px; } }
+    /* Wide screens: the check-in flyer gets its own band above the content */
+    @media (min-width: 1400px) { #checkin { padding-top: 220px; } #checkin .flyer { top: 18px; right: 6vw; } }
     .flyer {
       position: absolute; top: 6px; right: 12px; z-index: 1;
-      width: 72px; height: auto; pointer-events: none;
+      width: min(30vw, 160px); height: auto; pointer-events: none;
       animation: flyer-float 3.2s ease-in-out infinite;
     }
     .flyer--left { left: 12px; right: auto; }
     @media (min-width: 1400px) {
-      .flyer { top: 48px; width: clamp(150px, 11vw, 200px); }
-      .flyer--left { left: 3vw; right: auto; }
-      .flyer--right { right: 3vw; }
+      .flyer { top: 40px; width: clamp(200px, 14vw, 260px); }
+      .flyer--left { left: 2vw; right: auto; }
+      .flyer--right { right: 1vw; }
     }
     @keyframes flyer-float {
       0%, 100% { transform: translate(0, 0) rotate(0deg); }
