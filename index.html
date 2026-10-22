@@ -132,6 +132,8 @@
       pointer-events: none;
     }
 
+    .hero-still { display: none; }
+
     .hero-inner {
       position: relative; z-index: 2;
       width: 100%;
@@ -147,14 +149,14 @@
     @media (min-width: 1000px) and (min-aspect-ratio: 10/7) {
       #hero { min-height: max(640px, min(100svh, 56.25vw)); padding: 110px 0 60px; }
     }
-    /* Narrow or tall screens: the mascot sits above the text, cropped to a square */
+    /* Narrow or tall screens: a still of the mascot facing forward sits above the text, no video */
     @media (max-width: 999px), (max-aspect-ratio: 10/7) {
       #hero { flex-direction: column; justify-content: center; padding: 92px 0 64px; min-height: 0; }
-      .hero-video {
-        position: static;
+      .hero-video { display: none; }
+      .hero-still {
+        display: block;
         width: min(78vw, 400px); height: auto;
         aspect-ratio: 1 / 1;
-        object-position: 100% 50%;
         margin: 0 auto 8px;
         -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
         mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
@@ -243,9 +245,10 @@
     .always-inner h2 { color: var(--text-dark); margin-bottom: 18px; }
     .always-inner p { color: var(--text-mid); }
     /* Flyers either side of the centred text */
-    @media (min-width: 1000px) {
+    #always .flyer--left { width: 84px; }
+    @media (min-width: 1240px) {
       #always .flyer { top: 50%; margin-top: -80px; width: clamp(140px, 11vw, 190px); }
-      #always .flyer--left { left: calc(50% - 540px); right: auto; }
+      #always .flyer--left { left: calc(50% - 610px); right: auto; width: clamp(200px, 16vw, 260px); margin-top: -115px; }
       #always .flyer--right { right: calc(50% - 540px); }
     }
 
@@ -831,9 +834,8 @@
   <video class="hero-video" id="hero-video" poster="shield-hero-loop-poster.webp" autoplay muted loop playsinline preload="auto" aria-hidden="true">
     <source src="shield-hero-loop.mp4" type="video/mp4" media="(min-width: 1000px) and (min-aspect-ratio: 10/7)" />
     <source src="shield-hero-loop.webm" type="video/webm" media="(min-width: 1000px) and (min-aspect-ratio: 10/7)" />
-    <source src="shield-hero-loop-mobile.mp4" type="video/mp4" />
-    <source src="shield-hero-loop-mobile.webm" type="video/webm" />
   </video>
+  <img class="hero-still" src="shield-hero-still-mobile.webp" alt="" width="800" height="800" />
   <div class="hero-inner reveal">
       <div class="hero-copy">
         <p class="hero-label">Early-alert child safety device.</p>
