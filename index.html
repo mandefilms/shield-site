@@ -248,6 +248,24 @@
       .sidekick { position: absolute; right: 3vw; bottom: 0; width: clamp(140px, 11vw, 180px); margin: 0; }
     }
 
+    /* Comic flyers swooping through a few sections, with a gentle float */
+    #always, #checkin { position: relative; overflow: hidden; }
+    .flyer {
+      position: absolute; top: 6px; right: 12px; z-index: 1;
+      width: 72px; height: auto; pointer-events: none;
+      animation: flyer-float 3.2s ease-in-out infinite;
+    }
+    @media (min-width: 1400px) {
+      .flyer { top: 48px; width: clamp(150px, 11vw, 200px); }
+      .flyer--left { left: 3vw; right: auto; }
+      .flyer--right { right: 3vw; }
+    }
+    @keyframes flyer-float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50%      { transform: translate(6px, -10px) rotate(-2deg); }
+    }
+    @media (prefers-reduced-motion: reduce) { .flyer { animation: none; } }
+
     /* ── PERSONALIZE ──────────────────────────────── */
     #personalize { position: relative; overflow: hidden; }
     .personalize-demo { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
@@ -828,6 +846,7 @@
 
 <!-- ALWAYS THERE -->
 <section id="always" class="section-light">
+  <img src="shield-flyer-purple.webp" alt="" class="flyer flyer--left" loading="lazy" width="440" height="405" />
   <div class="container">
     <div class="device-inner reveal">
       <div class="device-text">
@@ -951,6 +970,7 @@
 
 <!-- CHECK-IN -->
 <section id="checkin" class="section-light">
+  <img src="shield-flyer-navy.webp" alt="" class="flyer flyer--right" loading="lazy" width="440" height="405" />
   <div class="container">
     <div class="checkin-inner reveal">
       <div class="checkin-visual">
@@ -1104,6 +1124,7 @@
 
 <!-- FINAL CTA -->
 <section id="cta">
+  <img src="shield-flyer-teal.webp" alt="" class="flyer flyer--left" loading="lazy" width="440" height="405" />
   <div class="blob blob-9"></div>
   <div class="blob blob-10"></div>
   <div class="container" style="position:relative;z-index:2;">
