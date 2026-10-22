@@ -294,7 +294,7 @@
     /* ── PERSONALIZE ──────────────────────────────── */
     #personalize { position: relative; overflow: hidden; }
     .personalize-demo { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
-    .personalize-mascot { width: clamp(110px, 18vw, 160px); height: auto; transition: opacity 0.45s ease; filter: drop-shadow(0 0 16px rgba(255,255,255,0.18)); }
+    .personalize-mascot { width: clamp(220px, 32vw, 340px); height: auto; transition: opacity 0.45s ease; filter: drop-shadow(0 0 16px rgba(255,255,255,0.18)); }
     .personalize-name { font-family: 'Fraunces', serif; font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; }
     .personalize-name .child {
       font-style: italic;
@@ -888,10 +888,10 @@
     <div class="section-header reveal" style="text-align:center;">
       <div class="tag tag--yellow">Made Theirs</div>
       <h2>Every child is unique. So is their Shield.</h2>
-      <p style="margin:14px auto 0; max-width:560px;">Each child creates their own superhero. Designed by them, looking after them.</p>
+      <p style="margin:14px auto 0; max-width:560px; text-wrap:balance;">Each child creates their own superhero. Designed by them, looking after them.</p>
     </div>
     <div class="personalize-demo reveal">
-      <img src="shield-mya-otter.webp" alt="" class="personalize-mascot" id="personalize-mascot-img" />
+      <img src="shield-hero-pink-wave.webp" alt="" class="personalize-mascot" id="personalize-mascot-img" width="520" height="434" />
       <span class="personalize-name"><span class="child visible" id="personalize-child-name">Mya's</span> Shield</span>
     </div>
   </div>
@@ -1211,8 +1211,8 @@
   // Simple waitlist form handler
   // Rotating child name + matching mascot swap, shown in the "Made Theirs" section
   // Each name is paired with the Shield that has that name printed on it
-  const childNames = ["Mya's","Evan's","Sophie's","Tom's","Mariessa's","William's","Sarah's","Sophie's","Mariessa's"];
-  const mascotImgs = ["shield-mya-otter.webp","shield-evan-monkey.webp","shield-sophie-otter.webp","shield-tom-dolphin.webp","shield-mariessa-toucan-terracotta.webp","shield-william-dog.webp","shield-sarah-butterfly.webp","shield-sophie-flamingo.webp","shield-mariessa-toucan-gold.webp"];
+  const childNames = ["Mya's","Tom's","Sophie's","William's","Sarah's"];
+  const mascotImgs = ["shield-hero-pink-wave.webp","shield-hero-green-wave.webp","shield-hero-purple-hips.webp","shield-hero-orange-wave.webp","shield-hero-navy-folded.webp"];
   // Preload all mascot images so swaps are instant
   mascotImgs.forEach(src => { const i = new Image(); i.src = src; });
   let nameIndex = 0;
