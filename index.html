@@ -240,6 +240,14 @@
     /* ── ALWAYS THERE ─────────────────────────────── */
     #always h2 em { font-style: italic; color: var(--blue-light); }
 
+    /* ── SIDEKICKS ────────────────────────────────── */
+    /* Superhero sidekicks dotted down the page, standing at the bottom right of a section and looking left at it */
+    #dock, #coverage { position: relative; }
+    .sidekick { display: block; width: 104px; height: auto; margin: 24px 0 0 auto; }
+    @media (min-width: 1400px) {
+      .sidekick { position: absolute; right: 3vw; bottom: 0; width: clamp(140px, 11vw, 180px); margin: 0; }
+    }
+
     /* ── PERSONALIZE ──────────────────────────────── */
     #personalize { position: relative; overflow: hidden; }
     .personalize-demo { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 28px; }
@@ -980,6 +988,7 @@
         </ul>
       </div>
     </div>
+    <img src="shield-sidekick-pink.webp" alt="" class="sidekick reveal" loading="lazy" width="420" height="390" />
   </div>
 </section>
 
@@ -1021,6 +1030,7 @@
         <p>What starts as a bedtime ritual becomes the habit that keeps Shield charged every single night. No nagging, no rules.</p>
       </div>
     </div>
+    <img src="shield-sidekick-teal-wave.webp" alt="" class="sidekick reveal" loading="lazy" width="420" height="368" />
   </div>
 </section>
 
@@ -1058,6 +1068,7 @@
       <span class="coverage-stat">Works in over 100 countries</span>
       <p class="coverage-label">Active cellular coverage. Included, always.</p>
     </div>
+    <img src="shield-sidekick-purple.webp" alt="" class="sidekick reveal" loading="lazy" width="420" height="390" />
   </div>
 </section>
 
@@ -1087,6 +1098,7 @@
       <p>Shield isn't a tech company chasing a market. It's a family that solved their own problem and decided to share the solution.</p>
       <p class="story-signoff">Safety at heart.</p>
     </div>
+    <img src="shield-sidekick-navy.webp" alt="" class="sidekick reveal" loading="lazy" width="420" height="390" />
   </div>
 </section>
 
